@@ -32,12 +32,18 @@ spring:
       indent-output: true
   data:
     mongodb:
-      uri: mongodb://localhost:27017/web
+      uri: ${com_camenduru_web_data_mongodb_uri}
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: ${com_camenduru_web_mail_host}
+    port: ${com_camenduru_web_mail_port}
+    username: ${com_camenduru_web_mail_username}
+    password: ${com_camenduru_web_mail_password}
+    protocol: smtp
+    tls: true
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+      ssl.trust: ${com_camenduru_web_mail_smtp_ssl_trust}
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
