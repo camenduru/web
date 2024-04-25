@@ -7,7 +7,7 @@
     "cacheProvider": "ehcache",
     "clientFramework": "angular",
     "clientTestFrameworks": ["cypress"],
-    "clientTheme": "lux",
+    "clientTheme": "yeti",
     "clientThemeVariant": "dark",
     "creationTimestamp": 1714074757984,
     "cypressAudit": true,
