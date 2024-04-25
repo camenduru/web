@@ -1,101 +1,87 @@
-import { computed, defineComponent, inject, ref, type Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useVuelidate } from '@vuelidate/core';
-import { email, helpers, maxLength, minLength, required, sameAs } from '@vuelidate/validators';
-import type LoginService from '@/account/login.service';
-import RegisterService from '@/account/register/register.service';
-import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from '@/constants';
+import { Component, AfterViewInit, ElementRef, inject, ViewChild, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
-const loginPattern = helpers.regex(/^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$/);
+import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
+import SharedModule from 'app/shared/shared.module';
+import PasswordStrengthBarComponent from '../password/password-strength-bar/password-strength-bar.component';
+import { RegisterService } from './register.service';
 
-export default defineComponent({
-  compatConfig: { MODE: 3 },
-  name: 'Register',
-  validations() {
-    return {
-      registerAccount: {
-        login: {
-          required,
-          minLength: minLength(1),
-          maxLength: maxLength(50),
-          pattern: loginPattern,
-        },
-        email: {
-          required,
-          minLength: minLength(5),
-          maxLength: maxLength(254),
-          email,
-        },
-        password: {
-          required,
-          minLength: minLength(4),
-          maxLength: maxLength(254),
-        },
-      },
-      confirmPassword: {
-        required,
-        minLength: minLength(4),
-        maxLength: maxLength(50),
-        sameAsPassword: sameAs(this.registerAccount.password),
-      },
-    };
-  },
-  setup(prop) {
-    const loginService = inject<LoginService>('loginService');
-    const registerService = inject('registerService', () => new RegisterService(), true);
-    const currentLanguage = inject('currentLanguage', () => computed(() => navigator.language ?? 'en'), true);
+@Component({
+  standalone: true,
+  selector: 'jhi-register',
+  imports: [SharedModule, RouterModule, FormsModule, ReactiveFormsModule, PasswordStrengthBarComponent],
+  templateUrl: './register.component.html',
+})
+export default class RegisterComponent implements AfterViewInit {
+  @ViewChild('login', { static: false })
+  login?: ElementRef;
 
-    const error: Ref<string> = ref('');
-    const errorEmailExists: Ref<string> = ref('');
-    const errorUserExists: Ref<string> = ref('');
-    const success: Ref<boolean> = ref(false);
+  doNotMatch = signal(false);
+  error = signal(false);
+  errorEmailExists = signal(false);
+  errorUserExists = signal(false);
+  success = signal(false);
 
-    const confirmPassword: Ref<any> = ref(null);
-    const registerAccount: Ref<any> = ref({
-      login: undefined,
-      email: undefined,
-      password: undefined,
-    });
+  registerForm = new FormGroup({
+    login: new FormControl('', {
+      nonNullable: true,
+      validators: [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z0-9!$&*+=?^_`{|}~.-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$|^[_.@A-Za-z0-9-]+$'),
+      ],
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
+    }),
+    confirmPassword: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(4), Validators.maxLength(50)],
+    }),
+  });
 
-    const openLogin = () => {
-      loginService.openLogin();
-    };
+  private translateService = inject(TranslateService);
+  private registerService = inject(RegisterService);
 
-    return {
-      openLogin,
-      currentLanguage,
-      registerService,
-      error,
-      errorEmailExists,
-      errorUserExists,
-      success,
-      confirmPassword,
-      registerAccount,
-      v$: useVuelidate(),
-      t$: useI18n().t,
-    };
-  },
-  methods: {
-    register(): void {
-      this.error = null;
-      this.errorUserExists = null;
-      this.errorEmailExists = null;
-      this.registerAccount.langKey = this.currentLanguage;
+  ngAfterViewInit(): void {
+    if (this.login) {
+      this.login.nativeElement.focus();
+    }
+  }
+
+  register(): void {
+    this.doNotMatch.set(false);
+    this.error.set(false);
+    this.errorEmailExists.set(false);
+    this.errorUserExists.set(false);
+
+    const { password, confirmPassword } = this.registerForm.getRawValue();
+    if (password !== confirmPassword) {
+      this.doNotMatch.set(true);
+    } else {
+      const { login, email } = this.registerForm.getRawValue();
       this.registerService
-        .processRegistration(this.registerAccount)
-        .then(() => {
-          this.success = true;
-        })
-        .catch(error => {
-          this.success = null;
-          if (error.response.status === 400 && error.response.data.type === LOGIN_ALREADY_USED_TYPE) {
-            this.errorUserExists = 'ERROR';
-          } else if (error.response.status === 400 && error.response.data.type === EMAIL_ALREADY_USED_TYPE) {
-            this.errorEmailExists = 'ERROR';
-          } else {
-            this.error = 'ERROR';
-          }
-        });
-    },
-  },
-});
+        .save({ login, email, password, langKey: this.translateService.currentLang })
+        .subscribe({ next: () => this.success.set(true), error: response => this.processError(response) });
+    }
+  }
+
+  private processError(response: HttpErrorResponse): void {
+    if (response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) {
+      this.errorUserExists.set(true);
+    } else if (response.status === 400 && response.error.type === EMAIL_ALREADY_USED_TYPE) {
+      this.errorEmailExists.set(true);
+    } else {
+      this.error.set(true);
+    }
+  }
+}

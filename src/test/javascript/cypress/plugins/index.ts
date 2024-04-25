@@ -42,5 +42,6 @@ export default async (on: Cypress.PluginEvents, config: Cypress.PluginConfigOpti
     }),
     pa11y: pa11y(),
   });
+  (await import('@cypress/code-coverage/task')).default(on, config);
   return config;
 };

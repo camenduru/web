@@ -1,135 +1,123 @@
-import { vitest } from 'vitest';
-import { computed } from 'vue';
-import { shallowMount } from '@vue/test-utils';
-import axios from 'axios';
-import sinon from 'sinon';
+import { ComponentFixture, TestBed, waitForAsync, inject, tick, fakeAsync } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormBuilder } from '@angular/forms';
+import { of, throwError } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import LoginService from '../login.service';
-import Register from './register.vue';
-import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from '@/constants';
+import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 
-type RegisterComponentType = InstanceType<typeof Register>;
+import { RegisterService } from './register.service';
+import RegisterComponent from './register.component';
 
-const axiosStub = {
-  get: sinon.stub(axios, 'get'),
-  post: sinon.stub(axios, 'post'),
-};
+describe('RegisterComponent', () => {
+  let fixture: ComponentFixture<RegisterComponent>;
+  let comp: RegisterComponent;
 
-describe('Register Component', () => {
-  let register: RegisterComponentType;
-  let loginService: LoginService;
-  const filledRegisterAccount = {
-    email: 'jhi@pster.net',
-    langKey: 'en',
-    login: 'jhi',
-    password: 'jhipster',
-  };
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot(), HttpClientTestingModule, RegisterComponent],
+      providers: [FormBuilder],
+    })
+      .overrideTemplate(RegisterComponent, '')
+      .compileComponents();
+  }));
 
   beforeEach(() => {
-    axiosStub.get.resolves({});
-    axiosStub.post.reset();
-    loginService = new LoginService({ emit: vitest.fn() });
-    vitest.spyOn(loginService, 'openLogin');
+    fixture = TestBed.createComponent(RegisterComponent);
+    comp = fixture.componentInstance;
+  });
 
-    const wrapper = shallowMount(Register, {
-      global: {
-        provide: {
-          loginService,
-          currentLanguage: computed(() => 'en'),
-        },
-      },
+  it('should ensure the two passwords entered match', () => {
+    comp.registerForm.patchValue({
+      password: 'password',
+      confirmPassword: 'non-matching',
     });
-    register = wrapper.vm;
+
+    comp.register();
+
+    expect(comp.doNotMatch()).toBe(true);
   });
 
-  it('should set all default values correctly', () => {
-    expect(register.success).toBe(false);
-    expect(register.error).toBe('');
-    expect(register.errorEmailExists).toBe('');
-    expect(register.errorUserExists).toBe('');
-    expect(register.confirmPassword).toBe(null);
-    expect(register.registerAccount.login).toBe(undefined);
-    expect(register.registerAccount.password).toBe(undefined);
-    expect(register.registerAccount.email).toBe(undefined);
-  });
+  it('should update success to true after creating an account', inject(
+    [RegisterService, TranslateService],
+    fakeAsync((service: RegisterService, mockTranslateService: TranslateService) => {
+      jest.spyOn(service, 'save').mockReturnValue(of({}));
+      mockTranslateService.currentLang = 'en';
+      comp.registerForm.patchValue({
+        password: 'password',
+        confirmPassword: 'password',
+      });
 
-  it('should open login modal when asked to', () => {
-    register.openLogin();
-    expect(loginService.openLogin).toBeCalledTimes(1);
-  });
+      comp.register();
+      tick();
 
-  it('should register when password match', async () => {
-    axiosStub.post.resolves();
-    register.registerAccount = filledRegisterAccount;
-    register.confirmPassword = filledRegisterAccount.password;
-    register.register();
-    await register.$nextTick();
-
-    expect(
-      axiosStub.post.calledWith('api/register', {
-        email: 'jhi@pster.net',
+      expect(service.save).toHaveBeenCalledWith({
+        email: '',
+        password: 'password',
+        login: '',
         langKey: 'en',
-        login: 'jhi',
-        password: 'jhipster',
-      }),
-    ).toBeTruthy();
-    expect(register.success).toBe(true);
-    expect(register.error).toBe(null);
-    expect(register.errorEmailExists).toBe(null);
-    expect(register.errorUserExists).toBe(null);
-  });
+      });
+      expect(comp.success()).toBe(true);
+      expect(comp.errorUserExists()).toBe(false);
+      expect(comp.errorEmailExists()).toBe(false);
+      expect(comp.error()).toBe(false);
+    }),
+  ));
 
-  it('should register when password match but throw error when login already exist', async () => {
-    const error = { response: { status: 400, data: { type: LOGIN_ALREADY_USED_TYPE } } };
-    axiosStub.post.rejects(error);
-    register.registerAccount = filledRegisterAccount;
-    register.confirmPassword = filledRegisterAccount.password;
-    register.register();
-    await register.$nextTick();
+  it('should notify of user existence upon 400/login already in use', inject(
+    [RegisterService],
+    fakeAsync((service: RegisterService) => {
+      const err = { status: 400, error: { type: LOGIN_ALREADY_USED_TYPE } };
+      jest.spyOn(service, 'save').mockReturnValue(throwError(() => err));
+      comp.registerForm.patchValue({
+        password: 'password',
+        confirmPassword: 'password',
+      });
 
-    expect(
-      axiosStub.post.calledWith('api/register', { email: 'jhi@pster.net', langKey: 'en', login: 'jhi', password: 'jhipster' }),
-    ).toBeTruthy();
-    await register.$nextTick();
-    expect(register.success).toBe(null);
-    expect(register.error).toBe(null);
-    expect(register.errorEmailExists).toBe(null);
-    expect(register.errorUserExists).toBe('ERROR');
-  });
+      comp.register();
+      tick();
 
-  it('should register when password match but throw error when email already used', async () => {
-    const error = { response: { status: 400, data: { type: EMAIL_ALREADY_USED_TYPE } } };
-    axiosStub.post.rejects(error);
-    register.registerAccount = filledRegisterAccount;
-    register.confirmPassword = filledRegisterAccount.password;
-    register.register();
-    await register.$nextTick();
+      expect(comp.errorUserExists()).toBe(true);
+      expect(comp.errorEmailExists()).toBe(false);
+      expect(comp.error()).toBe(false);
+    }),
+  ));
 
-    expect(
-      axiosStub.post.calledWith('api/register', { email: 'jhi@pster.net', langKey: 'en', login: 'jhi', password: 'jhipster' }),
-    ).toBeTruthy();
-    await register.$nextTick();
-    expect(register.success).toBe(null);
-    expect(register.error).toBe(null);
-    expect(register.errorEmailExists).toBe('ERROR');
-    expect(register.errorUserExists).toBe(null);
-  });
+  it('should notify of email existence upon 400/email address already in use', inject(
+    [RegisterService],
+    fakeAsync((service: RegisterService) => {
+      const err = { status: 400, error: { type: EMAIL_ALREADY_USED_TYPE } };
+      jest.spyOn(service, 'save').mockReturnValue(throwError(() => err));
+      comp.registerForm.patchValue({
+        password: 'password',
+        confirmPassword: 'password',
+      });
 
-  it('should register when password match but throw error', async () => {
-    const error = { response: { status: 400, data: { type: 'unknown' } } };
-    axiosStub.post.rejects(error);
-    register.registerAccount = filledRegisterAccount;
-    register.confirmPassword = filledRegisterAccount.password;
-    register.register();
-    await register.$nextTick();
+      comp.register();
+      tick();
 
-    expect(
-      axiosStub.post.calledWith('api/register', { email: 'jhi@pster.net', langKey: 'en', login: 'jhi', password: 'jhipster' }),
-    ).toBeTruthy();
-    await register.$nextTick();
-    expect(register.success).toBe(null);
-    expect(register.errorEmailExists).toBe(null);
-    expect(register.errorUserExists).toBe(null);
-    expect(register.error).toBe('ERROR');
-  });
+      expect(comp.errorEmailExists()).toBe(true);
+      expect(comp.errorUserExists()).toBe(false);
+      expect(comp.error()).toBe(false);
+    }),
+  ));
+
+  it('should notify of generic error', inject(
+    [RegisterService],
+    fakeAsync((service: RegisterService) => {
+      const err = { status: 503 };
+      jest.spyOn(service, 'save').mockReturnValue(throwError(() => err));
+      comp.registerForm.patchValue({
+        password: 'password',
+        confirmPassword: 'password',
+      });
+
+      comp.register();
+      tick();
+
+      expect(comp.errorUserExists()).toBe(false);
+      expect(comp.errorEmailExists()).toBe(false);
+      expect(comp.error()).toBe(true);
+    }),
+  ));
 });

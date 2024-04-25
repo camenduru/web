@@ -1,13 +1,9 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["src/main/webapp//**/*", "src/main/webapp/app/**/*.vue"],
-  "exclude": ["src/main/webapp/app/**/*.spec.ts"],
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "baseUrl": "src/main/webapp/app",
-    "outDir": "target/out-tsc/dist",
-    "paths": {
-      "@/*": ["./src/main/webapp/app/*"]
-    }
-  }
+    "outDir": "./target/out-tsc/app",
+    "types": ["@angular/localize"]
+  },
+  "files": ["src/main/webapp/main.ts"],
+  "include": ["src/main/webapp/**/*.d.ts"]
 }

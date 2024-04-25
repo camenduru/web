@@ -8,15 +8,10 @@
     <meta name="google" content="notranslate" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="theme-color" content="#000000" />
+    <base href="/" />
     <link rel="icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webapp" />
     <link rel="stylesheet" href="content/css/loading.css" />
-    <!-- Workaround https://github.com/axios/axios/issues/5622 -->
-    <script>
-      const global = globalThis;
-    </script>
-    <!-- Load vue main -->
-    <script type="module" src="./app/main.ts"></script>
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
   </head>
   <body>
@@ -26,7 +21,7 @@
         your experience.
       </p>
     <![endif]-->
-    <div id="app">
+    <jhi-app>
       <div class="app-loading">
         <div class="lds-pacman">
           <div>
@@ -104,7 +99,7 @@
           <!-- end of troubleshooting content -->
         </div>
       </div>
-    </div>
+    </jhi-app>
     <noscript>
       <h1>You must enable JavaScript to view this page.</h1>
     </noscript>

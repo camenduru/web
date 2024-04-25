@@ -33,18 +33,12 @@ spring:
       enabled: false
   data:
     mongodb:
-      uri: ${com_camenduru_web_data_mongodb_uri}
+      uri: mongodb://localhost:27017/web
   mail:
-    host: ${com_camenduru_web_mail_host}
-    port: ${com_camenduru_web_mail_port}
-    username: ${com_camenduru_web_mail_username}
-    password: ${com_camenduru_web_mail_password}
-    protocol: smtp
-    tls: true
-    properties.mail.smtp:
-      auth: true
-      starttls.enable: true
-      ssl.trust: ${com_camenduru_web_mail_smtp_ssl_trust}
+    host: localhost
+    port: 25
+    username:
+    password:
   thymeleaf:
     cache: true
 
@@ -97,7 +91,7 @@ jhipster:
         # - In the Consul configserver
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: NjNmOGQ1MDhkODBlYzAyMjQ3OWJlOTU5NjEyYzI2MTcyNTIwZjZmNzRhOGQwMWVjODYwYzIxYzVlNGVlY2E0N2Y1ZmFiN2I5MjUyZmQ1MmE4OWQ1ODlhMGQ5OTUzMGE0MmMzNmM3YmMwOWNjMTc1MWUyYjI2YTE4NjAyMWI3MWU=
+        base64-secret: ZjZlODVjNzQzMTJkNjE0MWVmZjYwMTUzOTZhYzY5N2I2ODI4ODA4YjAwOTBmNTExYzFhOTJhMmVlMjE0OTllZTg0NGQwOWZkODEzODE1NTI4NjBlZGMxMTVlOTAyYWMzMTczNzBjOGUzNmMwYTg3MDgyZDU3YzhiNjgxYTk4OGI=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

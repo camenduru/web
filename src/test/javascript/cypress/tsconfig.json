@@ -1,5 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "extends": "../../../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
     "sourceMap": false,

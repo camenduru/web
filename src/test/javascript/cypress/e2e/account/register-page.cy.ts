@@ -8,9 +8,9 @@ import {
   classValid,
 } from '../../support/commands';
 
-describe('/register', () => {
+describe('/account/register', () => {
   beforeEach(() => {
-    cy.visit('/register');
+    cy.visit('/account/register');
   });
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('/register', () => {
   it('should be accessible through menu', () => {
     cy.visit('');
     cy.clickOnRegisterItem();
-    cy.url().should('match', /\/register$/);
+    cy.url().should('match', /\/account\/register$/);
   });
 
   it('should load the register page', () => {
@@ -73,8 +73,7 @@ describe('/register', () => {
     cy.get(firstPasswordRegisterSelector).should('have.class', classValid);
     cy.get(secondPasswordRegisterSelector).should('have.class', classInvalid);
     cy.get(secondPasswordRegisterSelector).type('otherPassword');
-    cy.get(secondPasswordRegisterSelector).blur();
-    cy.get(secondPasswordRegisterSelector).should('have.class', classInvalid);
+    cy.get(submitRegisterSelector).should('be.disabled');
   });
 
   it('register a valid user', () => {

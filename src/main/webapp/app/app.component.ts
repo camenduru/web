@@ -1,28 +1,33 @@
-import { defineComponent, provide } from 'vue';
-import { useI18n } from 'vue-i18n';
-import Ribbon from '@/core/ribbon/ribbon.vue';
-import JhiFooter from '@/core/jhi-footer/jhi-footer.vue';
-import JhiNavbar from '@/core/jhi-navbar/jhi-navbar.vue';
-import LoginForm from '@/account/login-form/login-form.vue';
+import { Component, inject } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import dayjs from 'dayjs/esm';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import locale from '@angular/common/locales/en';
+// jhipster-needle-angular-add-module-import JHipster will add new module here
 
-import { useAlertService } from '@/shared/alert/alert.service';
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { fontAwesomeIcons } from './config/font-awesome-icons';
+import MainComponent from './layouts/main/main.component';
 
-import '@/shared/config/dayjs';
+@Component({
+  standalone: true,
+  selector: 'jhi-app',
+  template: '<jhi-main></jhi-main>',
+  imports: [
+    MainComponent,
+    // jhipster-needle-angular-add-module JHipster will add new module here
+  ],
+})
+export default class AppComponent {
+  private applicationConfigService = inject(ApplicationConfigService);
+  private iconLibrary = inject(FaIconLibrary);
+  private dpConfig = inject(NgbDatepickerConfig);
 
-export default defineComponent({
-  compatConfig: { MODE: 3 },
-  name: 'App',
-  components: {
-    ribbon: Ribbon,
-    'jhi-navbar': JhiNavbar,
-    'login-form': LoginForm,
-    'jhi-footer': JhiFooter,
-  },
-  setup() {
-    provide('alertService', useAlertService());
-
-    return {
-      t$: useI18n().t,
-    };
-  },
-});
+  constructor() {
+    this.applicationConfigService.setEndpointPrefix(SERVER_API_URL);
+    registerLocaleData(locale);
+    this.iconLibrary.addIcons(...fontAwesomeIcons);
+    this.dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
+  }
+}

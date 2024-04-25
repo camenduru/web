@@ -1,63 +1,61 @@
-import { computed, defineComponent, inject, ref, type Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 
-import LogsService from './logs.service';
-import { orderAndFilterBy } from '@/shared/computables';
+import SharedModule from 'app/shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { SortDirective, SortByDirective, sortStateSignal, SortService } from 'app/shared/sort';
+import { Log, LoggersResponse, Level } from './log.model';
+import { LogsService } from './logs.service';
 
-export default defineComponent({
-  compatConfig: { MODE: 3 },
-  name: 'JhiLogs',
-  setup() {
-    const logsService = inject('logsService', () => new LogsService(), true);
+@Component({
+  standalone: true,
+  selector: 'jhi-logs',
+  templateUrl: './logs.component.html',
+  imports: [SharedModule, FormsModule, SortDirective, SortByDirective],
+})
+export default class LogsComponent implements OnInit {
+  loggers = signal<Log[] | undefined>(undefined);
+  isLoading = signal(false);
+  filter = signal('');
+  sortState = sortStateSignal({ predicate: 'name', order: 'asc' });
+  filteredAndOrderedLoggers = computed<Log[] | undefined>(() => {
+    let data = this.loggers() ?? [];
+    const filter = this.filter();
+    if (filter) {
+      data = data.filter(logger => logger.name.toLowerCase().includes(filter.toLowerCase()));
+    }
 
-    const loggers: Ref<any[]> = ref([]);
-    const filtered = ref('');
-    const orderProp = ref('name');
-    const reverse = ref(false);
-    const filteredLoggers = computed(() =>
-      orderAndFilterBy(loggers.value, {
-        filterByTerm: filtered.value,
-        orderByProp: orderProp.value,
-        reverse: reverse.value,
-      }),
-    );
+    const { order, predicate } = this.sortState();
+    if (order && predicate) {
+      data = data.sort(this.sortService.startSort({ order, predicate }, { predicate: 'name', order: 'asc' }));
+    }
+    return data;
+  });
 
-    return {
-      logsService,
-      loggers,
-      filtered,
-      orderProp,
-      reverse,
-      filteredLoggers,
-      t$: useI18n().t,
-    };
-  },
-  mounted() {
-    this.init();
-  },
-  methods: {
-    init(): void {
-      this.logsService.findAll().then(response => {
-        this.extractLoggers(response);
+  private logsService = inject(LogsService);
+  private sortService = inject(SortService);
+
+  ngOnInit(): void {
+    this.findAndExtractLoggers();
+  }
+
+  changeLevel(name: string, level: Level): void {
+    this.logsService.changeLevel(name, level).subscribe(() => this.findAndExtractLoggers());
+  }
+
+  private findAndExtractLoggers(): void {
+    this.isLoading.set(true);
+    this.logsService
+      .findAll()
+      .pipe(
+        finalize(() => {
+          this.isLoading.set(false);
+        }),
+      )
+      .subscribe({
+        next: (response: LoggersResponse) =>
+          this.loggers.set(Object.entries(response.loggers).map(([key, logger]) => new Log(key, logger.effectiveLevel))),
+        error: () => this.loggers.set([]),
       });
-    },
-    updateLevel(name: string, level: string): void {
-      this.logsService.changeLevel(name, level).then(() => {
-        this.init();
-      });
-    },
-    changeOrder(orderProp: string): void {
-      this.orderProp = orderProp;
-      this.reverse = !this.reverse;
-    },
-    extractLoggers(response) {
-      this.loggers = [];
-      if (response.data) {
-        for (const key of Object.keys(response.data.loggers)) {
-          const logger = response.data.loggers[key];
-          this.loggers.push({ name: key, level: logger.effectiveLevel });
-        }
-      }
-    },
-  },
-});
+  }
+}

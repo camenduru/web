@@ -1,67 +1,44 @@
-import { computed, defineComponent, inject, ref, type Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 
-import ConfigurationService from './configuration.service';
-import { orderAndFilterBy } from '@/shared/computables';
+import SharedModule from 'app/shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { SortDirective, SortByDirective, sortStateSignal, SortService } from 'app/shared/sort';
+import { ConfigurationService } from './configuration.service';
+import { Bean, PropertySource } from './configuration.model';
 
-export default defineComponent({
-  compatConfig: { MODE: 3 },
-  name: 'JhiConfiguration',
-  setup() {
-    const configurationService = inject('configurationService', () => new ConfigurationService(), true);
+@Component({
+  standalone: true,
+  selector: 'jhi-configuration',
+  templateUrl: './configuration.component.html',
+  imports: [SharedModule, FormsModule, SortDirective, SortByDirective],
+})
+export default class ConfigurationComponent implements OnInit {
+  allBeans = signal<Bean[] | undefined>(undefined);
+  beansFilter = signal<string>('');
+  propertySources = signal<PropertySource[]>([]);
+  sortState = sortStateSignal({ predicate: 'prefix', order: 'asc' });
+  beans = computed(() => {
+    let data = this.allBeans() ?? [];
+    const beansFilter = this.beansFilter();
+    if (beansFilter) {
+      data = data.filter(bean => bean.prefix.toLowerCase().includes(beansFilter.toLowerCase()));
+    }
 
-    const orderProp = ref('prefix');
-    const reverse = ref(false);
-    const allConfiguration: Ref<any> = ref({});
-    const configuration: Ref<any[]> = ref([]);
-    const configKeys: Ref<any[]> = ref([]);
-    const filtered = ref('');
+    const { order, predicate } = this.sortState();
+    if (predicate && order) {
+      data = data.sort(this.sortService.startSort({ predicate, order }));
+    }
+    return data;
+  });
 
-    const filteredConfiguration = computed(() =>
-      orderAndFilterBy(configuration.value, {
-        filterByTerm: filtered.value,
-        orderByProp: orderProp.value,
-        reverse: reverse.value,
-      }),
-    );
+  private sortService = inject(SortService);
+  private configurationService = inject(ConfigurationService);
 
-    return {
-      configurationService,
-      orderProp,
-      reverse,
-      allConfiguration,
-      configuration,
-      configKeys,
-      filtered,
-      filteredConfiguration,
-      t$: useI18n().t,
-    };
-  },
-  mounted() {
-    this.init();
-  },
-  methods: {
-    init(): void {
-      this.configurationService.loadConfiguration().then(res => {
-        this.configuration = res;
+  ngOnInit(): void {
+    this.configurationService.getBeans().subscribe(beans => {
+      this.allBeans.set(beans);
+    });
 
-        for (const config of this.configuration) {
-          if (config.properties !== undefined) {
-            this.configKeys.push(Object.keys(config.properties));
-          }
-        }
-      });
-
-      this.configurationService.loadEnvConfiguration().then(res => {
-        this.allConfiguration = res;
-      });
-    },
-    changeOrder(prop: string): void {
-      this.orderProp = prop;
-      this.reverse = !this.reverse;
-    },
-    keys(dict: any): string[] {
-      return dict === undefined ? [] : Object.keys(dict);
-    },
-  },
-});
+    this.configurationService.getPropertySources().subscribe(propertySources => this.propertySources.set(propertySources));
+  }
+}

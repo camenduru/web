@@ -1,77 +1,68 @@
-import { computed, type ComputedRef, defineComponent, inject, ref, type Ref } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useVuelidate } from '@vuelidate/core';
-import { email, maxLength, minLength, required } from '@vuelidate/validators';
-import axios from 'axios';
-import languages from '@/shared/config/languages';
-import { EMAIL_ALREADY_USED_TYPE } from '@/constants';
-import { useStore } from '@/store';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
-const validations = {
-  settingsAccount: {
-    firstName: {
-      required,
-      minLength: minLength(1),
-      maxLength: maxLength(50),
-    },
-    lastName: {
-      required,
-      minLength: minLength(1),
-      maxLength: maxLength(50),
-    },
-    email: {
-      required,
-      email,
-      minLength: minLength(5),
-      maxLength: maxLength(254),
-    },
-  },
-};
+import SharedModule from 'app/shared/shared.module';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
+import { LANGUAGES } from 'app/config/language.constants';
 
-export default defineComponent({
-  compatConfig: { MODE: 3 },
-  name: 'Settings',
-  validations,
-  setup() {
-    const store = useStore();
+const initialAccount: Account = {} as Account;
 
-    const success: Ref<string> = ref(null);
-    const error: Ref<string> = ref(null);
-    const errorEmailExists: Ref<string> = ref(null);
+@Component({
+  standalone: true,
+  selector: 'jhi-settings',
+  imports: [SharedModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './settings.component.html',
+})
+export default class SettingsComponent implements OnInit {
+  success = signal(false);
+  languages = LANGUAGES;
 
-    const settingsAccount = computed(() => store.account);
-    const username = inject<ComputedRef<string>>('currentUsername', () => computed(() => store.account?.login), true);
+  settingsForm = new FormGroup({
+    firstName: new FormControl(initialAccount.firstName, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+    }),
+    lastName: new FormControl(initialAccount.lastName, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(1), Validators.maxLength(50)],
+    }),
+    email: new FormControl(initialAccount.email, {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email],
+    }),
+    langKey: new FormControl(initialAccount.langKey, { nonNullable: true }),
 
-    return {
-      success,
-      error,
-      errorEmailExists,
-      settingsAccount,
-      username,
-      v$: useVuelidate(),
-      languages: languages(),
-      t$: useI18n().t,
-    };
-  },
-  methods: {
-    save() {
-      this.error = null;
-      this.errorEmailExists = null;
-      return axios
-        .post('api/account', this.settingsAccount)
-        .then(() => {
-          this.error = null;
-          this.success = 'OK';
-          this.errorEmailExists = null;
-        })
-        .catch(ex => {
-          this.success = null;
-          this.error = 'ERROR';
-          if (ex.response.status === 400 && ex.response.data.type === EMAIL_ALREADY_USED_TYPE) {
-            this.errorEmailExists = 'ERROR';
-            this.error = null;
-          }
-        });
-    },
-  },
-});
+    activated: new FormControl(initialAccount.activated, { nonNullable: true }),
+    authorities: new FormControl(initialAccount.authorities, { nonNullable: true }),
+    imageUrl: new FormControl(initialAccount.imageUrl, { nonNullable: true }),
+    login: new FormControl(initialAccount.login, { nonNullable: true }),
+  });
+
+  private accountService = inject(AccountService);
+  private translateService = inject(TranslateService);
+
+  ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      if (account) {
+        this.settingsForm.patchValue(account);
+      }
+    });
+  }
+
+  save(): void {
+    this.success.set(false);
+
+    const account = this.settingsForm.getRawValue();
+    this.accountService.save(account).subscribe(() => {
+      this.success.set(true);
+
+      this.accountService.authenticate(account);
+
+      if (account.langKey !== this.translateService.currentLang) {
+        this.translateService.use(account.langKey);
+      }
+    });
+  }
+}
