@@ -24,6 +24,8 @@ https://github.com/vuejs/ <br />
 ### ⚡ Web Application Generator
 https://www.jhipster.tech/ <br />
 https://github.com/jhipster/generator-jhipster <br />
-
-![Screenshot 2024-04-25 191424](https://github.com/camenduru/web/assets/54370274/ebe7a4c9-08cf-4b64-a9e0-bc6ed5122760)
+ - ### 📋 Tutorial
+ - https://www.youtube.com/watch?v=IfyjKCt6YHE
+   
+   ![Screenshot 2024-04-25 191424](https://github.com/camenduru/web/assets/54370274/ebe7a4c9-08cf-4b64-a9e0-bc6ed5122760)
 
