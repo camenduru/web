@@ -70,6 +70,9 @@ class JobResourceIT {
     private static final String DEFAULT_TOTAL = "AAAAAAAAAA";
     private static final String UPDATED_TOTAL = "BBBBBBBBBB";
 
+    private static final String DEFAULT_RESULT = "AAAAAAAAAA";
+    private static final String UPDATED_RESULT = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/jobs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -104,7 +107,8 @@ class JobResourceIT {
             .command(DEFAULT_COMMAND)
             .type(DEFAULT_TYPE)
             .amount(DEFAULT_AMOUNT)
-            .total(DEFAULT_TOTAL);
+            .total(DEFAULT_TOTAL)
+            .result(DEFAULT_RESULT);
         return job;
     }
 
@@ -125,7 +129,8 @@ class JobResourceIT {
             .command(UPDATED_COMMAND)
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
-            .total(UPDATED_TOTAL);
+            .total(UPDATED_TOTAL)
+            .result(UPDATED_RESULT);
         return job;
     }
 
@@ -321,6 +326,21 @@ class JobResourceIT {
     }
 
     @Test
+    void checkResultIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        job.setResult(null);
+
+        // Create the Job, which fails.
+
+        restJobMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(job)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllJobs() throws Exception {
         // Initialize the database
         jobRepository.save(job);
@@ -340,7 +360,8 @@ class JobResourceIT {
             .andExpect(jsonPath("$.[*].command").value(hasItem(DEFAULT_COMMAND)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
-            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)));
+            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)))
+            .andExpect(jsonPath("$.[*].result").value(hasItem(DEFAULT_RESULT)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -380,7 +401,8 @@ class JobResourceIT {
             .andExpect(jsonPath("$.command").value(DEFAULT_COMMAND))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
-            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL));
+            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL))
+            .andExpect(jsonPath("$.result").value(DEFAULT_RESULT));
     }
 
     @Test
@@ -408,7 +430,8 @@ class JobResourceIT {
             .command(UPDATED_COMMAND)
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
-            .total(UPDATED_TOTAL);
+            .total(UPDATED_TOTAL)
+            .result(UPDATED_RESULT);
 
         restJobMockMvc
             .perform(
@@ -519,7 +542,8 @@ class JobResourceIT {
             .command(UPDATED_COMMAND)
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
-            .total(UPDATED_TOTAL);
+            .total(UPDATED_TOTAL)
+            .result(UPDATED_RESULT);
 
         restJobMockMvc
             .perform(

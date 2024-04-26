@@ -28,6 +28,7 @@
       "type": "Type",
       "amount": "Amount",
       "total": "Total",
+      "result": "Result",
       "user": "User"
     }
   }

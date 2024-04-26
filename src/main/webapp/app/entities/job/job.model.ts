@@ -15,6 +15,7 @@ export interface IJob {
   type?: string | null;
   amount?: string | null;
   total?: string | null;
+  result?: string | null;
   user?: Pick<IUser, 'id' | 'login'> | null;
 }
 

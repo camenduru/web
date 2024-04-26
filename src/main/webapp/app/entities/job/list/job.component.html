@@ -113,6 +113,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="result">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.job.result">Result</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="user.login">
               <div class="d-flex">
                 <span jhiTranslate="webApp.job.user">User</span>
@@ -163,6 +170,7 @@
               <td>{{ job.type }}</td>
               <td>{{ job.amount }}</td>
               <td>{{ job.total }}</td>
+              <td>{{ job.result }}</td>
               <td>
                 {{ job.user?.login }}
               </td>

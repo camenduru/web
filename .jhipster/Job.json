@@ -55,6 +55,11 @@
       "fieldName": "total",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "result",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     }
   ],
   "name": "Job",

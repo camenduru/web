@@ -56,7 +56,8 @@ public class JobAsserts {
             .satisfies(e -> assertThat(e.getCommand()).as("check command").isEqualTo(actual.getCommand()))
             .satisfies(e -> assertThat(e.getType()).as("check type").isEqualTo(actual.getType()))
             .satisfies(e -> assertThat(e.getAmount()).as("check amount").isEqualTo(actual.getAmount()))
-            .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()));
+            .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()))
+            .satisfies(e -> assertThat(e.getResult()).as("check result").isEqualTo(actual.getResult()));
     }
 
     /**

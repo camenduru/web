@@ -41,6 +41,7 @@ type JobFormGroupContent = {
   type: FormControl<JobFormRawValue['type']>;
   amount: FormControl<JobFormRawValue['amount']>;
   total: FormControl<JobFormRawValue['total']>;
+  result: FormControl<JobFormRawValue['result']>;
   user: FormControl<JobFormRawValue['user']>;
 };
 
@@ -89,6 +90,9 @@ export class JobFormService {
         validators: [Validators.required],
       }),
       total: new FormControl(jobRawValue.total, {
+        validators: [Validators.required],
+      }),
+      result: new FormControl(jobRawValue.result, {
         validators: [Validators.required],
       }),
       user: new FormControl(jobRawValue.user),

@@ -62,6 +62,10 @@ public class Job implements Serializable {
     @Field("total")
     private String total;
 
+    @NotNull
+    @Field("result")
+    private String result;
+
     @DBRef
     @Field("user")
     private User user;
@@ -211,6 +215,19 @@ public class Job implements Serializable {
         this.total = total;
     }
 
+    public String getResult() {
+        return this.result;
+    }
+
+    public Job result(String result) {
+        this.setResult(result);
+        return this;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
     public User getUser() {
         return this.user;
     }
@@ -258,6 +275,7 @@ public class Job implements Serializable {
             ", type='" + getType() + "'" +
             ", amount='" + getAmount() + "'" +
             ", total='" + getTotal() + "'" +
+            ", result='" + getResult() + "'" +
             "}";
     }
 }

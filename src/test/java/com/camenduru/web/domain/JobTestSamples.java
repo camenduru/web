@@ -13,7 +13,8 @@ public class JobTestSamples {
             .command("command1")
             .type("type1")
             .amount("amount1")
-            .total("total1");
+            .total("total1")
+            .result("result1");
     }
 
     public static Job getJobSample2() {
@@ -25,7 +26,8 @@ public class JobTestSamples {
             .command("command2")
             .type("type2")
             .amount("amount2")
-            .total("total2");
+            .total("total2")
+            .result("result2");
     }
 
     public static Job getJobRandomSampleGenerator() {
@@ -37,6 +39,7 @@ public class JobTestSamples {
             .command(UUID.randomUUID().toString())
             .type(UUID.randomUUID().toString())
             .amount(UUID.randomUUID().toString())
-            .total(UUID.randomUUID().toString());
+            .total(UUID.randomUUID().toString())
+            .result(UUID.randomUUID().toString());
     }
 }

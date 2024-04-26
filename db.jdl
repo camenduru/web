@@ -28,6 +28,7 @@ entity Job {
     type String required
     amount String required
     total String required
+    result String required
 }
 
 relationship ManyToOne {

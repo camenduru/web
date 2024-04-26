@@ -162,6 +162,9 @@ public class JobResource {
                 if (job.getTotal() != null) {
                     existingJob.setTotal(job.getTotal());
                 }
+                if (job.getResult() != null) {
+                    existingJob.setResult(job.getResult());
+                }
 
                 return existingJob;
             })
