@@ -55,7 +55,7 @@
                   <span jhiTranslate="global.menu.entities.job">Job</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/detail"

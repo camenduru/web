@@ -171,14 +171,14 @@
               <td>
                 @if (job.discord) {
                   <div>
-                    <a [routerLink]="['/detail', job.discord.id, 'view']">{{ job.discord.discord }}</a>
+                    {{ job.discord.discord }}
                   </div>
                 }
               </td>
               <td>
                 @if (job.total) {
                   <div>
-                    <a [routerLink]="['/detail', job.total.id, 'view']">{{ job.total.total }}</a>
+                    {{ job.total.total }}
                   </div>
                 }
               </td>

@@ -9,6 +9,7 @@
       </button>
 
       <button
+        *jhiHasAnyAuthority="'ROLE_ADMIN'"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-detail"
@@ -68,16 +69,12 @@
         <tbody>
           @for (detail of details; track trackId) {
             <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/detail', detail.id, 'view']">{{ detail.id }}</a>
-              </td>
+              <td>{{ detail.id }}</td>
               <td>{{ detail.discord }}</td>
               <td>{{ detail.total }}</td>
-              <td>
-                {{ detail.user?.login }}
-              </td>
+              <td>{{ detail.user?.login }}</td>
               <td class="text-end">
-                <div class="btn-group">
+                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">
                   <a [routerLink]="['/detail', detail.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>

@@ -1,7 +1,10 @@
 package com.camenduru.web.web.rest;
 
 import com.camenduru.web.domain.Detail;
+import com.camenduru.web.domain.User;
 import com.camenduru.web.repository.DetailRepository;
+import com.camenduru.web.repository.UserRepository;
+import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -39,8 +43,11 @@ public class DetailResource {
 
     private final DetailRepository detailRepository;
 
-    public DetailResource(DetailRepository detailRepository) {
+    private final UserRepository userRepository;
+
+    public DetailResource(DetailRepository detailRepository, UserRepository userRepository) {
         this.detailRepository = detailRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -51,6 +58,7 @@ public class DetailResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Detail> createDetail(@Valid @RequestBody Detail detail) throws URISyntaxException {
         log.debug("REST request to save Detail : {}", detail);
         if (detail.getId() != null) {
@@ -73,6 +81,7 @@ public class DetailResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Detail> updateDetail(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody Detail detail
@@ -107,6 +116,7 @@ public class DetailResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Detail> partialUpdateDetail(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody Detail detail
@@ -148,16 +158,22 @@ public class DetailResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of details in body.
      */
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<List<Detail>> getAllDetails(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
     ) {
         log.debug("REST request to get a page of Details");
         Page<Detail> page;
-        if (eagerload) {
-            page = detailRepository.findAllWithEagerRelationships(pageable);
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        if (user.getAuthorities().stream().anyMatch(authority -> authority.getName().equals("ROLE_ADMIN"))) {
+            if (eagerload) {
+                page = detailRepository.findAllWithEagerRelationships(pageable);
+            } else {
+                page = detailRepository.findAll(pageable);
+            }
         } else {
-            page = detailRepository.findAll(pageable);
+            page = detailRepository.findAllByUserIsCurrentUser(pageable, user.getId());
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -170,6 +186,7 @@ public class DetailResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the detail, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Detail> getDetail(@PathVariable("id") String id) {
         log.debug("REST request to get Detail : {}", id);
         Optional<Detail> detail = detailRepository.findOneWithEagerRelationships(id);
@@ -183,6 +200,7 @@ public class DetailResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteDetail(@PathVariable("id") String id) {
         log.debug("REST request to delete Detail : {}", id);
         detailRepository.deleteById(id);
