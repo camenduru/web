@@ -19,7 +19,8 @@
       },
       "id": "ID",
       "discord": "Discord",
-      "total": "Total"
+      "total": "Total",
+      "user": "User"
     }
   }
 }

@@ -7,10 +7,10 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/service/user.service';
 import { IDetail } from 'app/entities/detail/detail.model';
 import { DetailService } from 'app/entities/detail/service/detail.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { JobStatus } from 'app/entities/enumerations/job-status.model';
 import { JobSource } from 'app/entities/enumerations/job-source.model';
 import { JobService } from '../service/job.service';
@@ -29,21 +29,21 @@ export class JobUpdateComponent implements OnInit {
   jobStatusValues = Object.keys(JobStatus);
   jobSourceValues = Object.keys(JobSource);
 
-  usersSharedCollection: IUser[] = [];
   detailsSharedCollection: IDetail[] = [];
+  usersSharedCollection: IUser[] = [];
 
   protected jobService = inject(JobService);
   protected jobFormService = inject(JobFormService);
-  protected userService = inject(UserService);
   protected detailService = inject(DetailService);
+  protected userService = inject(UserService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
 
-  compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
-
   compareDetail = (o1: IDetail | null, o2: IDetail | null): boolean => this.detailService.compareDetail(o1, o2);
+
+  compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ job }) => {
@@ -93,21 +93,15 @@ export class JobUpdateComponent implements OnInit {
     this.job = job;
     this.jobFormService.resetForm(this.editForm, job);
 
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, job.user);
     this.detailsSharedCollection = this.detailService.addDetailToCollectionIfMissing<IDetail>(
       this.detailsSharedCollection,
       job.discord,
       job.total,
     );
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, job.user);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.userService
-      .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.job?.user)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
-
     this.detailService
       .query()
       .pipe(map((res: HttpResponse<IDetail[]>) => res.body ?? []))
@@ -117,5 +111,11 @@ export class JobUpdateComponent implements OnInit {
         ),
       )
       .subscribe((details: IDetail[]) => (this.detailsSharedCollection = details));
+
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.job?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 }

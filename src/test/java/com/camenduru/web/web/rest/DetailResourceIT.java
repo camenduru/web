@@ -4,6 +4,7 @@ import static com.camenduru.web.domain.DetailAsserts.*;
 import static com.camenduru.web.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -11,11 +12,17 @@ import com.camenduru.web.IntegrationTest;
 import com.camenduru.web.domain.Detail;
 import com.camenduru.web.repository.DetailRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
  * Integration tests for the {@link DetailResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class DetailResourceIT {
@@ -42,6 +50,9 @@ class DetailResourceIT {
 
     @Autowired
     private DetailRepository detailRepository;
+
+    @Mock
+    private DetailRepository detailRepositoryMock;
 
     @Autowired
     private MockMvc restDetailMockMvc;
@@ -154,6 +165,23 @@ class DetailResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(detail.getId())))
             .andExpect(jsonPath("$.[*].discord").value(hasItem(DEFAULT_DISCORD)))
             .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllDetailsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(detailRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restDetailMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(detailRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllDetailsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(detailRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restDetailMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(detailRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test

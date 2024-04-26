@@ -5,10 +5,10 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subject, from } from 'rxjs';
 
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/service/user.service';
 import { IDetail } from 'app/entities/detail/detail.model';
 import { DetailService } from 'app/entities/detail/service/detail.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { IJob } from '../job.model';
 import { JobService } from '../service/job.service';
 import { JobFormService } from './job-form.service';
@@ -21,8 +21,8 @@ describe('Job Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let jobFormService: JobFormService;
   let jobService: JobService;
-  let userService: UserService;
   let detailService: DetailService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -44,35 +44,13 @@ describe('Job Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     jobFormService = TestBed.inject(JobFormService);
     jobService = TestBed.inject(JobService);
-    userService = TestBed.inject(UserService);
     detailService = TestBed.inject(DetailService);
+    userService = TestBed.inject(UserService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call User query and add missing value', () => {
-      const job: IJob = { id: 'CBA' };
-      const user: IUser = { id: '4e721970-f867-4627-bd3d-7265264b9bbf' };
-      job.user = user;
-
-      const userCollection: IUser[] = [{ id: '4bb72124-bad9-4848-be96-0bacdcc776d6' }];
-      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
-      const additionalUsers = [user];
-      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
-      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ job });
-      comp.ngOnInit();
-
-      expect(userService.query).toHaveBeenCalled();
-      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(
-        userCollection,
-        ...additionalUsers.map(expect.objectContaining),
-      );
-      expect(comp.usersSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should call Detail query and add missing value', () => {
       const job: IJob = { id: 'CBA' };
       const discord: IDetail = { id: 'cf5156f5-cbe0-4d14-8b1f-0dcba1d13cbc' };
@@ -97,21 +75,43 @@ describe('Job Management Update Component', () => {
       expect(comp.detailsSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should update editForm', () => {
+    it('Should call User query and add missing value', () => {
       const job: IJob = { id: 'CBA' };
-      const user: IUser = { id: '75aa936a-ae7a-4886-8d3f-d0c7eab04fc0' };
+      const user: IUser = { id: '4e721970-f867-4627-bd3d-7265264b9bbf' };
       job.user = user;
-      const discord: IDetail = { id: '06a49775-dd23-4e51-892f-bc6cd19ed866' };
-      job.discord = discord;
-      const total: IDetail = { id: 'c9716dd6-e024-4520-8ee9-6dc1639957f8' };
-      job.total = total;
+
+      const userCollection: IUser[] = [{ id: '4bb72124-bad9-4848-be96-0bacdcc776d6' }];
+      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
+      const additionalUsers = [user];
+      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
+      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ job });
       comp.ngOnInit();
 
-      expect(comp.usersSharedCollection).toContain(user);
+      expect(userService.query).toHaveBeenCalled();
+      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(
+        userCollection,
+        ...additionalUsers.map(expect.objectContaining),
+      );
+      expect(comp.usersSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should update editForm', () => {
+      const job: IJob = { id: 'CBA' };
+      const discord: IDetail = { id: '06a49775-dd23-4e51-892f-bc6cd19ed866' };
+      job.discord = discord;
+      const total: IDetail = { id: 'c9716dd6-e024-4520-8ee9-6dc1639957f8' };
+      job.total = total;
+      const user: IUser = { id: '75aa936a-ae7a-4886-8d3f-d0c7eab04fc0' };
+      job.user = user;
+
+      activatedRoute.data = of({ job });
+      comp.ngOnInit();
+
       expect(comp.detailsSharedCollection).toContain(discord);
       expect(comp.detailsSharedCollection).toContain(total);
+      expect(comp.usersSharedCollection).toContain(user);
       expect(comp.job).toEqual(job);
     });
   });
@@ -185,16 +185,6 @@ describe('Job Management Update Component', () => {
   });
 
   describe('Compare relationships', () => {
-    describe('compareUser', () => {
-      it('Should forward to userService', () => {
-        const entity = { id: 'ABC' };
-        const entity2 = { id: 'CBA' };
-        jest.spyOn(userService, 'compareUser');
-        comp.compareUser(entity, entity2);
-        expect(userService.compareUser).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
     describe('compareDetail', () => {
       it('Should forward to detailService', () => {
         const entity = { id: 'ABC' };
@@ -202,6 +192,16 @@ describe('Job Management Update Component', () => {
         jest.spyOn(detailService, 'compareDetail');
         comp.compareDetail(entity, entity2);
         expect(detailService.compareDetail).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareUser', () => {
+      it('Should forward to userService', () => {
+        const entity = { id: 'ABC' };
+        const entity2 = { id: 'CBA' };
+        jest.spyOn(userService, 'compareUser');
+        comp.compareUser(entity, entity2);
+        expect(userService.compareUser).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

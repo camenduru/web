@@ -20,6 +20,7 @@ type DetailFormGroupContent = {
   id: FormControl<IDetail['id'] | NewDetail['id']>;
   discord: FormControl<IDetail['discord']>;
   total: FormControl<IDetail['total']>;
+  user: FormControl<IDetail['user']>;
 };
 
 export type DetailFormGroup = FormGroup<DetailFormGroupContent>;
@@ -45,6 +46,7 @@ export class DetailFormService {
       total: new FormControl(detailRawValue.total, {
         validators: [Validators.required],
       }),
+      user: new FormControl(detailRawValue.user),
     });
   }
 

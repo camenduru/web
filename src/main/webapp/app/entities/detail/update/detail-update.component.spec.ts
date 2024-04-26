@@ -5,6 +5,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subject, from } from 'rxjs';
 
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { DetailService } from '../service/detail.service';
 import { IDetail } from '../detail.model';
 import { DetailFormService } from './detail-form.service';
@@ -17,6 +19,7 @@ describe('Detail Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let detailFormService: DetailFormService;
   let detailService: DetailService;
+  let userService: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,17 +41,43 @@ describe('Detail Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     detailFormService = TestBed.inject(DetailFormService);
     detailService = TestBed.inject(DetailService);
+    userService = TestBed.inject(UserService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should update editForm', () => {
+    it('Should call User query and add missing value', () => {
       const detail: IDetail = { id: 'CBA' };
+      const user: IUser = { id: '17aa6bdb-98fa-4a87-8e5c-f5bad5e3b6e0' };
+      detail.user = user;
+
+      const userCollection: IUser[] = [{ id: '90ed59ae-8691-4f48-8232-172f6b43de8b' }];
+      jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
+      const additionalUsers = [user];
+      const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
+      jest.spyOn(userService, 'addUserToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ detail });
       comp.ngOnInit();
 
+      expect(userService.query).toHaveBeenCalled();
+      expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(
+        userCollection,
+        ...additionalUsers.map(expect.objectContaining),
+      );
+      expect(comp.usersSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should update editForm', () => {
+      const detail: IDetail = { id: 'CBA' };
+      const user: IUser = { id: '41bd28ad-51fe-4236-b9a0-285859df038c' };
+      detail.user = user;
+
+      activatedRoute.data = of({ detail });
+      comp.ngOnInit();
+
+      expect(comp.usersSharedCollection).toContain(user);
       expect(comp.detail).toEqual(detail);
     });
   });
@@ -118,6 +147,18 @@ describe('Detail Management Update Component', () => {
       expect(detailService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Compare relationships', () => {
+    describe('compareUser', () => {
+      it('Should forward to userService', () => {
+        const entity = { id: 'ABC' };
+        const entity2 = { id: 'CBA' };
+        jest.spyOn(userService, 'compareUser');
+        comp.compareUser(entity, entity2);
+        expect(userService.compareUser).toHaveBeenCalledWith(entity, entity2);
+      });
     });
   });
 });

@@ -117,6 +117,7 @@ export class DetailComponent implements OnInit {
     const queryObject: any = {
       page: pageToLoad - 1,
       size: this.itemsPerPage,
+      eagerload: true,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
     return this.detailService.query(queryObject).pipe(tap(() => (this.isLoading = false)));

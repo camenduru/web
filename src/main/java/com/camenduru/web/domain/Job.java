@@ -59,16 +59,16 @@ public class Job implements Serializable {
     private String result;
 
     @DBRef
-    @Field("user")
-    private User user;
-
-    @DBRef
     @Field("discord")
     private Detail discord;
 
     @DBRef
     @Field("total")
     private Detail total;
+
+    @DBRef
+    @Field("user")
+    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -202,19 +202,6 @@ public class Job implements Serializable {
         this.result = result;
     }
 
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Job user(User user) {
-        this.setUser(user);
-        return this;
-    }
-
     public Detail getDiscord() {
         return this.discord;
     }
@@ -238,6 +225,19 @@ public class Job implements Serializable {
 
     public Job total(Detail detail) {
         this.setTotal(detail);
+        return this;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Job user(User user) {
+        this.setUser(user);
         return this;
     }
 

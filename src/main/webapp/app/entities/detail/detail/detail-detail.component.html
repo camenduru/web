@@ -23,6 +23,10 @@
           <dd>
             <span>{{ detail()!.total }}</span>
           </dd>
+          <dt><span jhiTranslate="webApp.detail.user">User</span></dt>
+          <dd>
+            <span>{{ detail()!.user?.login }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

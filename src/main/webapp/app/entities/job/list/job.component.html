@@ -106,12 +106,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="user.login">
-              <div class="d-flex">
-                <span jhiTranslate="webApp.job.user">User</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="discord.discord">
               <div class="d-flex">
                 <span jhiTranslate="webApp.job.discord">Discord</span>
@@ -121,6 +115,12 @@
             <th scope="col" jhiSortBy="total.total">
               <div class="d-flex">
                 <span jhiTranslate="webApp.job.total">Total</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.job.user">User</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
@@ -169,9 +169,6 @@
               <td>{{ job.amount }}</td>
               <td>{{ job.result }}</td>
               <td>
-                {{ job.user?.login }}
-              </td>
-              <td>
                 @if (job.discord) {
                   <div>
                     <a [routerLink]="['/detail', job.discord.id, 'view']">{{ job.discord.discord }}</a>
@@ -184,6 +181,9 @@
                     <a [routerLink]="['/detail', job.total.id, 'view']">{{ job.total.total }}</a>
                   </div>
                 }
+              </td>
+              <td>
+                {{ job.user?.login }}
               </td>
               <td class="text-end">
                 <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">

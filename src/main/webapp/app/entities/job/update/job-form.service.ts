@@ -40,9 +40,9 @@ type JobFormGroupContent = {
   type: FormControl<JobFormRawValue['type']>;
   amount: FormControl<JobFormRawValue['amount']>;
   result: FormControl<JobFormRawValue['result']>;
-  user: FormControl<JobFormRawValue['user']>;
   discord: FormControl<JobFormRawValue['discord']>;
   total: FormControl<JobFormRawValue['total']>;
+  user: FormControl<JobFormRawValue['user']>;
 };
 
 export type JobFormGroup = FormGroup<JobFormGroupContent>;
@@ -89,9 +89,9 @@ export class JobFormService {
       result: new FormControl(jobRawValue.result, {
         validators: [Validators.required],
       }),
-      user: new FormControl(jobRawValue.user),
       discord: new FormControl(jobRawValue.discord),
       total: new FormControl(jobRawValue.total),
+      user: new FormControl(jobRawValue.user),
     });
   }
 

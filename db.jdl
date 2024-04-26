@@ -37,6 +37,10 @@ entity Job {
 
 relationship ManyToOne {
     Job{user(login)} to User with builtInEntity
+}
+
+relationship OneToOne {
+    Detail{user(login)} to User with builtInEntity
     Job{discord(discord)} to Detail
     Job{total(total)} to Detail
 }

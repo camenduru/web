@@ -2,11 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/service/user.service';
 import { IDetail } from '../detail.model';
 import { DetailService } from '../service/detail.service';
 import { DetailFormService, DetailFormGroup } from './detail-form.service';
@@ -21,12 +23,17 @@ export class DetailUpdateComponent implements OnInit {
   isSaving = false;
   detail: IDetail | null = null;
 
+  usersSharedCollection: IUser[] = [];
+
   protected detailService = inject(DetailService);
   protected detailFormService = inject(DetailFormService);
+  protected userService = inject(UserService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: DetailFormGroup = this.detailFormService.createDetailFormGroup();
+
+  compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ detail }) => {
@@ -34,6 +41,8 @@ export class DetailUpdateComponent implements OnInit {
       if (detail) {
         this.updateForm(detail);
       }
+
+      this.loadRelationshipsOptions();
     });
   }
 
@@ -73,5 +82,15 @@ export class DetailUpdateComponent implements OnInit {
   protected updateForm(detail: IDetail): void {
     this.detail = detail;
     this.detailFormService.resetForm(this.editForm, detail);
+
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, detail.user);
+  }
+
+  protected loadRelationshipsOptions(): void {
+    this.userService
+      .query()
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.detail?.user)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
   }
 }

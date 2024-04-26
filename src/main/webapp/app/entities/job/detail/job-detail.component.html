@@ -73,10 +73,6 @@
           <dd>
             <span>{{ job()!.result }}</span>
           </dd>
-          <dt><span jhiTranslate="webApp.job.user">User</span></dt>
-          <dd>
-            <span>{{ job()!.user?.login }}</span>
-          </dd>
           <dt><span jhiTranslate="webApp.job.discord">Discord</span></dt>
           <dd>
             @if (job()!.discord) {
@@ -92,6 +88,10 @@
                 <a [routerLink]="['/detail', job()!.total?.id, 'view']">{{ job()!.total?.total }}</a>
               </div>
             }
+          </dd>
+          <dt><span jhiTranslate="webApp.job.user">User</span></dt>
+          <dd>
+            <span>{{ job()!.user?.login }}</span>
           </dd>
         </dl>
 

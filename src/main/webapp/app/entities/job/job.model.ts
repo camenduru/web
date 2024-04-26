@@ -1,6 +1,6 @@
 import dayjs from 'dayjs/esm';
-import { IUser } from 'app/entities/user/user.model';
 import { IDetail } from 'app/entities/detail/detail.model';
+import { IUser } from 'app/entities/user/user.model';
 import { JobStatus } from 'app/entities/enumerations/job-status.model';
 import { JobSource } from 'app/entities/enumerations/job-source.model';
 
@@ -15,9 +15,9 @@ export interface IJob {
   type?: string | null;
   amount?: string | null;
   result?: string | null;
-  user?: Pick<IUser, 'id' | 'login'> | null;
   discord?: IDetail | null;
   total?: IDetail | null;
+  user?: Pick<IUser, 'id' | 'login'> | null;
 }
 
 export type NewJob = Omit<IJob, 'id'> & { id: null };

@@ -22,6 +22,7 @@ describe('Detail Form Service', () => {
             id: expect.any(Object),
             discord: expect.any(Object),
             total: expect.any(Object),
+            user: expect.any(Object),
           }),
         );
       });
@@ -34,6 +35,7 @@ describe('Detail Form Service', () => {
             id: expect.any(Object),
             discord: expect.any(Object),
             total: expect.any(Object),
+            user: expect.any(Object),
           }),
         );
       });

@@ -29,9 +29,9 @@ describe('Job Form Service', () => {
             type: expect.any(Object),
             amount: expect.any(Object),
             result: expect.any(Object),
-            user: expect.any(Object),
             discord: expect.any(Object),
             total: expect.any(Object),
+            user: expect.any(Object),
           }),
         );
       });
@@ -51,9 +51,9 @@ describe('Job Form Service', () => {
             type: expect.any(Object),
             amount: expect.any(Object),
             result: expect.any(Object),
-            user: expect.any(Object),
             discord: expect.any(Object),
             total: expect.any(Object),
+            user: expect.any(Object),
           }),
         );
       });
