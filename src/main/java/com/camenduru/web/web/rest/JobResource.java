@@ -1,7 +1,10 @@
 package com.camenduru.web.web.rest;
 
 import com.camenduru.web.domain.Job;
+import com.camenduru.web.domain.User;
 import com.camenduru.web.repository.JobRepository;
+import com.camenduru.web.repository.UserRepository;
+import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
@@ -39,8 +43,11 @@ public class JobResource {
 
     private final JobRepository jobRepository;
 
-    public JobResource(JobRepository jobRepository) {
+    private final UserRepository userRepository;
+
+    public JobResource(JobRepository jobRepository, UserRepository userRepository) {
         this.jobRepository = jobRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -51,6 +58,7 @@ public class JobResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Job> createJob(@Valid @RequestBody Job job) throws URISyntaxException {
         log.debug("REST request to save Job : {}", job);
         if (job.getId() != null) {
@@ -73,6 +81,7 @@ public class JobResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Job> updateJob(@PathVariable(value = "id", required = false) final String id, @Valid @RequestBody Job job)
         throws URISyntaxException {
         log.debug("REST request to update Job : {}, {}", id, job);
@@ -103,6 +112,7 @@ public class JobResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Job> partialUpdateJob(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody Job job
@@ -168,16 +178,22 @@ public class JobResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of jobs in body.
      */
     @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<List<Job>> getAllJobs(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable,
         @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
     ) {
         log.debug("REST request to get a page of Jobs");
         Page<Job> page;
-        if (eagerload) {
-            page = jobRepository.findAllWithEagerRelationships(pageable);
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        if (user.getAuthorities().stream().anyMatch(authority -> authority.getName().equals("ROLE_ADMIN"))) {
+            if (eagerload) {
+                page = jobRepository.findAllWithEagerRelationships(pageable);
+            } else {
+                page = jobRepository.findAll(pageable);
+            }
         } else {
-            page = jobRepository.findAll(pageable);
+            page = jobRepository.findAllByUserIsCurrentUser(pageable, user.getId());
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -190,6 +206,7 @@ public class JobResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the job, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Job> getJob(@PathVariable("id") String id) {
         log.debug("REST request to get Job : {}", id);
         Optional<Job> job = jobRepository.findOneWithEagerRelationships(id);
@@ -203,6 +220,7 @@ public class JobResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteJob(@PathVariable("id") String id) {
         log.debug("REST request to delete Job : {}", id);
         jobRepository.deleteById(id);

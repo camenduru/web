@@ -14,6 +14,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface JobRepository extends MongoRepository<Job, String> {
+    @Query("{'user.id': ?0}")
+    Page<Job> findAllByUserIsCurrentUser(Pageable pageable, String userId);
+
     @Query("{}")
     Page<Job> findAllWithEagerRelationships(Pageable pageable);
 
