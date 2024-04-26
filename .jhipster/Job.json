@@ -1,0 +1,70 @@
+{
+  "annotations": {
+    "changelogDate": "20240426001004"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "JobStatus",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "WORKING,DONE,FAILED,CANCELED"
+    },
+    {
+      "fieldName": "source",
+      "fieldType": "JobSource",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "WEB,IOS,ANDROID,DISCORD,OTHER"
+    },
+    {
+      "fieldName": "sourceID",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "sourceChannel",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "sourceUsername",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "command",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "server",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Job",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityField": "total",
+      "otherEntityName": "credit",
+      "relationshipName": "credit",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

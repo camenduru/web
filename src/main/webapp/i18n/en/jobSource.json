@@ -1,0 +1,12 @@
+{
+  "webApp": {
+    "JobSource": {
+      "null": "",
+      "WEB": "WEB",
+      "IOS": "IOS",
+      "ANDROID": "ANDROID",
+      "DISCORD": "DISCORD",
+      "OTHER": "OTHER"
+    }
+  }
+}

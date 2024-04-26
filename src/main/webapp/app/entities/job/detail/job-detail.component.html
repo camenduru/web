@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (job()) {
+      <div>
+        <h2 data-cy="jobDetailsHeading"><span jhiTranslate="webApp.job.detail.title">Job</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ job()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.date">Date</span></dt>
+          <dd>
+            <span>{{ job()!.date | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'webApp.JobStatus.' + (job()!.status ?? 'null')">{{
+              { null: '', WORKING: 'WORKING', DONE: 'DONE', FAILED: 'FAILED', CANCELED: 'CANCELED' }[job()!.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.source">Source</span></dt>
+          <dd>
+            <span [jhiTranslate]="'webApp.JobSource.' + (job()!.source ?? 'null')">{{
+              { null: '', WEB: 'WEB', IOS: 'IOS', ANDROID: 'ANDROID', DISCORD: 'DISCORD', OTHER: 'OTHER' }[job()!.source ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.sourceID">Source ID</span></dt>
+          <dd>
+            <span>{{ job()!.sourceID }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.sourceChannel">Source Channel</span></dt>
+          <dd>
+            <span>{{ job()!.sourceChannel }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.sourceUsername">Source Username</span></dt>
+          <dd>
+            <span>{{ job()!.sourceUsername }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.command">Command</span></dt>
+          <dd>
+            <span>{{ job()!.command }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.server">Server</span></dt>
+          <dd>
+            <span>{{ job()!.server }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.user">User</span></dt>
+          <dd>
+            <span>{{ job()!.user?.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.credit">Credit</span></dt>
+          <dd>
+            @if (job()!.credit) {
+              <div>
+                <a [routerLink]="['/credit', job()!.credit?.id, 'view']">{{ job()!.credit?.total }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/job', job()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

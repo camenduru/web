@@ -1,0 +1,11 @@
+{
+  "webApp": {
+    "JobStatus": {
+      "null": "",
+      "WORKING": "WORKING",
+      "DONE": "DONE",
+      "FAILED": "FAILED",
+      "CANCELED": "CANCELED"
+    }
+  }
+}

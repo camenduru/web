@@ -1,0 +1,9 @@
+{
+  "webApp": {
+    "CreditStatus": {
+      "null": "",
+      "IN": "IN",
+      "OUT": "OUT"
+    }
+  }
+}

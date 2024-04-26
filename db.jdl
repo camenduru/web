@@ -1,0 +1,54 @@
+enum JobStatus {
+    WORKING,
+    DONE,
+    FAILED,
+    CANCELED
+}
+
+enum JobSource {
+    WEB,
+    IOS,
+    ANDROID,
+    DISCORD,
+    OTHER
+}
+
+enum CreditStatus {
+    IN,
+    OUT
+}
+
+enum CreditSource {
+    WEB,
+    IOS,
+    ANDROID,
+    PAYPAL,
+    PATREON,
+    OTHER
+}
+
+entity Credit {
+    date Instant required
+    status CreditStatus required
+    source CreditSource required
+    total String required
+}
+
+entity Job {
+    date Instant required
+    status JobStatus required
+    source JobSource required
+    sourceID String required
+    sourceChannel String required
+    sourceUsername String required
+    command String required
+    server String required
+}
+
+relationship ManyToOne {
+    Job{user(login)} to User with builtInEntity
+    Job{credit(total)} to Credit
+    Credit{user(login)} to User with builtInEntity
+}
+
+paginate all with pagination

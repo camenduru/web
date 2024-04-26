@@ -1,0 +1,33 @@
+{
+  "webApp": {
+    "job": {
+      "home": {
+        "title": "Jobs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Job",
+        "createOrEditLabel": "Create or edit a Job",
+        "notFound": "No Jobs found"
+      },
+      "created": "A new Job is created with identifier {{ param }}",
+      "updated": "A Job is updated with identifier {{ param }}",
+      "deleted": "A Job is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Job {{ id }}?"
+      },
+      "detail": {
+        "title": "Job"
+      },
+      "id": "ID",
+      "date": "Date",
+      "status": "Status",
+      "source": "Source",
+      "sourceID": "Source ID",
+      "sourceChannel": "Source Channel",
+      "sourceUsername": "Source Username",
+      "command": "Command",
+      "server": "Server",
+      "user": "User",
+      "credit": "Credit"
+    }
+  }
+}

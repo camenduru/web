@@ -1,0 +1,13 @@
+{
+  "webApp": {
+    "CreditSource": {
+      "null": "",
+      "WEB": "WEB",
+      "IOS": "IOS",
+      "ANDROID": "ANDROID",
+      "PAYPAL": "PAYPAL",
+      "PATREON": "PATREON",
+      "OTHER": "OTHER"
+    }
+  }
+}

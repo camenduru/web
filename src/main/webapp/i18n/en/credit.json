@@ -1,0 +1,28 @@
+{
+  "webApp": {
+    "credit": {
+      "home": {
+        "title": "Credits",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Credit",
+        "createOrEditLabel": "Create or edit a Credit",
+        "notFound": "No Credits found"
+      },
+      "created": "A new Credit is created with identifier {{ param }}",
+      "updated": "A Credit is updated with identifier {{ param }}",
+      "deleted": "A Credit is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Credit {{ id }}?"
+      },
+      "detail": {
+        "title": "Credit"
+      },
+      "id": "ID",
+      "date": "Date",
+      "status": "Status",
+      "source": "Source",
+      "total": "Total",
+      "user": "User"
+    }
+  }
+}

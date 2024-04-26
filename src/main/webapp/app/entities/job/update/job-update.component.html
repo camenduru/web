@@ -1,0 +1,199 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-job-heading" data-cy="JobCreateUpdateHeading" jhiTranslate="webApp.job.home.createOrEditLabel">Create or edit a Job</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="webApp.job.id">ID</label>
+            <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_date" jhiTranslate="webApp.job.date">Date</label>
+          <div class="d-flex">
+            <input
+              id="field_date"
+              data-cy="date"
+              type="datetime-local"
+              class="form-control"
+              name="date"
+              formControlName="date"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (editForm.get('date')!.invalid && (editForm.get('date')!.dirty || editForm.get('date')!.touched)) {
+            <div>
+              @if (editForm.get('date')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('date')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >This field should be a date and time.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_status" jhiTranslate="webApp.job.status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'webApp.JobStatus.null' | translate }}</option>
+            @for (jobStatus of jobStatusValues; track $index) {
+              <option [value]="jobStatus">{{ 'webApp.JobStatus.' + jobStatus | translate }}</option>
+            }
+          </select>
+          @if (editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)) {
+            <div>
+              @if (editForm.get('status')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_source" jhiTranslate="webApp.job.source">Source</label>
+          <select class="form-control" name="source" formControlName="source" id="field_source" data-cy="source">
+            <option [ngValue]="null">{{ 'webApp.JobSource.null' | translate }}</option>
+            @for (jobSource of jobSourceValues; track $index) {
+              <option [value]="jobSource">{{ 'webApp.JobSource.' + jobSource | translate }}</option>
+            }
+          </select>
+          @if (editForm.get('source')!.invalid && (editForm.get('source')!.dirty || editForm.get('source')!.touched)) {
+            <div>
+              @if (editForm.get('source')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sourceID" jhiTranslate="webApp.job.sourceID">Source ID</label>
+          <input type="text" class="form-control" name="sourceID" id="field_sourceID" data-cy="sourceID" formControlName="sourceID" />
+          @if (editForm.get('sourceID')!.invalid && (editForm.get('sourceID')!.dirty || editForm.get('sourceID')!.touched)) {
+            <div>
+              @if (editForm.get('sourceID')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sourceChannel" jhiTranslate="webApp.job.sourceChannel">Source Channel</label>
+          <input
+            type="text"
+            class="form-control"
+            name="sourceChannel"
+            id="field_sourceChannel"
+            data-cy="sourceChannel"
+            formControlName="sourceChannel"
+          />
+          @if (editForm.get('sourceChannel')!.invalid && (editForm.get('sourceChannel')!.dirty || editForm.get('sourceChannel')!.touched)) {
+            <div>
+              @if (editForm.get('sourceChannel')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sourceUsername" jhiTranslate="webApp.job.sourceUsername">Source Username</label>
+          <input
+            type="text"
+            class="form-control"
+            name="sourceUsername"
+            id="field_sourceUsername"
+            data-cy="sourceUsername"
+            formControlName="sourceUsername"
+          />
+          @if (
+            editForm.get('sourceUsername')!.invalid && (editForm.get('sourceUsername')!.dirty || editForm.get('sourceUsername')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('sourceUsername')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_command" jhiTranslate="webApp.job.command">Command</label>
+          <input type="text" class="form-control" name="command" id="field_command" data-cy="command" formControlName="command" />
+          @if (editForm.get('command')!.invalid && (editForm.get('command')!.dirty || editForm.get('command')!.touched)) {
+            <div>
+              @if (editForm.get('command')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_server" jhiTranslate="webApp.job.server">Server</label>
+          <input type="text" class="form-control" name="server" id="field_server" data-cy="server" formControlName="server" />
+          @if (editForm.get('server')!.invalid && (editForm.get('server')!.dirty || editForm.get('server')!.touched)) {
+            <div>
+              @if (editForm.get('server')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_user" jhiTranslate="webApp.job.user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_credit" jhiTranslate="webApp.job.credit">Credit</label>
+          <select
+            class="form-control"
+            id="field_credit"
+            data-cy="credit"
+            name="credit"
+            formControlName="credit"
+            [compareWith]="compareCredit"
+          >
+            <option [ngValue]="null"></option>
+            @for (creditOption of creditsSharedCollection; track $index) {
+              <option [ngValue]="creditOption">{{ creditOption.total }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
