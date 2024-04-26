@@ -1,9 +1,0 @@
-{
-  "webApp": {
-    "CreditStatus": {
-      "null": "",
-      "POSITIVE": "POSITIVE",
-      "NEGATIVE": "NEGATIVE"
-    }
-  }
-}
