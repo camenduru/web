@@ -46,6 +46,9 @@ class CreditResourceIT {
     private static final CreditStatus DEFAULT_STATUS = CreditStatus.IN;
     private static final CreditStatus UPDATED_STATUS = CreditStatus.OUT;
 
+    private static final String DEFAULT_AMOUNT = "AAAAAAAAAA";
+    private static final String UPDATED_AMOUNT = "BBBBBBBBBB";
+
     private static final CreditSource DEFAULT_SOURCE = CreditSource.WEB;
     private static final CreditSource UPDATED_SOURCE = CreditSource.IOS;
 
@@ -76,7 +79,12 @@ class CreditResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Credit createEntity() {
-        Credit credit = new Credit().date(DEFAULT_DATE).status(DEFAULT_STATUS).source(DEFAULT_SOURCE).total(DEFAULT_TOTAL);
+        Credit credit = new Credit()
+            .date(DEFAULT_DATE)
+            .status(DEFAULT_STATUS)
+            .amount(DEFAULT_AMOUNT)
+            .source(DEFAULT_SOURCE)
+            .total(DEFAULT_TOTAL);
         return credit;
     }
 
@@ -87,7 +95,12 @@ class CreditResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Credit createUpdatedEntity() {
-        Credit credit = new Credit().date(UPDATED_DATE).status(UPDATED_STATUS).source(UPDATED_SOURCE).total(UPDATED_TOTAL);
+        Credit credit = new Credit()
+            .date(UPDATED_DATE)
+            .status(UPDATED_STATUS)
+            .amount(UPDATED_AMOUNT)
+            .source(UPDATED_SOURCE)
+            .total(UPDATED_TOTAL);
         return credit;
     }
 
@@ -163,6 +176,21 @@ class CreditResourceIT {
     }
 
     @Test
+    void checkAmountIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        credit.setAmount(null);
+
+        // Create the Credit, which fails.
+
+        restCreditMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(credit)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
     void checkSourceIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -205,6 +233,7 @@ class CreditResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(credit.getId())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
             .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
             .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)));
     }
@@ -239,6 +268,7 @@ class CreditResourceIT {
             .andExpect(jsonPath("$.id").value(credit.getId()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
+            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
             .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
             .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL));
     }
@@ -258,7 +288,7 @@ class CreditResourceIT {
 
         // Update the credit
         Credit updatedCredit = creditRepository.findById(credit.getId()).orElseThrow();
-        updatedCredit.date(UPDATED_DATE).status(UPDATED_STATUS).source(UPDATED_SOURCE).total(UPDATED_TOTAL);
+        updatedCredit.date(UPDATED_DATE).status(UPDATED_STATUS).amount(UPDATED_AMOUNT).source(UPDATED_SOURCE).total(UPDATED_TOTAL);
 
         restCreditMockMvc
             .perform(
@@ -330,7 +360,7 @@ class CreditResourceIT {
         Credit partialUpdatedCredit = new Credit();
         partialUpdatedCredit.setId(credit.getId());
 
-        partialUpdatedCredit.status(UPDATED_STATUS).source(UPDATED_SOURCE);
+        partialUpdatedCredit.status(UPDATED_STATUS).amount(UPDATED_AMOUNT).total(UPDATED_TOTAL);
 
         restCreditMockMvc
             .perform(
@@ -357,7 +387,7 @@ class CreditResourceIT {
         Credit partialUpdatedCredit = new Credit();
         partialUpdatedCredit.setId(credit.getId());
 
-        partialUpdatedCredit.date(UPDATED_DATE).status(UPDATED_STATUS).source(UPDATED_SOURCE).total(UPDATED_TOTAL);
+        partialUpdatedCredit.date(UPDATED_DATE).status(UPDATED_STATUS).amount(UPDATED_AMOUNT).source(UPDATED_SOURCE).total(UPDATED_TOTAL);
 
         restCreditMockMvc
             .perform(

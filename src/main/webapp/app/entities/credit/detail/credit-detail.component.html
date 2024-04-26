@@ -25,6 +25,10 @@
               { null: '', IN: 'IN', OUT: 'OUT' }[credit()!.status ?? 'null']
             }}</span>
           </dd>
+          <dt><span jhiTranslate="webApp.credit.amount">Amount</span></dt>
+          <dd>
+            <span>{{ credit()!.amount }}</span>
+          </dd>
           <dt><span jhiTranslate="webApp.credit.source">Source</span></dt>
           <dd>
             <span [jhiTranslate]="'webApp.CreditSource.' + (credit()!.source ?? 'null')">{{

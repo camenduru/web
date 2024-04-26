@@ -49,6 +49,7 @@ public class CreditAsserts {
             .as("Verify Credit relevant properties")
             .satisfies(e -> assertThat(e.getDate()).as("check date").isEqualTo(actual.getDate()))
             .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
+            .satisfies(e -> assertThat(e.getAmount()).as("check amount").isEqualTo(actual.getAmount()))
             .satisfies(e -> assertThat(e.getSource()).as("check source").isEqualTo(actual.getSource()))
             .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()));
     }

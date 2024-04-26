@@ -15,7 +15,7 @@ describe('Credit e2e test', () => {
   const creditPageUrlPattern = new RegExp('/credit(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const creditSample = { date: '2024-04-25T18:42:14.166Z', status: 'OUT', source: 'IOS', total: 'prayer attack fooey' };
+  const creditSample = { date: '2024-04-25T15:46:10.814Z', status: 'OUT', amount: 'of vainly instead', source: 'WEB', total: 'blossom' };
 
   let credit;
 
@@ -160,16 +160,19 @@ describe('Credit e2e test', () => {
     });
 
     it('should create an instance of Credit', () => {
-      cy.get(`[data-cy="date"]`).type('2024-04-25T14:53');
+      cy.get(`[data-cy="date"]`).type('2024-04-25T01:34');
       cy.get(`[data-cy="date"]`).blur();
-      cy.get(`[data-cy="date"]`).should('have.value', '2024-04-25T14:53');
+      cy.get(`[data-cy="date"]`).should('have.value', '2024-04-25T01:34');
 
       cy.get(`[data-cy="status"]`).select('IN');
 
-      cy.get(`[data-cy="source"]`).select('OTHER');
+      cy.get(`[data-cy="amount"]`).type('uh-huh woot hilarious');
+      cy.get(`[data-cy="amount"]`).should('have.value', 'uh-huh woot hilarious');
 
-      cy.get(`[data-cy="total"]`).type('boost afterwards while');
-      cy.get(`[data-cy="total"]`).should('have.value', 'boost afterwards while');
+      cy.get(`[data-cy="source"]`).select('PATREON');
+
+      cy.get(`[data-cy="total"]`).type('amidst when crank');
+      cy.get(`[data-cy="total"]`).should('have.value', 'amidst when crank');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

@@ -30,6 +30,7 @@ enum CreditSource {
 entity Credit {
     date Instant required
     status CreditStatus required
+    amount String required
     source CreditSource required
     total String required
 }

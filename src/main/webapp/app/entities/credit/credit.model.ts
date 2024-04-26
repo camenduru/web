@@ -7,6 +7,7 @@ export interface ICredit {
   id: string;
   date?: dayjs.Dayjs | null;
   status?: keyof typeof CreditStatus | null;
+  amount?: string | null;
   source?: keyof typeof CreditSource | null;
   total?: string | null;
   user?: Pick<IUser, 'id' | 'login'> | null;

@@ -16,6 +16,11 @@
       "fieldValues": "IN,OUT"
     },
     {
+      "fieldName": "amount",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "source",
       "fieldType": "CreditSource",
       "fieldValidateRules": ["required"],

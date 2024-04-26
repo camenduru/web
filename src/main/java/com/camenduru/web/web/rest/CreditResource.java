@@ -132,6 +132,9 @@ public class CreditResource {
                 if (credit.getStatus() != null) {
                     existingCredit.setStatus(credit.getStatus());
                 }
+                if (credit.getAmount() != null) {
+                    existingCredit.setAmount(credit.getAmount());
+                }
                 if (credit.getSource() != null) {
                     existingCredit.setSource(credit.getSource());
                 }

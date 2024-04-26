@@ -31,6 +31,10 @@ public class Credit implements Serializable {
     private CreditStatus status;
 
     @NotNull
+    @Field("amount")
+    private String amount;
+
+    @NotNull
     @Field("source")
     private CreditSource source;
 
@@ -81,6 +85,19 @@ public class Credit implements Serializable {
 
     public void setStatus(CreditStatus status) {
         this.status = status;
+    }
+
+    public String getAmount() {
+        return this.amount;
+    }
+
+    public Credit amount(String amount) {
+        this.setAmount(amount);
+        return this;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 
     public CreditSource getSource() {
@@ -148,6 +165,7 @@ public class Credit implements Serializable {
             "id=" + getId() +
             ", date='" + getDate() + "'" +
             ", status='" + getStatus() + "'" +
+            ", amount='" + getAmount() + "'" +
             ", source='" + getSource() + "'" +
             ", total='" + getTotal() + "'" +
             "}";

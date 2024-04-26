@@ -20,6 +20,7 @@
       "id": "ID",
       "date": "Date",
       "status": "Status",
+      "amount": "Amount",
       "source": "Source",
       "total": "Total",
       "user": "User"

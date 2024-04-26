@@ -3,34 +3,38 @@ import dayjs from 'dayjs/esm';
 import { ICredit, NewCredit } from './credit.model';
 
 export const sampleWithRequiredData: ICredit = {
-  id: '0e24103c-5864-42ac-974f-fa5ca15abddc',
-  date: dayjs('2024-04-25T00:41'),
-  status: 'IN',
-  source: 'PATREON',
-  total: 'ranger',
+  id: 'e24103c5-8642-4ac7-b4ff-a5ca15abddc7',
+  date: dayjs('2024-04-25T23:33'),
+  status: 'OUT',
+  amount: 'ranger',
+  source: 'IOS',
+  total: 'biff',
 };
 
 export const sampleWithPartialData: ICredit = {
-  id: '32d379b2-11bb-4de8-8529-e2bf04d065aa',
-  date: dayjs('2024-04-25T02:19'),
+  id: '1bbde852-9e2b-4f04-bd06-5aa1e42a1d8a',
+  date: dayjs('2024-04-25T15:05'),
   status: 'IN',
-  source: 'WEB',
-  total: 'lively sedately',
+  amount: 'enraged next',
+  source: 'IOS',
+  total: 'blend',
 };
 
 export const sampleWithFullData: ICredit = {
-  id: '376501f9-301e-48e9-a910-1fe7ae39b269',
-  date: dayjs('2024-04-25T10:31'),
+  id: '01fe7ae3-9b26-49b9-a7a2-febd3a4bb201',
+  date: dayjs('2024-04-25T21:42'),
   status: 'IN',
-  source: 'PAYPAL',
-  total: 'however',
+  amount: 'gah',
+  source: 'IOS',
+  total: 'finally',
 };
 
 export const sampleWithNewData: NewCredit = {
-  date: dayjs('2024-04-25T06:54'),
+  date: dayjs('2024-04-25T02:39'),
   status: 'OUT',
-  source: 'WEB',
-  total: 'truthfully',
+  amount: 'afore handsome mixed',
+  source: 'ANDROID',
+  total: 'restaurant lest fussy',
   id: null,
 };
 

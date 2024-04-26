@@ -75,10 +75,10 @@ describe('Job Management Update Component', () => {
 
     it('Should call Credit query and add missing value', () => {
       const job: IJob = { id: 'CBA' };
-      const credit: ICredit = { id: '05267531-aa78-443e-9cbf-09dab1ffe6ce' };
+      const credit: ICredit = { id: 'eae46b7a-4e3b-4b55-ba50-e89d1278d6df' };
       job.credit = credit;
 
-      const creditCollection: ICredit[] = [{ id: '59347986-d60a-4990-bbe9-034864d34bb5' }];
+      const creditCollection: ICredit[] = [{ id: '962deb39-9051-4f59-90f1-0295682e393d' }];
       jest.spyOn(creditService, 'query').mockReturnValue(of(new HttpResponse({ body: creditCollection })));
       const additionalCredits = [credit];
       const expectedCollection: ICredit[] = [...additionalCredits, ...creditCollection];
@@ -99,7 +99,7 @@ describe('Job Management Update Component', () => {
       const job: IJob = { id: 'CBA' };
       const user: IUser = { id: '41bd28ad-51fe-4236-b9a0-285859df038c' };
       job.user = user;
-      const credit: ICredit = { id: 'ae46b7a4-e3bb-455a-a50e-89d1278d6dfc' };
+      const credit: ICredit = { id: '19415a13-4a25-40c2-925c-238cdf4549de' };
       job.credit = credit;
 
       activatedRoute.data = of({ job });

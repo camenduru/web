@@ -56,6 +56,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="amount">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.credit.amount">Amount</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="source">
               <div class="d-flex">
                 <span jhiTranslate="webApp.credit.source">Source</span>
@@ -89,6 +96,7 @@
               <td [jhiTranslate]="'webApp.CreditStatus.' + (credit.status ?? 'null')">
                 {{ { null: '', IN: 'IN', OUT: 'OUT' }[credit.status ?? 'null'] }}
               </td>
+              <td>{{ credit.amount }}</td>
               <td [jhiTranslate]="'webApp.CreditSource.' + (credit.source ?? 'null')">
                 {{
                   { null: '', WEB: 'WEB', IOS: 'IOS', ANDROID: 'ANDROID', PAYPAL: 'PAYPAL', PATREON: 'PATREON', OTHER: 'OTHER' }[

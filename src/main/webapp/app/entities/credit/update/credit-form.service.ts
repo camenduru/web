@@ -33,6 +33,7 @@ type CreditFormGroupContent = {
   id: FormControl<CreditFormRawValue['id'] | NewCredit['id']>;
   date: FormControl<CreditFormRawValue['date']>;
   status: FormControl<CreditFormRawValue['status']>;
+  amount: FormControl<CreditFormRawValue['amount']>;
   source: FormControl<CreditFormRawValue['source']>;
   total: FormControl<CreditFormRawValue['total']>;
   user: FormControl<CreditFormRawValue['user']>;
@@ -59,6 +60,9 @@ export class CreditFormService {
         validators: [Validators.required],
       }),
       status: new FormControl(creditRawValue.status, {
+        validators: [Validators.required],
+      }),
+      amount: new FormControl(creditRawValue.amount, {
         validators: [Validators.required],
       }),
       source: new FormControl(creditRawValue.source, {
