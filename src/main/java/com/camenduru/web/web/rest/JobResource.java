@@ -147,9 +147,6 @@ public class JobResource {
                 if (job.getSourceChannel() != null) {
                     existingJob.setSourceChannel(job.getSourceChannel());
                 }
-                if (job.getSourceUsername() != null) {
-                    existingJob.setSourceUsername(job.getSourceUsername());
-                }
                 if (job.getCommand() != null) {
                     existingJob.setCommand(job.getCommand());
                 }
@@ -158,9 +155,6 @@ public class JobResource {
                 }
                 if (job.getAmount() != null) {
                     existingJob.setAmount(job.getAmount());
-                }
-                if (job.getTotal() != null) {
-                    existingJob.setTotal(job.getTotal());
                 }
                 if (job.getResult() != null) {
                     existingJob.setResult(job.getResult());
