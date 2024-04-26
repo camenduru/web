@@ -18,22 +18,27 @@ enum JobSource {
     OTHER
 }
 
+entity Detail {
+    discord String required
+    total String required
+}
+
 entity Job {
     date Instant required
     status JobStatus required
     source JobSource required
     sourceId String required
     sourceChannel String required
-    sourceUsername String required
     command String required
     type String required
     amount String required
-    total String required
     result String required
 }
 
 relationship ManyToOne {
     Job{user(login)} to User with builtInEntity
+    Job{discord(discord)} to Detail
+    Job{total(total)} to Detail
 }
 
 paginate all with pagination

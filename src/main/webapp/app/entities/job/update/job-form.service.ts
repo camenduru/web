@@ -36,13 +36,13 @@ type JobFormGroupContent = {
   source: FormControl<JobFormRawValue['source']>;
   sourceId: FormControl<JobFormRawValue['sourceId']>;
   sourceChannel: FormControl<JobFormRawValue['sourceChannel']>;
-  sourceUsername: FormControl<JobFormRawValue['sourceUsername']>;
   command: FormControl<JobFormRawValue['command']>;
   type: FormControl<JobFormRawValue['type']>;
   amount: FormControl<JobFormRawValue['amount']>;
-  total: FormControl<JobFormRawValue['total']>;
   result: FormControl<JobFormRawValue['result']>;
   user: FormControl<JobFormRawValue['user']>;
+  discord: FormControl<JobFormRawValue['discord']>;
+  total: FormControl<JobFormRawValue['total']>;
 };
 
 export type JobFormGroup = FormGroup<JobFormGroupContent>;
@@ -77,9 +77,6 @@ export class JobFormService {
       sourceChannel: new FormControl(jobRawValue.sourceChannel, {
         validators: [Validators.required],
       }),
-      sourceUsername: new FormControl(jobRawValue.sourceUsername, {
-        validators: [Validators.required],
-      }),
       command: new FormControl(jobRawValue.command, {
         validators: [Validators.required],
       }),
@@ -89,13 +86,12 @@ export class JobFormService {
       amount: new FormControl(jobRawValue.amount, {
         validators: [Validators.required],
       }),
-      total: new FormControl(jobRawValue.total, {
-        validators: [Validators.required],
-      }),
       result: new FormControl(jobRawValue.result, {
         validators: [Validators.required],
       }),
       user: new FormControl(jobRawValue.user),
+      discord: new FormControl(jobRawValue.discord),
+      total: new FormControl(jobRawValue.total),
     });
   }
 

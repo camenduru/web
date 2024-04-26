@@ -57,10 +57,6 @@
           <dd>
             <span>{{ job()!.sourceChannel }}</span>
           </dd>
-          <dt><span jhiTranslate="webApp.job.sourceUsername">Source Username</span></dt>
-          <dd>
-            <span>{{ job()!.sourceUsername }}</span>
-          </dd>
           <dt><span jhiTranslate="webApp.job.command">Command</span></dt>
           <dd>
             <span>{{ job()!.command }}</span>
@@ -73,10 +69,6 @@
           <dd>
             <span>{{ job()!.amount }}</span>
           </dd>
-          <dt><span jhiTranslate="webApp.job.total">Total</span></dt>
-          <dd>
-            <span>{{ job()!.total }}</span>
-          </dd>
           <dt><span jhiTranslate="webApp.job.result">Result</span></dt>
           <dd>
             <span>{{ job()!.result }}</span>
@@ -84,6 +76,22 @@
           <dt><span jhiTranslate="webApp.job.user">User</span></dt>
           <dd>
             <span>{{ job()!.user?.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.discord">Discord</span></dt>
+          <dd>
+            @if (job()!.discord) {
+              <div>
+                <a [routerLink]="['/detail', job()!.discord?.id, 'view']">{{ job()!.discord?.discord }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="webApp.job.total">Total</span></dt>
+          <dd>
+            @if (job()!.total) {
+              <div>
+                <a [routerLink]="['/detail', job()!.total?.id, 'view']">{{ job()!.total?.total }}</a>
+              </div>
+            }
           </dd>
         </dl>
 

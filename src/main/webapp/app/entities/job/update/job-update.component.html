@@ -107,27 +107,6 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_sourceUsername" jhiTranslate="webApp.job.sourceUsername">Source Username</label>
-          <input
-            type="text"
-            class="form-control"
-            name="sourceUsername"
-            id="field_sourceUsername"
-            data-cy="sourceUsername"
-            formControlName="sourceUsername"
-          />
-          @if (
-            editForm.get('sourceUsername')!.invalid && (editForm.get('sourceUsername')!.dirty || editForm.get('sourceUsername')!.touched)
-          ) {
-            <div>
-              @if (editForm.get('sourceUsername')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
           <label class="form-label" for="field_command" jhiTranslate="webApp.job.command">Command</label>
           <input type="text" class="form-control" name="command" id="field_command" data-cy="command" formControlName="command" />
           @if (editForm.get('command')!.invalid && (editForm.get('command')!.dirty || editForm.get('command')!.touched)) {
@@ -164,18 +143,6 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_total" jhiTranslate="webApp.job.total">Total</label>
-          <input type="text" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
-          @if (editForm.get('total')!.invalid && (editForm.get('total')!.dirty || editForm.get('total')!.touched)) {
-            <div>
-              @if (editForm.get('total')?.errors?.required) {
-                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="mb-3">
           <label class="form-label" for="field_result" jhiTranslate="webApp.job.result">Result</label>
           <input type="text" class="form-control" name="result" id="field_result" data-cy="result" formControlName="result" />
           @if (editForm.get('result')!.invalid && (editForm.get('result')!.dirty || editForm.get('result')!.touched)) {
@@ -193,6 +160,33 @@
             <option [ngValue]="null"></option>
             @for (userOption of usersSharedCollection; track $index) {
               <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_discord" jhiTranslate="webApp.job.discord">Discord</label>
+          <select
+            class="form-control"
+            id="field_discord"
+            data-cy="discord"
+            name="discord"
+            formControlName="discord"
+            [compareWith]="compareDetail"
+          >
+            <option [ngValue]="null"></option>
+            @for (detailOption of detailsSharedCollection; track $index) {
+              <option [ngValue]="detailOption">{{ detailOption.discord }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_total" jhiTranslate="webApp.job.total">Total</label>
+          <select class="form-control" id="field_total" data-cy="total" name="total" formControlName="total" [compareWith]="compareDetail">
+            <option [ngValue]="null"></option>
+            @for (detailOption of detailsSharedCollection; track $index) {
+              <option [ngValue]="detailOption">{{ detailOption.total }}</option>
             }
           </select>
         </div>

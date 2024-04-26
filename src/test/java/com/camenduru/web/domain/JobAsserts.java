@@ -52,11 +52,9 @@ public class JobAsserts {
             .satisfies(e -> assertThat(e.getSource()).as("check source").isEqualTo(actual.getSource()))
             .satisfies(e -> assertThat(e.getSourceId()).as("check sourceId").isEqualTo(actual.getSourceId()))
             .satisfies(e -> assertThat(e.getSourceChannel()).as("check sourceChannel").isEqualTo(actual.getSourceChannel()))
-            .satisfies(e -> assertThat(e.getSourceUsername()).as("check sourceUsername").isEqualTo(actual.getSourceUsername()))
             .satisfies(e -> assertThat(e.getCommand()).as("check command").isEqualTo(actual.getCommand()))
             .satisfies(e -> assertThat(e.getType()).as("check type").isEqualTo(actual.getType()))
             .satisfies(e -> assertThat(e.getAmount()).as("check amount").isEqualTo(actual.getAmount()))
-            .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()))
             .satisfies(e -> assertThat(e.getResult()).as("check result").isEqualTo(actual.getResult()));
     }
 
@@ -66,5 +64,10 @@ public class JobAsserts {
      * @param expected the expected entity
      * @param actual the actual entity
      */
-    public static void assertJobUpdatableRelationshipsEquals(Job expected, Job actual) {}
+    public static void assertJobUpdatableRelationshipsEquals(Job expected, Job actual) {
+        assertThat(expected)
+            .as("Verify Job relationships")
+            .satisfies(e -> assertThat(e.getDiscord()).as("check discord").isEqualTo(actual.getDiscord()))
+            .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()));
+    }
 }

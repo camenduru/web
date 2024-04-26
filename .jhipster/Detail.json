@@ -1,0 +1,22 @@
+{
+  "annotations": {
+    "changelogDate": "20240426193838"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "discord",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Detail",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no"
+}

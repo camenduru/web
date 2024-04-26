@@ -7,8 +7,10 @@ import { of, Subject, from } from 'rxjs';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/service/user.service';
-import { JobService } from '../service/job.service';
+import { IDetail } from 'app/entities/detail/detail.model';
+import { DetailService } from 'app/entities/detail/service/detail.service';
 import { IJob } from '../job.model';
+import { JobService } from '../service/job.service';
 import { JobFormService } from './job-form.service';
 
 import { JobUpdateComponent } from './job-update.component';
@@ -20,6 +22,7 @@ describe('Job Management Update Component', () => {
   let jobFormService: JobFormService;
   let jobService: JobService;
   let userService: UserService;
+  let detailService: DetailService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,6 +45,7 @@ describe('Job Management Update Component', () => {
     jobFormService = TestBed.inject(JobFormService);
     jobService = TestBed.inject(JobService);
     userService = TestBed.inject(UserService);
+    detailService = TestBed.inject(DetailService);
 
     comp = fixture.componentInstance;
   });
@@ -69,15 +73,45 @@ describe('Job Management Update Component', () => {
       expect(comp.usersSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call Detail query and add missing value', () => {
+      const job: IJob = { id: 'CBA' };
+      const discord: IDetail = { id: 'cf5156f5-cbe0-4d14-8b1f-0dcba1d13cbc' };
+      job.discord = discord;
+      const total: IDetail = { id: '9a8efb9e-089f-4b7f-8bb3-eb4fe69d1c7d' };
+      job.total = total;
+
+      const detailCollection: IDetail[] = [{ id: '0e44c70a-25ae-4f02-8e62-6fe9b479c763' }];
+      jest.spyOn(detailService, 'query').mockReturnValue(of(new HttpResponse({ body: detailCollection })));
+      const additionalDetails = [discord, total];
+      const expectedCollection: IDetail[] = [...additionalDetails, ...detailCollection];
+      jest.spyOn(detailService, 'addDetailToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ job });
+      comp.ngOnInit();
+
+      expect(detailService.query).toHaveBeenCalled();
+      expect(detailService.addDetailToCollectionIfMissing).toHaveBeenCalledWith(
+        detailCollection,
+        ...additionalDetails.map(expect.objectContaining),
+      );
+      expect(comp.detailsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const job: IJob = { id: 'CBA' };
       const user: IUser = { id: '75aa936a-ae7a-4886-8d3f-d0c7eab04fc0' };
       job.user = user;
+      const discord: IDetail = { id: '06a49775-dd23-4e51-892f-bc6cd19ed866' };
+      job.discord = discord;
+      const total: IDetail = { id: 'c9716dd6-e024-4520-8ee9-6dc1639957f8' };
+      job.total = total;
 
       activatedRoute.data = of({ job });
       comp.ngOnInit();
 
       expect(comp.usersSharedCollection).toContain(user);
+      expect(comp.detailsSharedCollection).toContain(discord);
+      expect(comp.detailsSharedCollection).toContain(total);
       expect(comp.job).toEqual(job);
     });
   });
@@ -158,6 +192,16 @@ describe('Job Management Update Component', () => {
         jest.spyOn(userService, 'compareUser');
         comp.compareUser(entity, entity2);
         expect(userService.compareUser).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareDetail', () => {
+      it('Should forward to detailService', () => {
+        const entity = { id: 'ABC' };
+        const entity2 = { id: 'CBA' };
+        jest.spyOn(detailService, 'compareDetail');
+        comp.compareDetail(entity, entity2);
+        expect(detailService.compareDetail).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

@@ -55,9 +55,6 @@ class JobResourceIT {
     private static final String DEFAULT_SOURCE_CHANNEL = "AAAAAAAAAA";
     private static final String UPDATED_SOURCE_CHANNEL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_SOURCE_USERNAME = "AAAAAAAAAA";
-    private static final String UPDATED_SOURCE_USERNAME = "BBBBBBBBBB";
-
     private static final String DEFAULT_COMMAND = "AAAAAAAAAA";
     private static final String UPDATED_COMMAND = "BBBBBBBBBB";
 
@@ -66,9 +63,6 @@ class JobResourceIT {
 
     private static final String DEFAULT_AMOUNT = "AAAAAAAAAA";
     private static final String UPDATED_AMOUNT = "BBBBBBBBBB";
-
-    private static final String DEFAULT_TOTAL = "AAAAAAAAAA";
-    private static final String UPDATED_TOTAL = "BBBBBBBBBB";
 
     private static final String DEFAULT_RESULT = "AAAAAAAAAA";
     private static final String UPDATED_RESULT = "BBBBBBBBBB";
@@ -103,11 +97,9 @@ class JobResourceIT {
             .source(DEFAULT_SOURCE)
             .sourceId(DEFAULT_SOURCE_ID)
             .sourceChannel(DEFAULT_SOURCE_CHANNEL)
-            .sourceUsername(DEFAULT_SOURCE_USERNAME)
             .command(DEFAULT_COMMAND)
             .type(DEFAULT_TYPE)
             .amount(DEFAULT_AMOUNT)
-            .total(DEFAULT_TOTAL)
             .result(DEFAULT_RESULT);
         return job;
     }
@@ -125,11 +117,9 @@ class JobResourceIT {
             .source(UPDATED_SOURCE)
             .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
-            .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
-            .total(UPDATED_TOTAL)
             .result(UPDATED_RESULT);
         return job;
     }
@@ -251,21 +241,6 @@ class JobResourceIT {
     }
 
     @Test
-    void checkSourceUsernameIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        job.setSourceUsername(null);
-
-        // Create the Job, which fails.
-
-        restJobMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(job)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
     void checkCommandIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -311,21 +286,6 @@ class JobResourceIT {
     }
 
     @Test
-    void checkTotalIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        job.setTotal(null);
-
-        // Create the Job, which fails.
-
-        restJobMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(job)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
     void checkResultIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -356,11 +316,9 @@ class JobResourceIT {
             .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
             .andExpect(jsonPath("$.[*].sourceId").value(hasItem(DEFAULT_SOURCE_ID)))
             .andExpect(jsonPath("$.[*].sourceChannel").value(hasItem(DEFAULT_SOURCE_CHANNEL)))
-            .andExpect(jsonPath("$.[*].sourceUsername").value(hasItem(DEFAULT_SOURCE_USERNAME)))
             .andExpect(jsonPath("$.[*].command").value(hasItem(DEFAULT_COMMAND)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
             .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
-            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)))
             .andExpect(jsonPath("$.[*].result").value(hasItem(DEFAULT_RESULT)));
     }
 
@@ -397,11 +355,9 @@ class JobResourceIT {
             .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
             .andExpect(jsonPath("$.sourceId").value(DEFAULT_SOURCE_ID))
             .andExpect(jsonPath("$.sourceChannel").value(DEFAULT_SOURCE_CHANNEL))
-            .andExpect(jsonPath("$.sourceUsername").value(DEFAULT_SOURCE_USERNAME))
             .andExpect(jsonPath("$.command").value(DEFAULT_COMMAND))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
             .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
-            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL))
             .andExpect(jsonPath("$.result").value(DEFAULT_RESULT));
     }
 
@@ -426,11 +382,9 @@ class JobResourceIT {
             .source(UPDATED_SOURCE)
             .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
-            .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
-            .total(UPDATED_TOTAL)
             .result(UPDATED_RESULT);
 
         restJobMockMvc
@@ -501,11 +455,7 @@ class JobResourceIT {
         Job partialUpdatedJob = new Job();
         partialUpdatedJob.setId(job.getId());
 
-        partialUpdatedJob
-            .source(UPDATED_SOURCE)
-            .sourceId(UPDATED_SOURCE_ID)
-            .sourceUsername(UPDATED_SOURCE_USERNAME)
-            .command(UPDATED_COMMAND);
+        partialUpdatedJob.source(UPDATED_SOURCE).sourceId(UPDATED_SOURCE_ID).command(UPDATED_COMMAND).type(UPDATED_TYPE);
 
         restJobMockMvc
             .perform(
@@ -538,11 +488,9 @@ class JobResourceIT {
             .source(UPDATED_SOURCE)
             .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
-            .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)
             .type(UPDATED_TYPE)
             .amount(UPDATED_AMOUNT)
-            .total(UPDATED_TOTAL)
             .result(UPDATED_RESULT);
 
         restJobMockMvc

@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/service/user.service';
+import { IDetail } from 'app/entities/detail/detail.model';
+import { DetailService } from 'app/entities/detail/service/detail.service';
 import { JobStatus } from 'app/entities/enumerations/job-status.model';
 import { JobSource } from 'app/entities/enumerations/job-source.model';
 import { JobService } from '../service/job.service';
@@ -28,16 +30,20 @@ export class JobUpdateComponent implements OnInit {
   jobSourceValues = Object.keys(JobSource);
 
   usersSharedCollection: IUser[] = [];
+  detailsSharedCollection: IDetail[] = [];
 
   protected jobService = inject(JobService);
   protected jobFormService = inject(JobFormService);
   protected userService = inject(UserService);
+  protected detailService = inject(DetailService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
 
   compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
+
+  compareDetail = (o1: IDetail | null, o2: IDetail | null): boolean => this.detailService.compareDetail(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ job }) => {
@@ -88,6 +94,11 @@ export class JobUpdateComponent implements OnInit {
     this.jobFormService.resetForm(this.editForm, job);
 
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, job.user);
+    this.detailsSharedCollection = this.detailService.addDetailToCollectionIfMissing<IDetail>(
+      this.detailsSharedCollection,
+      job.discord,
+      job.total,
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -96,5 +107,15 @@ export class JobUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.job?.user)))
       .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+
+    this.detailService
+      .query()
+      .pipe(map((res: HttpResponse<IDetail[]>) => res.body ?? []))
+      .pipe(
+        map((details: IDetail[]) =>
+          this.detailService.addDetailToCollectionIfMissing<IDetail>(details, this.job?.discord, this.job?.total),
+        ),
+      )
+      .subscribe((details: IDetail[]) => (this.detailsSharedCollection = details));
   }
 }

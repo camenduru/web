@@ -16,17 +16,15 @@ describe('Job e2e test', () => {
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const jobSample = {
-    date: '2024-04-25T01:10:18.140Z',
-    status: 'WORKING',
-    source: 'PATREON',
-    sourceId: 'as tired',
-    sourceChannel: 'ugh',
-    sourceUsername: 'serene',
-    command: 'seriously',
-    type: 'yet harp',
-    amount: 'ingredient healthily',
-    total: 'fooey than',
-    result: 'calendar',
+    date: '2024-04-25T10:55:35.647Z',
+    status: 'NEGATIVE',
+    source: 'IOS',
+    sourceId: 'supposing about pop',
+    sourceChannel: 'short',
+    command: 'since',
+    type: 'mostly regularly which',
+    amount: 'near than apud',
+    result: 'ignite',
   };
 
   let job;
@@ -172,37 +170,31 @@ describe('Job e2e test', () => {
     });
 
     it('should create an instance of Job', () => {
-      cy.get(`[data-cy="date"]`).type('2024-04-25T17:48');
+      cy.get(`[data-cy="date"]`).type('2024-04-25T09:28');
       cy.get(`[data-cy="date"]`).blur();
-      cy.get(`[data-cy="date"]`).should('have.value', '2024-04-25T17:48');
+      cy.get(`[data-cy="date"]`).should('have.value', '2024-04-25T09:28');
 
       cy.get(`[data-cy="status"]`).select('WORKING');
 
-      cy.get(`[data-cy="source"]`).select('WEB');
+      cy.get(`[data-cy="source"]`).select('OTHER');
 
-      cy.get(`[data-cy="sourceId"]`).type('apud short underestimate');
-      cy.get(`[data-cy="sourceId"]`).should('have.value', 'apud short underestimate');
+      cy.get(`[data-cy="sourceId"]`).type('soupy');
+      cy.get(`[data-cy="sourceId"]`).should('have.value', 'soupy');
 
-      cy.get(`[data-cy="sourceChannel"]`).type('judgementally jovially');
-      cy.get(`[data-cy="sourceChannel"]`).should('have.value', 'judgementally jovially');
+      cy.get(`[data-cy="sourceChannel"]`).type('boldly underneath amidst');
+      cy.get(`[data-cy="sourceChannel"]`).should('have.value', 'boldly underneath amidst');
 
-      cy.get(`[data-cy="sourceUsername"]`).type('which gee');
-      cy.get(`[data-cy="sourceUsername"]`).should('have.value', 'which gee');
+      cy.get(`[data-cy="command"]`).type('torpedo from bias');
+      cy.get(`[data-cy="command"]`).should('have.value', 'torpedo from bias');
 
-      cy.get(`[data-cy="command"]`).type('than apud');
-      cy.get(`[data-cy="command"]`).should('have.value', 'than apud');
+      cy.get(`[data-cy="type"]`).type('therapist sneaky');
+      cy.get(`[data-cy="type"]`).should('have.value', 'therapist sneaky');
 
-      cy.get(`[data-cy="type"]`).type('ignite');
-      cy.get(`[data-cy="type"]`).should('have.value', 'ignite');
+      cy.get(`[data-cy="amount"]`).type('elegantly nicely upbeat');
+      cy.get(`[data-cy="amount"]`).should('have.value', 'elegantly nicely upbeat');
 
-      cy.get(`[data-cy="amount"]`).type('rejoin roughly above');
-      cy.get(`[data-cy="amount"]`).should('have.value', 'rejoin roughly above');
-
-      cy.get(`[data-cy="total"]`).type('mode nor');
-      cy.get(`[data-cy="total"]`).should('have.value', 'mode nor');
-
-      cy.get(`[data-cy="result"]`).type('yahoo');
-      cy.get(`[data-cy="result"]`).should('have.value', 'yahoo');
+      cy.get(`[data-cy="result"]`).type('trusting chronometer however');
+      cy.get(`[data-cy="result"]`).should('have.value', 'trusting chronometer however');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

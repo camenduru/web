@@ -9,7 +9,8 @@
         "main": "Entities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
         "adminAuthority": "Authority",
-        "job": "Job"
+        "job": "Job",
+        "detail": "Detail"
       },
       "account": {
         "main": "Account",

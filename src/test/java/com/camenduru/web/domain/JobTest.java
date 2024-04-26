@@ -1,5 +1,6 @@
 package com.camenduru.web.domain;
 
+import static com.camenduru.web.domain.DetailTestSamples.*;
 import static com.camenduru.web.domain.JobTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,5 +21,29 @@ class JobTest {
 
         job2 = getJobSample2();
         assertThat(job1).isNotEqualTo(job2);
+    }
+
+    @Test
+    void discordTest() throws Exception {
+        Job job = getJobRandomSampleGenerator();
+        Detail detailBack = getDetailRandomSampleGenerator();
+
+        job.setDiscord(detailBack);
+        assertThat(job.getDiscord()).isEqualTo(detailBack);
+
+        job.discord(null);
+        assertThat(job.getDiscord()).isNull();
+    }
+
+    @Test
+    void totalTest() throws Exception {
+        Job job = getJobRandomSampleGenerator();
+        Detail detailBack = getDetailRandomSampleGenerator();
+
+        job.setTotal(detailBack);
+        assertThat(job.getTotal()).isEqualTo(detailBack);
+
+        job.total(null);
+        assertThat(job.getTotal()).isNull();
     }
 }

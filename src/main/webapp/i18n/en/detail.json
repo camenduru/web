@@ -1,0 +1,25 @@
+{
+  "webApp": {
+    "detail": {
+      "home": {
+        "title": "Details",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Detail",
+        "createOrEditLabel": "Create or edit a Detail",
+        "notFound": "No Details found"
+      },
+      "created": "A new Detail is created with identifier {{ param }}",
+      "updated": "A Detail is updated with identifier {{ param }}",
+      "deleted": "A Detail is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Detail {{ id }}?"
+      },
+      "detail": {
+        "title": "Detail"
+      },
+      "id": "ID",
+      "discord": "Discord",
+      "total": "Total"
+    }
+  }
+}

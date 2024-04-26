@@ -43,10 +43,6 @@ public class Job implements Serializable {
     private String sourceChannel;
 
     @NotNull
-    @Field("source_username")
-    private String sourceUsername;
-
-    @NotNull
     @Field("command")
     private String command;
 
@@ -59,16 +55,20 @@ public class Job implements Serializable {
     private String amount;
 
     @NotNull
-    @Field("total")
-    private String total;
-
-    @NotNull
     @Field("result")
     private String result;
 
     @DBRef
     @Field("user")
     private User user;
+
+    @DBRef
+    @Field("discord")
+    private Detail discord;
+
+    @DBRef
+    @Field("total")
+    private Detail total;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -150,19 +150,6 @@ public class Job implements Serializable {
         this.sourceChannel = sourceChannel;
     }
 
-    public String getSourceUsername() {
-        return this.sourceUsername;
-    }
-
-    public Job sourceUsername(String sourceUsername) {
-        this.setSourceUsername(sourceUsername);
-        return this;
-    }
-
-    public void setSourceUsername(String sourceUsername) {
-        this.sourceUsername = sourceUsername;
-    }
-
     public String getCommand() {
         return this.command;
     }
@@ -202,19 +189,6 @@ public class Job implements Serializable {
         this.amount = amount;
     }
 
-    public String getTotal() {
-        return this.total;
-    }
-
-    public Job total(String total) {
-        this.setTotal(total);
-        return this;
-    }
-
-    public void setTotal(String total) {
-        this.total = total;
-    }
-
     public String getResult() {
         return this.result;
     }
@@ -238,6 +212,32 @@ public class Job implements Serializable {
 
     public Job user(User user) {
         this.setUser(user);
+        return this;
+    }
+
+    public Detail getDiscord() {
+        return this.discord;
+    }
+
+    public void setDiscord(Detail detail) {
+        this.discord = detail;
+    }
+
+    public Job discord(Detail detail) {
+        this.setDiscord(detail);
+        return this;
+    }
+
+    public Detail getTotal() {
+        return this.total;
+    }
+
+    public void setTotal(Detail detail) {
+        this.total = detail;
+    }
+
+    public Job total(Detail detail) {
+        this.setTotal(detail);
         return this;
     }
 
@@ -270,11 +270,9 @@ public class Job implements Serializable {
             ", source='" + getSource() + "'" +
             ", sourceId='" + getSourceId() + "'" +
             ", sourceChannel='" + getSourceChannel() + "'" +
-            ", sourceUsername='" + getSourceUsername() + "'" +
             ", command='" + getCommand() + "'" +
             ", type='" + getType() + "'" +
             ", amount='" + getAmount() + "'" +
-            ", total='" + getTotal() + "'" +
             ", result='" + getResult() + "'" +
             "}";
     }

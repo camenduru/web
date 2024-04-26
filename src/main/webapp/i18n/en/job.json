@@ -23,13 +23,13 @@
       "source": "Source",
       "sourceId": "Source Id",
       "sourceChannel": "Source Channel",
-      "sourceUsername": "Source Username",
       "command": "Command",
       "type": "Type",
       "amount": "Amount",
-      "total": "Total",
       "result": "Result",
-      "user": "User"
+      "user": "User",
+      "discord": "Discord",
+      "total": "Total"
     }
   }
 }

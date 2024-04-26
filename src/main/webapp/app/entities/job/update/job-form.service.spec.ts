@@ -25,13 +25,13 @@ describe('Job Form Service', () => {
             source: expect.any(Object),
             sourceId: expect.any(Object),
             sourceChannel: expect.any(Object),
-            sourceUsername: expect.any(Object),
             command: expect.any(Object),
             type: expect.any(Object),
             amount: expect.any(Object),
-            total: expect.any(Object),
             result: expect.any(Object),
             user: expect.any(Object),
+            discord: expect.any(Object),
+            total: expect.any(Object),
           }),
         );
       });
@@ -47,13 +47,13 @@ describe('Job Form Service', () => {
             source: expect.any(Object),
             sourceId: expect.any(Object),
             sourceChannel: expect.any(Object),
-            sourceUsername: expect.any(Object),
             command: expect.any(Object),
             type: expect.any(Object),
             amount: expect.any(Object),
-            total: expect.any(Object),
             result: expect.any(Object),
             user: expect.any(Object),
+            discord: expect.any(Object),
+            total: expect.any(Object),
           }),
         );
       });
