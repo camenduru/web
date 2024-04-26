@@ -22,7 +22,7 @@ entity Job {
     date Instant required
     status JobStatus required
     source JobSource required
-    sourceID String required
+    sourceId String required
     sourceChannel String required
     sourceUsername String required
     command String required

@@ -19,7 +19,7 @@ describe('Job e2e test', () => {
     date: '2024-04-25T01:10:18.140Z',
     status: 'WORKING',
     source: 'PATREON',
-    sourceID: 'as tired',
+    sourceId: 'as tired',
     sourceChannel: 'ugh',
     sourceUsername: 'serene',
     command: 'seriously',
@@ -180,8 +180,8 @@ describe('Job e2e test', () => {
 
       cy.get(`[data-cy="source"]`).select('WEB');
 
-      cy.get(`[data-cy="sourceID"]`).type('apud short underestimate');
-      cy.get(`[data-cy="sourceID"]`).should('have.value', 'apud short underestimate');
+      cy.get(`[data-cy="sourceId"]`).type('apud short underestimate');
+      cy.get(`[data-cy="sourceId"]`).should('have.value', 'apud short underestimate');
 
       cy.get(`[data-cy="sourceChannel"]`).type('judgementally jovially');
       cy.get(`[data-cy="sourceChannel"]`).should('have.value', 'judgementally jovially');

@@ -21,7 +21,7 @@
       "date": "Date",
       "status": "Status",
       "source": "Source",
-      "sourceID": "Source ID",
+      "sourceId": "Source Id",
       "sourceChannel": "Source Channel",
       "sourceUsername": "Source Username",
       "command": "Command",

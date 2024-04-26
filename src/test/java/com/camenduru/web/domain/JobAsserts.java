@@ -50,7 +50,7 @@ public class JobAsserts {
             .satisfies(e -> assertThat(e.getDate()).as("check date").isEqualTo(actual.getDate()))
             .satisfies(e -> assertThat(e.getStatus()).as("check status").isEqualTo(actual.getStatus()))
             .satisfies(e -> assertThat(e.getSource()).as("check source").isEqualTo(actual.getSource()))
-            .satisfies(e -> assertThat(e.getSourceID()).as("check sourceID").isEqualTo(actual.getSourceID()))
+            .satisfies(e -> assertThat(e.getSourceId()).as("check sourceId").isEqualTo(actual.getSourceId()))
             .satisfies(e -> assertThat(e.getSourceChannel()).as("check sourceChannel").isEqualTo(actual.getSourceChannel()))
             .satisfies(e -> assertThat(e.getSourceUsername()).as("check sourceUsername").isEqualTo(actual.getSourceUsername()))
             .satisfies(e -> assertThat(e.getCommand()).as("check command").isEqualTo(actual.getCommand()))

@@ -22,7 +22,7 @@
       "fieldValues": "WEB,IOS,ANDROID,DISCORD,PAYPAL,PATREON,OTHER"
     },
     {
-      "fieldName": "sourceID",
+      "fieldName": "sourceId",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },

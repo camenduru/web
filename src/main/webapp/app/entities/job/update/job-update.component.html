@@ -76,11 +76,11 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" for="field_sourceID" jhiTranslate="webApp.job.sourceID">Source ID</label>
-          <input type="text" class="form-control" name="sourceID" id="field_sourceID" data-cy="sourceID" formControlName="sourceID" />
-          @if (editForm.get('sourceID')!.invalid && (editForm.get('sourceID')!.dirty || editForm.get('sourceID')!.touched)) {
+          <label class="form-label" for="field_sourceId" jhiTranslate="webApp.job.sourceId">Source Id</label>
+          <input type="text" class="form-control" name="sourceId" id="field_sourceId" data-cy="sourceId" formControlName="sourceId" />
+          @if (editForm.get('sourceId')!.invalid && (editForm.get('sourceId')!.dirty || editForm.get('sourceId')!.touched)) {
             <div>
-              @if (editForm.get('sourceID')?.errors?.required) {
+              @if (editForm.get('sourceId')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
               }
             </div>

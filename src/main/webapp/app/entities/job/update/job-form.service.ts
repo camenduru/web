@@ -34,7 +34,7 @@ type JobFormGroupContent = {
   date: FormControl<JobFormRawValue['date']>;
   status: FormControl<JobFormRawValue['status']>;
   source: FormControl<JobFormRawValue['source']>;
-  sourceID: FormControl<JobFormRawValue['sourceID']>;
+  sourceId: FormControl<JobFormRawValue['sourceId']>;
   sourceChannel: FormControl<JobFormRawValue['sourceChannel']>;
   sourceUsername: FormControl<JobFormRawValue['sourceUsername']>;
   command: FormControl<JobFormRawValue['command']>;
@@ -71,7 +71,7 @@ export class JobFormService {
       source: new FormControl(jobRawValue.source, {
         validators: [Validators.required],
       }),
-      sourceID: new FormControl(jobRawValue.sourceID, {
+      sourceId: new FormControl(jobRawValue.sourceId, {
         validators: [Validators.required],
       }),
       sourceChannel: new FormControl(jobRawValue.sourceChannel, {

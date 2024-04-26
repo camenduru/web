@@ -8,7 +8,7 @@ export interface IJob {
   date?: dayjs.Dayjs | null;
   status?: keyof typeof JobStatus | null;
   source?: keyof typeof JobSource | null;
-  sourceID?: string | null;
+  sourceId?: string | null;
   sourceChannel?: string | null;
   sourceUsername?: string | null;
   command?: string | null;

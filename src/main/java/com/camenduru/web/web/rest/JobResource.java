@@ -141,8 +141,8 @@ public class JobResource {
                 if (job.getSource() != null) {
                     existingJob.setSource(job.getSource());
                 }
-                if (job.getSourceID() != null) {
-                    existingJob.setSourceID(job.getSourceID());
+                if (job.getSourceId() != null) {
+                    existingJob.setSourceId(job.getSourceId());
                 }
                 if (job.getSourceChannel() != null) {
                     existingJob.setSourceChannel(job.getSourceChannel());

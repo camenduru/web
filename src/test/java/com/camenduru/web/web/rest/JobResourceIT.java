@@ -101,7 +101,7 @@ class JobResourceIT {
             .date(DEFAULT_DATE)
             .status(DEFAULT_STATUS)
             .source(DEFAULT_SOURCE)
-            .sourceID(DEFAULT_SOURCE_ID)
+            .sourceId(DEFAULT_SOURCE_ID)
             .sourceChannel(DEFAULT_SOURCE_CHANNEL)
             .sourceUsername(DEFAULT_SOURCE_USERNAME)
             .command(DEFAULT_COMMAND)
@@ -123,7 +123,7 @@ class JobResourceIT {
             .date(UPDATED_DATE)
             .status(UPDATED_STATUS)
             .source(UPDATED_SOURCE)
-            .sourceID(UPDATED_SOURCE_ID)
+            .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)
@@ -221,10 +221,10 @@ class JobResourceIT {
     }
 
     @Test
-    void checkSourceIDIsRequired() throws Exception {
+    void checkSourceIdIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
-        job.setSourceID(null);
+        job.setSourceId(null);
 
         // Create the Job, which fails.
 
@@ -354,7 +354,7 @@ class JobResourceIT {
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].source").value(hasItem(DEFAULT_SOURCE.toString())))
-            .andExpect(jsonPath("$.[*].sourceID").value(hasItem(DEFAULT_SOURCE_ID)))
+            .andExpect(jsonPath("$.[*].sourceId").value(hasItem(DEFAULT_SOURCE_ID)))
             .andExpect(jsonPath("$.[*].sourceChannel").value(hasItem(DEFAULT_SOURCE_CHANNEL)))
             .andExpect(jsonPath("$.[*].sourceUsername").value(hasItem(DEFAULT_SOURCE_USERNAME)))
             .andExpect(jsonPath("$.[*].command").value(hasItem(DEFAULT_COMMAND)))
@@ -395,7 +395,7 @@ class JobResourceIT {
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.source").value(DEFAULT_SOURCE.toString()))
-            .andExpect(jsonPath("$.sourceID").value(DEFAULT_SOURCE_ID))
+            .andExpect(jsonPath("$.sourceId").value(DEFAULT_SOURCE_ID))
             .andExpect(jsonPath("$.sourceChannel").value(DEFAULT_SOURCE_CHANNEL))
             .andExpect(jsonPath("$.sourceUsername").value(DEFAULT_SOURCE_USERNAME))
             .andExpect(jsonPath("$.command").value(DEFAULT_COMMAND))
@@ -424,7 +424,7 @@ class JobResourceIT {
             .date(UPDATED_DATE)
             .status(UPDATED_STATUS)
             .source(UPDATED_SOURCE)
-            .sourceID(UPDATED_SOURCE_ID)
+            .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)
@@ -503,7 +503,7 @@ class JobResourceIT {
 
         partialUpdatedJob
             .source(UPDATED_SOURCE)
-            .sourceID(UPDATED_SOURCE_ID)
+            .sourceId(UPDATED_SOURCE_ID)
             .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND);
 
@@ -536,7 +536,7 @@ class JobResourceIT {
             .date(UPDATED_DATE)
             .status(UPDATED_STATUS)
             .source(UPDATED_SOURCE)
-            .sourceID(UPDATED_SOURCE_ID)
+            .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)

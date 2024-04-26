@@ -36,7 +36,7 @@ public class Job implements Serializable {
 
     @NotNull
     @Field("source_id")
-    private String sourceID;
+    private String sourceId;
 
     @NotNull
     @Field("source_channel")
@@ -124,17 +124,17 @@ public class Job implements Serializable {
         this.source = source;
     }
 
-    public String getSourceID() {
-        return this.sourceID;
+    public String getSourceId() {
+        return this.sourceId;
     }
 
-    public Job sourceID(String sourceID) {
-        this.setSourceID(sourceID);
+    public Job sourceId(String sourceId) {
+        this.setSourceId(sourceId);
         return this;
     }
 
-    public void setSourceID(String sourceID) {
-        this.sourceID = sourceID;
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     public String getSourceChannel() {
@@ -268,7 +268,7 @@ public class Job implements Serializable {
             ", date='" + getDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", source='" + getSource() + "'" +
-            ", sourceID='" + getSourceID() + "'" +
+            ", sourceId='" + getSourceId() + "'" +
             ", sourceChannel='" + getSourceChannel() + "'" +
             ", sourceUsername='" + getSourceUsername() + "'" +
             ", command='" + getCommand() + "'" +
