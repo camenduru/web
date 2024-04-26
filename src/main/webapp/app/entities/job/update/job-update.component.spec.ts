@@ -49,10 +49,10 @@ describe('Job Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call User query and add missing value', () => {
       const job: IJob = { id: 'CBA' };
-      const user: IUser = { id: '82ff4e12-18e2-423c-bff1-52449a0e15b2' };
+      const user: IUser = { id: '4e721970-f867-4627-bd3d-7265264b9bbf' };
       job.user = user;
 
-      const userCollection: IUser[] = [{ id: '374d60ae-74c0-4680-9a31-0a6b36c18a67' }];
+      const userCollection: IUser[] = [{ id: '4bb72124-bad9-4848-be96-0bacdcc776d6' }];
       jest.spyOn(userService, 'query').mockReturnValue(of(new HttpResponse({ body: userCollection })));
       const additionalUsers = [user];
       const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
@@ -71,7 +71,7 @@ describe('Job Management Update Component', () => {
 
     it('Should update editForm', () => {
       const job: IJob = { id: 'CBA' };
-      const user: IUser = { id: 'b4e332f6-d0bd-4c44-b111-75ea03c60cac' };
+      const user: IUser = { id: '75aa936a-ae7a-4886-8d3f-d0c7eab04fc0' };
       job.user = user;
 
       activatedRoute.data = of({ job });
