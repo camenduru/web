@@ -18,7 +18,7 @@
     "enableHibernateCache": false,
     "enableSwaggerCodegen": true,
     "enableTranslation": true,
-    "entities": ["Credit", "Job"],
+    "entities": ["Job"],
     "feignClient": null,
     "jhipsterVersion": "8.3.0",
     "jwtSecretKey": "ZjZlODVjNzQzMTJkNjE0MWVmZjYwMTUzOTZhYzY5N2I2ODI4ODA4YjAwOTBmNTExYzFhOTJhMmVlMjE0OTllZTg0NGQwOWZkODEzODE1NTI4NjBlZGMxMTVlOTAyYWMzMTczNzBjOGUzNmMwYTg3MDgyZDU3YzhiNjgxYTk4OGI=",

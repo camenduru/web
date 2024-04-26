@@ -478,11 +478,7 @@ class JobResourceIT {
         Job partialUpdatedJob = new Job();
         partialUpdatedJob.setId(job.getId());
 
-        partialUpdatedJob
-            .source(UPDATED_SOURCE)
-            .sourceID(UPDATED_SOURCE_ID)
-            .sourceUsername(UPDATED_SOURCE_USERNAME)
-            .command(UPDATED_COMMAND);
+        partialUpdatedJob.source(UPDATED_SOURCE).sourceChannel(UPDATED_SOURCE_CHANNEL).command(UPDATED_COMMAND).amount(UPDATED_AMOUNT);
 
         restJobMockMvc
             .perform(
