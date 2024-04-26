@@ -5,6 +5,7 @@ import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import SharedModule from 'app/shared/shared.module';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { sortStateSignal, SortDirective, SortByDirective, type SortState, SortService } from 'app/shared/sort';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { ItemCountComponent } from 'app/shared/pagination';
@@ -30,6 +31,7 @@ import { DetailDeleteDialogComponent } from '../delete/detail-delete-dialog.comp
     FormatMediumDatetimePipe,
     FormatMediumDatePipe,
     ItemCountComponent,
+    HasAnyAuthorityDirective,
   ],
 })
 export class DetailComponent implements OnInit {
