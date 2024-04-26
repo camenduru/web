@@ -13,7 +13,7 @@
       "fieldName": "status",
       "fieldType": "JobStatus",
       "fieldValidateRules": ["required"],
-      "fieldValues": "POSITIVE,NEGATIVE,WORKING,DONE,FAILED,CANCELED"
+      "fieldValues": "POSITIVE,NEGATIVE,WAITING,WORKING,DONE,FAILED,CANCELED"
     },
     {
       "fieldName": "source",

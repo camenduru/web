@@ -6,6 +6,7 @@ package com.camenduru.web.domain.enumeration;
 public enum JobStatus {
     POSITIVE,
     NEGATIVE,
+    WAITING,
     WORKING,
     DONE,
     FAILED,

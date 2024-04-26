@@ -17,7 +17,7 @@ describe('Job e2e test', () => {
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const jobSample = {
     date: '2024-04-25T01:10:18.140Z',
-    status: 'DONE',
+    status: 'WORKING',
     source: 'PATREON',
     sourceID: 'as tired',
     sourceChannel: 'ugh',
@@ -176,7 +176,7 @@ describe('Job e2e test', () => {
       cy.get(`[data-cy="date"]`).blur();
       cy.get(`[data-cy="date"]`).should('have.value', '2024-04-25T17:48');
 
-      cy.get(`[data-cy="status"]`).select('DONE');
+      cy.get(`[data-cy="status"]`).select('WORKING');
 
       cy.get(`[data-cy="source"]`).select('WEB');
 

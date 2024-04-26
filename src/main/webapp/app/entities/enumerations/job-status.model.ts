@@ -3,6 +3,8 @@ export enum JobStatus {
 
   NEGATIVE = 'NEGATIVE',
 
+  WAITING = 'WAITING',
+
   WORKING = 'WORKING',
 
   DONE = 'DONE',

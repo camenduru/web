@@ -35,7 +35,7 @@ export const sampleWithPartialData: IJob = {
 export const sampleWithFullData: IJob = {
   id: 'e1d54ac3-3aa1-4154-b9c0-11cd55c8c057',
   date: dayjs('2024-04-25T23:07'),
-  status: 'WORKING',
+  status: 'WAITING',
   source: 'IOS',
   sourceID: 'apud indoctrinate',
   sourceChannel: 'insidious modulo',
@@ -49,7 +49,7 @@ export const sampleWithFullData: IJob = {
 
 export const sampleWithNewData: NewJob = {
   date: dayjs('2024-04-25T17:49'),
-  status: 'WORKING',
+  status: 'WAITING',
   source: 'WEB',
   sourceID: 'winner short-term',
   sourceChannel: 'extremely coffee even',
