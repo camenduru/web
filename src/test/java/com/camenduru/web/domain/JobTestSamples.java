@@ -11,7 +11,9 @@ public class JobTestSamples {
             .sourceChannel("sourceChannel1")
             .sourceUsername("sourceUsername1")
             .command("command1")
-            .server("server1");
+            .type("type1")
+            .amount("amount1")
+            .total("total1");
     }
 
     public static Job getJobSample2() {
@@ -21,7 +23,9 @@ public class JobTestSamples {
             .sourceChannel("sourceChannel2")
             .sourceUsername("sourceUsername2")
             .command("command2")
-            .server("server2");
+            .type("type2")
+            .amount("amount2")
+            .total("total2");
     }
 
     public static Job getJobRandomSampleGenerator() {
@@ -31,6 +35,8 @@ public class JobTestSamples {
             .sourceChannel(UUID.randomUUID().toString())
             .sourceUsername(UUID.randomUUID().toString())
             .command(UUID.randomUUID().toString())
-            .server(UUID.randomUUID().toString());
+            .type(UUID.randomUUID().toString())
+            .amount(UUID.randomUUID().toString())
+            .total(UUID.randomUUID().toString());
     }
 }

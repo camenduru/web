@@ -143,8 +143,14 @@ public class JobResource {
                 if (job.getCommand() != null) {
                     existingJob.setCommand(job.getCommand());
                 }
-                if (job.getServer() != null) {
-                    existingJob.setServer(job.getServer());
+                if (job.getType() != null) {
+                    existingJob.setType(job.getType());
+                }
+                if (job.getAmount() != null) {
+                    existingJob.setAmount(job.getAmount());
+                }
+                if (job.getTotal() != null) {
+                    existingJob.setTotal(job.getTotal());
                 }
 
                 return existingJob;

@@ -2,7 +2,6 @@ package com.camenduru.web.domain;
 
 import com.camenduru.web.domain.enumeration.JobSource;
 import com.camenduru.web.domain.enumeration.JobStatus;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
@@ -52,17 +51,20 @@ public class Job implements Serializable {
     private String command;
 
     @NotNull
-    @Field("server")
-    private String server;
+    @Field("type")
+    private String type;
+
+    @NotNull
+    @Field("amount")
+    private String amount;
+
+    @NotNull
+    @Field("total")
+    private String total;
 
     @DBRef
     @Field("user")
     private User user;
-
-    @DBRef
-    @Field("credit")
-    @JsonIgnoreProperties(value = { "user" }, allowSetters = true)
-    private Credit credit;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -170,17 +172,43 @@ public class Job implements Serializable {
         this.command = command;
     }
 
-    public String getServer() {
-        return this.server;
+    public String getType() {
+        return this.type;
     }
 
-    public Job server(String server) {
-        this.setServer(server);
+    public Job type(String type) {
+        this.setType(type);
         return this;
     }
 
-    public void setServer(String server) {
-        this.server = server;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAmount() {
+        return this.amount;
+    }
+
+    public Job amount(String amount) {
+        this.setAmount(amount);
+        return this;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getTotal() {
+        return this.total;
+    }
+
+    public Job total(String total) {
+        this.setTotal(total);
+        return this;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
     }
 
     public User getUser() {
@@ -193,19 +221,6 @@ public class Job implements Serializable {
 
     public Job user(User user) {
         this.setUser(user);
-        return this;
-    }
-
-    public Credit getCredit() {
-        return this.credit;
-    }
-
-    public void setCredit(Credit credit) {
-        this.credit = credit;
-    }
-
-    public Job credit(Credit credit) {
-        this.setCredit(credit);
         return this;
     }
 
@@ -240,7 +255,9 @@ public class Job implements Serializable {
             ", sourceChannel='" + getSourceChannel() + "'" +
             ", sourceUsername='" + getSourceUsername() + "'" +
             ", command='" + getCommand() + "'" +
-            ", server='" + getServer() + "'" +
+            ", type='" + getType() + "'" +
+            ", amount='" + getAmount() + "'" +
+            ", total='" + getTotal() + "'" +
             "}";
     }
 }

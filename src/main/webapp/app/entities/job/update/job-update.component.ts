@@ -9,8 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/service/user.service';
-import { ICredit } from 'app/entities/credit/credit.model';
-import { CreditService } from 'app/entities/credit/service/credit.service';
 import { JobStatus } from 'app/entities/enumerations/job-status.model';
 import { JobSource } from 'app/entities/enumerations/job-source.model';
 import { JobService } from '../service/job.service';
@@ -30,20 +28,16 @@ export class JobUpdateComponent implements OnInit {
   jobSourceValues = Object.keys(JobSource);
 
   usersSharedCollection: IUser[] = [];
-  creditsSharedCollection: ICredit[] = [];
 
   protected jobService = inject(JobService);
   protected jobFormService = inject(JobFormService);
   protected userService = inject(UserService);
-  protected creditService = inject(CreditService);
   protected activatedRoute = inject(ActivatedRoute);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
 
   compareUser = (o1: IUser | null, o2: IUser | null): boolean => this.userService.compareUser(o1, o2);
-
-  compareCredit = (o1: ICredit | null, o2: ICredit | null): boolean => this.creditService.compareCredit(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ job }) => {
@@ -94,7 +88,6 @@ export class JobUpdateComponent implements OnInit {
     this.jobFormService.resetForm(this.editForm, job);
 
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing<IUser>(this.usersSharedCollection, job.user);
-    this.creditsSharedCollection = this.creditService.addCreditToCollectionIfMissing<ICredit>(this.creditsSharedCollection, job.credit);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -103,11 +96,5 @@ export class JobUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.job?.user)))
       .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
-
-    this.creditService
-      .query()
-      .pipe(map((res: HttpResponse<ICredit[]>) => res.body ?? []))
-      .pipe(map((credits: ICredit[]) => this.creditService.addCreditToCollectionIfMissing<ICredit>(credits, this.job?.credit)))
-      .subscribe((credits: ICredit[]) => (this.creditsSharedCollection = credits));
   }
 }

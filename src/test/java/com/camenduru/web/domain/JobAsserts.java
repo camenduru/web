@@ -54,7 +54,9 @@ public class JobAsserts {
             .satisfies(e -> assertThat(e.getSourceChannel()).as("check sourceChannel").isEqualTo(actual.getSourceChannel()))
             .satisfies(e -> assertThat(e.getSourceUsername()).as("check sourceUsername").isEqualTo(actual.getSourceUsername()))
             .satisfies(e -> assertThat(e.getCommand()).as("check command").isEqualTo(actual.getCommand()))
-            .satisfies(e -> assertThat(e.getServer()).as("check server").isEqualTo(actual.getServer()));
+            .satisfies(e -> assertThat(e.getType()).as("check type").isEqualTo(actual.getType()))
+            .satisfies(e -> assertThat(e.getAmount()).as("check amount").isEqualTo(actual.getAmount()))
+            .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()));
     }
 
     /**
@@ -63,9 +65,5 @@ public class JobAsserts {
      * @param expected the expected entity
      * @param actual the actual entity
      */
-    public static void assertJobUpdatableRelationshipsEquals(Job expected, Job actual) {
-        assertThat(expected)
-            .as("Verify Job relationships")
-            .satisfies(e -> assertThat(e.getCredit()).as("check credit").isEqualTo(actual.getCredit()));
-    }
+    public static void assertJobUpdatableRelationshipsEquals(Job expected, Job actual) {}
 }

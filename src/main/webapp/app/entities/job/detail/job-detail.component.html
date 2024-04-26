@@ -22,13 +22,30 @@
           <dt><span jhiTranslate="webApp.job.status">Status</span></dt>
           <dd>
             <span [jhiTranslate]="'webApp.JobStatus.' + (job()!.status ?? 'null')">{{
-              { null: '', WORKING: 'WORKING', DONE: 'DONE', FAILED: 'FAILED', CANCELED: 'CANCELED' }[job()!.status ?? 'null']
+              {
+                null: '',
+                POSITIVE: 'POSITIVE',
+                NEGATIVE: 'NEGATIVE',
+                WORKING: 'WORKING',
+                DONE: 'DONE',
+                FAILED: 'FAILED',
+                CANCELED: 'CANCELED'
+              }[job()!.status ?? 'null']
             }}</span>
           </dd>
           <dt><span jhiTranslate="webApp.job.source">Source</span></dt>
           <dd>
             <span [jhiTranslate]="'webApp.JobSource.' + (job()!.source ?? 'null')">{{
-              { null: '', WEB: 'WEB', IOS: 'IOS', ANDROID: 'ANDROID', DISCORD: 'DISCORD', OTHER: 'OTHER' }[job()!.source ?? 'null']
+              {
+                null: '',
+                WEB: 'WEB',
+                IOS: 'IOS',
+                ANDROID: 'ANDROID',
+                DISCORD: 'DISCORD',
+                PAYPAL: 'PAYPAL',
+                PATREON: 'PATREON',
+                OTHER: 'OTHER'
+              }[job()!.source ?? 'null']
             }}</span>
           </dd>
           <dt><span jhiTranslate="webApp.job.sourceID">Source ID</span></dt>
@@ -47,21 +64,21 @@
           <dd>
             <span>{{ job()!.command }}</span>
           </dd>
-          <dt><span jhiTranslate="webApp.job.server">Server</span></dt>
+          <dt><span jhiTranslate="webApp.job.type">Type</span></dt>
           <dd>
-            <span>{{ job()!.server }}</span>
+            <span>{{ job()!.type }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.amount">Amount</span></dt>
+          <dd>
+            <span>{{ job()!.amount }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.job.total">Total</span></dt>
+          <dd>
+            <span>{{ job()!.total }}</span>
           </dd>
           <dt><span jhiTranslate="webApp.job.user">User</span></dt>
           <dd>
             <span>{{ job()!.user?.login }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.job.credit">Credit</span></dt>
-          <dd>
-            @if (job()!.credit) {
-              <div>
-                <a [routerLink]="['/credit', job()!.credit?.id, 'view']">{{ job()!.credit?.total }}</a>
-              </div>
-            }
           </dd>
         </dl>
 

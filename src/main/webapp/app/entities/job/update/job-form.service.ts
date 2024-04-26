@@ -38,9 +38,10 @@ type JobFormGroupContent = {
   sourceChannel: FormControl<JobFormRawValue['sourceChannel']>;
   sourceUsername: FormControl<JobFormRawValue['sourceUsername']>;
   command: FormControl<JobFormRawValue['command']>;
-  server: FormControl<JobFormRawValue['server']>;
+  type: FormControl<JobFormRawValue['type']>;
+  amount: FormControl<JobFormRawValue['amount']>;
+  total: FormControl<JobFormRawValue['total']>;
   user: FormControl<JobFormRawValue['user']>;
-  credit: FormControl<JobFormRawValue['credit']>;
 };
 
 export type JobFormGroup = FormGroup<JobFormGroupContent>;
@@ -81,11 +82,16 @@ export class JobFormService {
       command: new FormControl(jobRawValue.command, {
         validators: [Validators.required],
       }),
-      server: new FormControl(jobRawValue.server, {
+      type: new FormControl(jobRawValue.type, {
+        validators: [Validators.required],
+      }),
+      amount: new FormControl(jobRawValue.amount, {
+        validators: [Validators.required],
+      }),
+      total: new FormControl(jobRawValue.total, {
         validators: [Validators.required],
       }),
       user: new FormControl(jobRawValue.user),
-      credit: new FormControl(jobRawValue.credit),
     });
   }
 

@@ -1,6 +1,5 @@
 package com.camenduru.web.domain;
 
-import static com.camenduru.web.domain.CreditTestSamples.*;
 import static com.camenduru.web.domain.JobTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,17 +20,5 @@ class JobTest {
 
         job2 = getJobSample2();
         assertThat(job1).isNotEqualTo(job2);
-    }
-
-    @Test
-    void creditTest() throws Exception {
-        Job job = getJobRandomSampleGenerator();
-        Credit creditBack = getCreditRandomSampleGenerator();
-
-        job.setCredit(creditBack);
-        assertThat(job.getCredit()).isEqualTo(creditBack);
-
-        job.credit(null);
-        assertThat(job.getCredit()).isNull();
     }
 }

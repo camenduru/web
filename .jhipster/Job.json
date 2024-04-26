@@ -13,13 +13,13 @@
       "fieldName": "status",
       "fieldType": "JobStatus",
       "fieldValidateRules": ["required"],
-      "fieldValues": "WORKING,DONE,FAILED,CANCELED"
+      "fieldValues": "POSITIVE,NEGATIVE,WORKING,DONE,FAILED,CANCELED"
     },
     {
       "fieldName": "source",
       "fieldType": "JobSource",
       "fieldValidateRules": ["required"],
-      "fieldValues": "WEB,IOS,ANDROID,DISCORD,OTHER"
+      "fieldValues": "WEB,IOS,ANDROID,DISCORD,PAYPAL,PATREON,OTHER"
     },
     {
       "fieldName": "sourceID",
@@ -42,7 +42,17 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "server",
+      "fieldName": "type",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "total",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     }
@@ -57,13 +67,6 @@
       "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipWithBuiltInEntity": true
-    },
-    {
-      "otherEntityField": "total",
-      "otherEntityName": "credit",
-      "relationshipName": "credit",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
     }
   ],
   "searchEngine": "no"

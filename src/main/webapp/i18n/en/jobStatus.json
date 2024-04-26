@@ -2,6 +2,8 @@
   "webApp": {
     "JobStatus": {
       "null": "",
+      "POSITIVE": "POSITIVE",
+      "NEGATIVE": "NEGATIVE",
       "WORKING": "WORKING",
       "DONE": "DONE",
       "FAILED": "FAILED",

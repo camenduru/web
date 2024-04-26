@@ -8,5 +8,7 @@ public enum JobSource {
     IOS,
     ANDROID,
     DISCORD,
+    PAYPAL,
+    PATREON,
     OTHER,
 }

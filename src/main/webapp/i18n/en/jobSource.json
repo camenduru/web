@@ -6,6 +6,8 @@
       "IOS": "IOS",
       "ANDROID": "ANDROID",
       "DISCORD": "DISCORD",
+      "PAYPAL": "PAYPAL",
+      "PATREON": "PATREON",
       "OTHER": "OTHER"
     }
   }

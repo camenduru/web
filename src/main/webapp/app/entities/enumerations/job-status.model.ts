@@ -1,4 +1,8 @@
 export enum JobStatus {
+  POSITIVE = 'POSITIVE',
+
+  NEGATIVE = 'NEGATIVE',
+
   WORKING = 'WORKING',
 
   DONE = 'DONE',

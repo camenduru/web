@@ -25,9 +25,10 @@
       "sourceChannel": "Source Channel",
       "sourceUsername": "Source Username",
       "command": "Command",
-      "server": "Server",
-      "user": "User",
-      "credit": "Credit"
+      "type": "Type",
+      "amount": "Amount",
+      "total": "Total",
+      "user": "User"
     }
   }
 }

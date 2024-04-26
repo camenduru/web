@@ -43,8 +43,8 @@ class JobResourceIT {
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final JobStatus DEFAULT_STATUS = JobStatus.WORKING;
-    private static final JobStatus UPDATED_STATUS = JobStatus.DONE;
+    private static final JobStatus DEFAULT_STATUS = JobStatus.POSITIVE;
+    private static final JobStatus UPDATED_STATUS = JobStatus.NEGATIVE;
 
     private static final JobSource DEFAULT_SOURCE = JobSource.WEB;
     private static final JobSource UPDATED_SOURCE = JobSource.IOS;
@@ -61,8 +61,14 @@ class JobResourceIT {
     private static final String DEFAULT_COMMAND = "AAAAAAAAAA";
     private static final String UPDATED_COMMAND = "BBBBBBBBBB";
 
-    private static final String DEFAULT_SERVER = "AAAAAAAAAA";
-    private static final String UPDATED_SERVER = "BBBBBBBBBB";
+    private static final String DEFAULT_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_TYPE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_AMOUNT = "AAAAAAAAAA";
+    private static final String UPDATED_AMOUNT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_TOTAL = "AAAAAAAAAA";
+    private static final String UPDATED_TOTAL = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/jobs";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -96,7 +102,9 @@ class JobResourceIT {
             .sourceChannel(DEFAULT_SOURCE_CHANNEL)
             .sourceUsername(DEFAULT_SOURCE_USERNAME)
             .command(DEFAULT_COMMAND)
-            .server(DEFAULT_SERVER);
+            .type(DEFAULT_TYPE)
+            .amount(DEFAULT_AMOUNT)
+            .total(DEFAULT_TOTAL);
         return job;
     }
 
@@ -115,7 +123,9 @@ class JobResourceIT {
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)
-            .server(UPDATED_SERVER);
+            .type(UPDATED_TYPE)
+            .amount(UPDATED_AMOUNT)
+            .total(UPDATED_TOTAL);
         return job;
     }
 
@@ -266,10 +276,40 @@ class JobResourceIT {
     }
 
     @Test
-    void checkServerIsRequired() throws Exception {
+    void checkTypeIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
-        job.setServer(null);
+        job.setType(null);
+
+        // Create the Job, which fails.
+
+        restJobMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(job)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkAmountIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        job.setAmount(null);
+
+        // Create the Job, which fails.
+
+        restJobMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(job)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkTotalIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        job.setTotal(null);
 
         // Create the Job, which fails.
 
@@ -298,7 +338,9 @@ class JobResourceIT {
             .andExpect(jsonPath("$.[*].sourceChannel").value(hasItem(DEFAULT_SOURCE_CHANNEL)))
             .andExpect(jsonPath("$.[*].sourceUsername").value(hasItem(DEFAULT_SOURCE_USERNAME)))
             .andExpect(jsonPath("$.[*].command").value(hasItem(DEFAULT_COMMAND)))
-            .andExpect(jsonPath("$.[*].server").value(hasItem(DEFAULT_SERVER)));
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
+            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -336,7 +378,9 @@ class JobResourceIT {
             .andExpect(jsonPath("$.sourceChannel").value(DEFAULT_SOURCE_CHANNEL))
             .andExpect(jsonPath("$.sourceUsername").value(DEFAULT_SOURCE_USERNAME))
             .andExpect(jsonPath("$.command").value(DEFAULT_COMMAND))
-            .andExpect(jsonPath("$.server").value(DEFAULT_SERVER));
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
+            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
+            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL));
     }
 
     @Test
@@ -362,7 +406,9 @@ class JobResourceIT {
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)
-            .server(UPDATED_SERVER);
+            .type(UPDATED_TYPE)
+            .amount(UPDATED_AMOUNT)
+            .total(UPDATED_TOTAL);
 
         restJobMockMvc
             .perform(
@@ -471,7 +517,9 @@ class JobResourceIT {
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .sourceUsername(UPDATED_SOURCE_USERNAME)
             .command(UPDATED_COMMAND)
-            .server(UPDATED_SERVER);
+            .type(UPDATED_TYPE)
+            .amount(UPDATED_AMOUNT)
+            .total(UPDATED_TOTAL);
 
         restJobMockMvc
             .perform(

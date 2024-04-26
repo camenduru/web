@@ -1,4 +1,6 @@
 enum JobStatus {
+    POSITIVE,
+    NEGATIVE,
     WORKING,
     DONE,
     FAILED,
@@ -10,29 +12,9 @@ enum JobSource {
     IOS,
     ANDROID,
     DISCORD,
-    OTHER
-}
-
-enum CreditStatus {
-    POSITIVE,
-    NEGATIVE
-}
-
-enum CreditSource {
-    WEB,
-    IOS,
-    ANDROID,
     PAYPAL,
     PATREON,
     OTHER
-}
-
-entity Credit {
-    date Instant required
-    status CreditStatus required
-    amount String required
-    source CreditSource required
-    total String required
 }
 
 entity Job {
@@ -43,13 +25,13 @@ entity Job {
     sourceChannel String required
     sourceUsername String required
     command String required
-    server String required
+    type String required
+    amount String required
+    total String required
 }
 
 relationship ManyToOne {
     Job{user(login)} to User with builtInEntity
-    Job{credit(total)} to Credit
-    Credit{user(login)} to User with builtInEntity
 }
 
 paginate all with pagination

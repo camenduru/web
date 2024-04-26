@@ -7,5 +7,9 @@ export enum JobSource {
 
   DISCORD = 'DISCORD',
 
+  PAYPAL = 'PAYPAL',
+
+  PATREON = 'PATREON',
+
   OTHER = 'OTHER',
 }
