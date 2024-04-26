@@ -43,8 +43,8 @@ class CreditResourceIT {
     private static final Instant DEFAULT_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final CreditStatus DEFAULT_STATUS = CreditStatus.IN;
-    private static final CreditStatus UPDATED_STATUS = CreditStatus.OUT;
+    private static final CreditStatus DEFAULT_STATUS = CreditStatus.POSITIVE;
+    private static final CreditStatus UPDATED_STATUS = CreditStatus.NEGATIVE;
 
     private static final String DEFAULT_AMOUNT = "AAAAAAAAAA";
     private static final String UPDATED_AMOUNT = "BBBBBBBBBB";

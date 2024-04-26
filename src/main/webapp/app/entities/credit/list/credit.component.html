@@ -94,7 +94,7 @@
               </td>
               <td>{{ credit.date | formatMediumDatetime }}</td>
               <td [jhiTranslate]="'webApp.CreditStatus.' + (credit.status ?? 'null')">
-                {{ { null: '', IN: 'IN', OUT: 'OUT' }[credit.status ?? 'null'] }}
+                {{ { null: '', POSITIVE: 'POSITIVE', NEGATIVE: 'NEGATIVE' }[credit.status ?? 'null'] }}
               </td>
               <td>{{ credit.amount }}</td>
               <td [jhiTranslate]="'webApp.CreditSource.' + (credit.source ?? 'null')">

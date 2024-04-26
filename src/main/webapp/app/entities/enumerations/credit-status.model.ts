@@ -1,5 +1,5 @@
 export enum CreditStatus {
-  IN = 'IN',
+  POSITIVE = 'POSITIVE',
 
-  OUT = 'OUT',
+  NEGATIVE = 'NEGATIVE',
 }

@@ -22,7 +22,7 @@
           <dt><span jhiTranslate="webApp.credit.status">Status</span></dt>
           <dd>
             <span [jhiTranslate]="'webApp.CreditStatus.' + (credit()!.status ?? 'null')">{{
-              { null: '', IN: 'IN', OUT: 'OUT' }[credit()!.status ?? 'null']
+              { null: '', POSITIVE: 'POSITIVE', NEGATIVE: 'NEGATIVE' }[credit()!.status ?? 'null']
             }}</span>
           </dd>
           <dt><span jhiTranslate="webApp.credit.amount">Amount</span></dt>

@@ -13,7 +13,7 @@
       "fieldName": "status",
       "fieldType": "CreditStatus",
       "fieldValidateRules": ["required"],
-      "fieldValues": "IN,OUT"
+      "fieldValues": "POSITIVE,NEGATIVE"
     },
     {
       "fieldName": "amount",
