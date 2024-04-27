@@ -165,7 +165,7 @@ public class DetailResource {
     ) {
         log.debug("REST request to get a page of Details");
         Page<Detail> page;
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
         if (user.getAuthorities().stream().anyMatch(authority -> authority.getName().equals("ROLE_ADMIN"))) {
             if (eagerload) {
                 page = detailRepository.findAllWithEagerRelationships(pageable);

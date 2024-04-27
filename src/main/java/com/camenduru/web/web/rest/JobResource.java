@@ -182,7 +182,7 @@ public class JobResource {
     ) {
         log.debug("REST request to get a page of Jobs");
         Page<Job> page;
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().get()).get();
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
         if (user.getAuthorities().stream().anyMatch(authority -> authority.getName().equals("ROLE_ADMIN"))) {
             if (eagerload) {
                 page = jobRepository.findAllWithEagerRelationships(pageable);

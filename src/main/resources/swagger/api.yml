@@ -27,7 +27,7 @@ components:
                   it SHOULD provide human-readable documentation for the problem type
                   (e.g., using HTML).
                 default: 'about:blank'
-                example: 'https://www.jhipster.tech/problem/constraint-violation'
+                example: 'http://localhost:8080/problem/constraint-violation'
               title:
                 type: string
                 description: |
