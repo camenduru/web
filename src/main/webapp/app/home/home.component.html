@@ -19,11 +19,11 @@
                 <img src="{{ job.result }}" width="201" height="201" />
               }
             </div> -->
-            <app-masonry-layout-container [items]="jobs" [breakpointsMap]="masonryLayoutBreakpointsMap">
+            <jhi-app-masonry-layout-container [items]="jobs" [breakpointsMap]="masonryLayoutBreakpointsMap">
               <ng-template let-item>
                 <img class="rounded" [src]="item.result" alt="Photo of {{ item.result }}" width="445" />
               </ng-template>
-            </app-masonry-layout-container>
+            </jhi-app-masonry-layout-container>
           }
           @if (jobs && jobs.length > 0) {
             <div>

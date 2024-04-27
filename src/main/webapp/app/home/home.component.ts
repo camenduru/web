@@ -54,14 +54,22 @@ export default class HomeComponent implements OnInit, OnDestroy {
   isLoading = false;
   sortState = sortStateSignal({});
 
-  private readonly destroy$ = new Subject<void>();
+  readonly masonryLayoutBreakpointsMap: MasonryLayoutBreakpointsMap = {
+    [Breakpoints.XSmall]: 1,
+    [Breakpoints.Small]: 2,
+    [Breakpoints.Medium]: 2,
+    [Breakpoints.Large]: 3,
+    [unmatchedBreakpointKey]: 4,
+  };
 
-  private accountService = inject(AccountService);
-  private router = inject(Router);
   protected jobService = inject(JobService);
   protected sortService = inject(SortService);
   protected activatedRoute = inject(ActivatedRoute);
   protected ngZone = inject(NgZone);
+
+  private readonly destroy$ = new Subject<void>();
+  private accountService = inject(AccountService);
+  private router = inject(Router);
 
   trackId = (_index: number, item: IJob): string => this.jobService.getJobIdentifier(item);
 
@@ -151,12 +159,4 @@ export default class HomeComponent implements OnInit, OnDestroy {
       });
     });
   }
-
-  readonly masonryLayoutBreakpointsMap: MasonryLayoutBreakpointsMap = {
-    [Breakpoints.XSmall]: 1,
-    [Breakpoints.Small]: 2,
-    [Breakpoints.Medium]: 2,
-    [Breakpoints.Large]: 3,
-    [unmatchedBreakpointKey]: 4,
-  };
 }

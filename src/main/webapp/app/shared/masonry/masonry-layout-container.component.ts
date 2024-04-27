@@ -22,7 +22,7 @@ export type MasonryLayoutBreakpointsMap = Partial<Record<MasonryLayoutBreakpoint
 
 // See https://benjamin-maisonneuve1.medium.com/multiple-content-projections-in-angular-cc65f72ba519
 @Component({
-  selector: 'app-masonry-layout-container',
+  selector: 'jhi-app-masonry-layout-container',
   templateUrl: './masonry-layout-container.component.html',
   styleUrls: ['./masonry-layout-container.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,7 +46,7 @@ export class MasonryLayoutContainerComponent implements OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['items']?.currentValue) {
+    if (changes['items'].currentValue) {
       const currentItems = changes['items'].currentValue;
       // TODO: Use Angular's input as signals when available
       // https://github.com/angular/angular/discussions/49682
@@ -54,7 +54,7 @@ export class MasonryLayoutContainerComponent implements OnChanges, OnDestroy {
       this.itemsSignal.set(currentItems);
     }
 
-    if (changes['breakpointsMap']?.currentValue) {
+    if (changes['breakpointsMap'].currentValue) {
       const currentBreakpointsMap = changes['breakpointsMap'].currentValue;
       const breakpointKeysFiltered = Object.keys(currentBreakpointsMap).filter(key => key !== unmatchedBreakpointKey);
 
