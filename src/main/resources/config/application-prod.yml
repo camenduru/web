@@ -44,7 +44,7 @@ spring:
     properties.mail.smtp:
       auth: true
       starttls.enable: true
-      ssl.trust: ${com_camenduru_web_mail_smtp_ssl_trust
+      ssl.trust: ${com_camenduru_web_mail_smtp_ssl_trust}
   thymeleaf:
     cache: true
 
@@ -102,7 +102,7 @@ jhipster:
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://my-server-url-to-change # Modify according to your server's URL
+    base-url: https://web.camenduru.com # Modify according to your server's URL
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
