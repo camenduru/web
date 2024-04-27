@@ -1,4 +1,10 @@
 import { Component, NgZone, inject, signal, OnInit, OnDestroy } from '@angular/core';
+import {
+  MasonryLayoutBreakpointsMap,
+  unmatchedBreakpointKey,
+  MasonryLayoutContainerComponent,
+} from '../shared/masonry/masonry-layout-container.component';
+import { Breakpoints } from '@angular/cdk/layout';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
@@ -35,6 +41,7 @@ import { EntityArrayResponseType, JobService } from '../entities/job/service/job
     FormatMediumDatePipe,
     ItemCountComponent,
     HasAnyAuthorityDirective,
+    MasonryLayoutContainerComponent,
   ],
 })
 export default class HomeComponent implements OnInit, OnDestroy {
@@ -144,4 +151,12 @@ export default class HomeComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  readonly masonryLayoutBreakpointsMap: MasonryLayoutBreakpointsMap = {
+    [Breakpoints.XSmall]: 1,
+    [Breakpoints.Small]: 2,
+    [Breakpoints.Medium]: 2,
+    [Breakpoints.Large]: 3,
+    [unmatchedBreakpointKey]: 4,
+  };
 }

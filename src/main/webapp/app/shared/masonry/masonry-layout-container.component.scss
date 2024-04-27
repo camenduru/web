@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+// https://javascript.plainenglish.io/masonry-layouts-with-angular-71c0b5a80c36
+.masonry-layout {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 16px;
+}
+
+.masonry-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

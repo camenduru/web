@@ -89,6 +89,7 @@
     "packaging": "jar"
   },
   "dependencies": {
+    "@angular/cdk": "17.3.3",
     "@angular/common": "17.3.3",
     "@angular/compiler": "17.3.3",
     "@angular/core": "17.3.3",
