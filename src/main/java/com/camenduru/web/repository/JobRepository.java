@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface JobRepository extends MongoRepository<Job, String> {
-    @Query(value = "{'user.id': ?0}", sort = "{date : -1}")
+    @Query(value = "{$and: [{'user.id': ?0}, {'result': {$regex: '^http.*'}}]}", sort = "{date : -1}")
     Page<Job> findAllByUserIsCurrentUser(Pageable pageable, String userId);
 
     @Query(value = "{}", sort = "{date : -1}")

@@ -37,7 +37,7 @@
           @if (jobs && jobs.length > 0) {
             <jhi-app-masonry-layout-container [items]="jobs" [breakpointsMap]="masonryLayoutBreakpointsMap">
               <ng-template let-item>
-                <img *ngIf="item.result.startsWith('http')" class="rounded" [src]="item.result" alt="{{ item.result }}" width="445" />
+                <img class="rounded" [src]="item.result" alt="{{ item.result }}" width="445" />
               </ng-template>
             </jhi-app-masonry-layout-container>
           }
