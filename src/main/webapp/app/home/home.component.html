@@ -14,8 +14,11 @@
           style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555"
         ></textarea>
         <br />
-        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-secondary float-end">Enter</button>
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-secondary float-end">🧿 Enter</button>
       </form>
+      <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
+      </button>
       <br /><br /><br /><br /><br />
     </div>
   </div>
