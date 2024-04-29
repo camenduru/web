@@ -60,8 +60,8 @@ export default class HomeComponent implements OnInit, OnDestroy {
   page = 1;
   isLoading = false;
   sortState = sortStateSignal({});
-  default_type: any = 'sdxl';
-  types: any = ['sdxl', 'sdxl-turbo'];
+  default_type: any = 'sdxl-turbo';
+  types: any = ['sdxl-turbo', 'sdxl'];
 
   readonly masonryLayoutBreakpointsMap: MasonryLayoutBreakpointsMap = {
     [Breakpoints.XSmall]: 1,
