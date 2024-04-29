@@ -28,6 +28,7 @@ import { JobFormService, JobFormGroup } from '../entities/job/update/job-form.se
 import { UserService } from '../entities/user/service/user.service';
 import { JobStatus } from '../entities/enumerations/job-status.model';
 import { JobSource } from '../entities/enumerations/job-source.model';
+import dayjs from 'dayjs/esm';
 
 @Component({
   standalone: true,
@@ -93,6 +94,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
     job.amount = '1';
     job.sourceChannel = '1234257765258494003';
     job.sourceId = '616280178288623619';
+    job.date = dayjs();
     job.status = JobStatus.WAITING;
     job.result = this.account()?.login;
     job.source = JobSource.WEB;
