@@ -106,6 +106,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="login">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.job.login">Login</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="discord.discord">
               <div class="d-flex">
                 <span jhiTranslate="webApp.job.discord">Discord</span>
@@ -168,6 +175,7 @@
               <td>{{ job.type }}</td>
               <td>{{ job.amount }}</td>
               <td>{{ job.result }}</td>
+              <td>{{ job.login }}</td>
               <td>
                 @if (job.discord) {
                   <div>

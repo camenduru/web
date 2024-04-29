@@ -155,6 +155,18 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_login" jhiTranslate="webApp.job.login">Login</label>
+          <input type="text" class="form-control" name="login" id="field_login" data-cy="login" formControlName="login" />
+          @if (editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)) {
+            <div>
+              @if (editForm.get('login')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_discord" jhiTranslate="webApp.job.discord">Discord</label>
           <select
             class="form-control"

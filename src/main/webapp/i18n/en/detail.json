@@ -19,7 +19,10 @@
       },
       "id": "ID",
       "discord": "Discord",
+      "sourceId": "Source Id",
+      "sourceChannel": "Source Channel",
       "total": "Total",
+      "login": "Login",
       "user": "User"
     }
   }

@@ -19,7 +19,10 @@ type DetailFormDefaults = Pick<NewDetail, 'id'>;
 type DetailFormGroupContent = {
   id: FormControl<IDetail['id'] | NewDetail['id']>;
   discord: FormControl<IDetail['discord']>;
+  sourceId: FormControl<IDetail['sourceId']>;
+  sourceChannel: FormControl<IDetail['sourceChannel']>;
   total: FormControl<IDetail['total']>;
+  login: FormControl<IDetail['login']>;
   user: FormControl<IDetail['user']>;
 };
 
@@ -43,7 +46,16 @@ export class DetailFormService {
       discord: new FormControl(detailRawValue.discord, {
         validators: [Validators.required],
       }),
+      sourceId: new FormControl(detailRawValue.sourceId, {
+        validators: [Validators.required],
+      }),
+      sourceChannel: new FormControl(detailRawValue.sourceChannel, {
+        validators: [Validators.required],
+      }),
       total: new FormControl(detailRawValue.total, {
+        validators: [Validators.required],
+      }),
+      login: new FormControl(detailRawValue.login, {
         validators: [Validators.required],
       }),
       user: new FormControl(detailRawValue.user),

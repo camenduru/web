@@ -39,8 +39,17 @@ class DetailResourceIT {
     private static final String DEFAULT_DISCORD = "AAAAAAAAAA";
     private static final String UPDATED_DISCORD = "BBBBBBBBBB";
 
+    private static final String DEFAULT_SOURCE_ID = "AAAAAAAAAA";
+    private static final String UPDATED_SOURCE_ID = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SOURCE_CHANNEL = "AAAAAAAAAA";
+    private static final String UPDATED_SOURCE_CHANNEL = "BBBBBBBBBB";
+
     private static final String DEFAULT_TOTAL = "AAAAAAAAAA";
     private static final String UPDATED_TOTAL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LOGIN = "AAAAAAAAAA";
+    private static final String UPDATED_LOGIN = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/details";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -66,7 +75,12 @@ class DetailResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Detail createEntity() {
-        Detail detail = new Detail().discord(DEFAULT_DISCORD).total(DEFAULT_TOTAL);
+        Detail detail = new Detail()
+            .discord(DEFAULT_DISCORD)
+            .sourceId(DEFAULT_SOURCE_ID)
+            .sourceChannel(DEFAULT_SOURCE_CHANNEL)
+            .total(DEFAULT_TOTAL)
+            .login(DEFAULT_LOGIN);
         return detail;
     }
 
@@ -77,7 +91,12 @@ class DetailResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Detail createUpdatedEntity() {
-        Detail detail = new Detail().discord(UPDATED_DISCORD).total(UPDATED_TOTAL);
+        Detail detail = new Detail()
+            .discord(UPDATED_DISCORD)
+            .sourceId(UPDATED_SOURCE_ID)
+            .sourceChannel(UPDATED_SOURCE_CHANNEL)
+            .total(UPDATED_TOTAL)
+            .login(UPDATED_LOGIN);
         return detail;
     }
 
@@ -138,10 +157,55 @@ class DetailResourceIT {
     }
 
     @Test
+    void checkSourceIdIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        detail.setSourceId(null);
+
+        // Create the Detail, which fails.
+
+        restDetailMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(detail)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkSourceChannelIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        detail.setSourceChannel(null);
+
+        // Create the Detail, which fails.
+
+        restDetailMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(detail)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
     void checkTotalIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
         detail.setTotal(null);
+
+        // Create the Detail, which fails.
+
+        restDetailMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(detail)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkLoginIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        detail.setLogin(null);
 
         // Create the Detail, which fails.
 
@@ -164,7 +228,10 @@ class DetailResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(detail.getId())))
             .andExpect(jsonPath("$.[*].discord").value(hasItem(DEFAULT_DISCORD)))
-            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)));
+            .andExpect(jsonPath("$.[*].sourceId").value(hasItem(DEFAULT_SOURCE_ID)))
+            .andExpect(jsonPath("$.[*].sourceChannel").value(hasItem(DEFAULT_SOURCE_CHANNEL)))
+            .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)))
+            .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -196,7 +263,10 @@ class DetailResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(detail.getId()))
             .andExpect(jsonPath("$.discord").value(DEFAULT_DISCORD))
-            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL));
+            .andExpect(jsonPath("$.sourceId").value(DEFAULT_SOURCE_ID))
+            .andExpect(jsonPath("$.sourceChannel").value(DEFAULT_SOURCE_CHANNEL))
+            .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL))
+            .andExpect(jsonPath("$.login").value(DEFAULT_LOGIN));
     }
 
     @Test
@@ -214,7 +284,12 @@ class DetailResourceIT {
 
         // Update the detail
         Detail updatedDetail = detailRepository.findById(detail.getId()).orElseThrow();
-        updatedDetail.discord(UPDATED_DISCORD).total(UPDATED_TOTAL);
+        updatedDetail
+            .discord(UPDATED_DISCORD)
+            .sourceId(UPDATED_SOURCE_ID)
+            .sourceChannel(UPDATED_SOURCE_CHANNEL)
+            .total(UPDATED_TOTAL)
+            .login(UPDATED_LOGIN);
 
         restDetailMockMvc
             .perform(
@@ -286,7 +361,7 @@ class DetailResourceIT {
         Detail partialUpdatedDetail = new Detail();
         partialUpdatedDetail.setId(detail.getId());
 
-        partialUpdatedDetail.total(UPDATED_TOTAL);
+        partialUpdatedDetail.sourceId(UPDATED_SOURCE_ID).login(UPDATED_LOGIN);
 
         restDetailMockMvc
             .perform(
@@ -313,7 +388,12 @@ class DetailResourceIT {
         Detail partialUpdatedDetail = new Detail();
         partialUpdatedDetail.setId(detail.getId());
 
-        partialUpdatedDetail.discord(UPDATED_DISCORD).total(UPDATED_TOTAL);
+        partialUpdatedDetail
+            .discord(UPDATED_DISCORD)
+            .sourceId(UPDATED_SOURCE_ID)
+            .sourceChannel(UPDATED_SOURCE_CHANNEL)
+            .total(UPDATED_TOTAL)
+            .login(UPDATED_LOGIN);
 
         restDetailMockMvc
             .perform(

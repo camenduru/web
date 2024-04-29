@@ -20,7 +20,15 @@ enum JobSource {
 
 entity Detail {
     discord String required
+    sourceId String required
+    sourceChannel String required
     total String required
+    login String required
+}
+
+entity Type {
+    type String required
+    amount String required
 }
 
 entity Job {
@@ -33,6 +41,7 @@ entity Job {
     type String required
     amount String required
     result String required
+    login String required
 }
 
 relationship ManyToOne {

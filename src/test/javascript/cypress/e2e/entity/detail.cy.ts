@@ -15,7 +15,13 @@ describe('Detail e2e test', () => {
   const detailPageUrlPattern = new RegExp('/detail(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const detailSample = { discord: 'sometimes fervently glorify', total: 'always' };
+  const detailSample = {
+    discord: 'commonly',
+    sourceId: 'strictly',
+    sourceChannel: 'maracas cloudy',
+    total: 'likewise',
+    login: 'cower sinuosity',
+  };
 
   let detail;
 
@@ -160,11 +166,20 @@ describe('Detail e2e test', () => {
     });
 
     it('should create an instance of Detail', () => {
-      cy.get(`[data-cy="discord"]`).type('hand-holding phooey');
-      cy.get(`[data-cy="discord"]`).should('have.value', 'hand-holding phooey');
+      cy.get(`[data-cy="discord"]`).type('toilet');
+      cy.get(`[data-cy="discord"]`).should('have.value', 'toilet');
 
-      cy.get(`[data-cy="total"]`).type('meanwhile blah');
-      cy.get(`[data-cy="total"]`).should('have.value', 'meanwhile blah');
+      cy.get(`[data-cy="sourceId"]`).type('till');
+      cy.get(`[data-cy="sourceId"]`).should('have.value', 'till');
+
+      cy.get(`[data-cy="sourceChannel"]`).type('endow casserole');
+      cy.get(`[data-cy="sourceChannel"]`).should('have.value', 'endow casserole');
+
+      cy.get(`[data-cy="total"]`).type('horrible surpass readies');
+      cy.get(`[data-cy="total"]`).should('have.value', 'horrible surpass readies');
+
+      cy.get(`[data-cy="login"]`).type('oh sans');
+      cy.get(`[data-cy="login"]`).should('have.value', 'oh sans');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

@@ -48,7 +48,10 @@ public class DetailAsserts {
         assertThat(expected)
             .as("Verify Detail relevant properties")
             .satisfies(e -> assertThat(e.getDiscord()).as("check discord").isEqualTo(actual.getDiscord()))
-            .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()));
+            .satisfies(e -> assertThat(e.getSourceId()).as("check sourceId").isEqualTo(actual.getSourceId()))
+            .satisfies(e -> assertThat(e.getSourceChannel()).as("check sourceChannel").isEqualTo(actual.getSourceChannel()))
+            .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()))
+            .satisfies(e -> assertThat(e.getLogin()).as("check login").isEqualTo(actual.getLogin()));
     }
 
     /**

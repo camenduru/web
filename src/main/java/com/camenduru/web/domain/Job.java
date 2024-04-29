@@ -58,6 +58,10 @@ public class Job implements Serializable {
     @Field("result")
     private String result;
 
+    @NotNull
+    @Field("login")
+    private String login;
+
     @DBRef
     @Field("discord")
     private Detail discord;
@@ -202,6 +206,19 @@ public class Job implements Serializable {
         this.result = result;
     }
 
+    public String getLogin() {
+        return this.login;
+    }
+
+    public Job login(String login) {
+        this.setLogin(login);
+        return this;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public Detail getDiscord() {
         return this.discord;
     }
@@ -274,6 +291,7 @@ public class Job implements Serializable {
             ", type='" + getType() + "'" +
             ", amount='" + getAmount() + "'" +
             ", result='" + getResult() + "'" +
+            ", login='" + getLogin() + "'" +
             "}";
     }
 }

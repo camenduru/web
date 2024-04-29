@@ -1,26 +1,38 @@
 import { IDetail, NewDetail } from './detail.model';
 
 export const sampleWithRequiredData: IDetail = {
-  id: '192c9833-f39c-4546-9f02-d04964268df2',
-  discord: 'qua',
-  total: 'gripping meanwhile prospect',
+  id: 'c9833f39-c546-4f02-ad04-964268df260a',
+  discord: 'resect',
+  sourceId: 'whereas cane',
+  sourceChannel: 'pay plunder yum',
+  total: 'boo',
+  login: 'alongside nearly',
 };
 
 export const sampleWithPartialData: IDetail = {
-  id: '08ea0c6c-fba3-4e74-b364-0f6f079170c6',
-  discord: 'rally whenever',
-  total: 'uplift whoa',
+  id: '2d5cc990-b169-4f25-823b-d1f1491429b8',
+  discord: 'phew sponsor engulf',
+  sourceId: 'even everlasting failing',
+  sourceChannel: 'aw grit ratio',
+  total: 'along atop despite',
+  login: 'sketch lazily meanwhile',
 };
 
 export const sampleWithFullData: IDetail = {
-  id: 'f1491429-b83e-4d62-90ca-cc75651d6d92',
-  discord: 'optimal tremendously',
-  total: 'obi naturally',
+  id: 'c074f71d-962b-427c-b828-d44362ada763',
+  discord: 'when',
+  sourceId: 'solidly what',
+  sourceChannel: 'thunderstorm pro recant',
+  total: 'pish',
+  login: 'boo poorly',
 };
 
 export const sampleWithNewData: NewDetail = {
-  discord: 'split brr sparse',
-  total: 'charge over',
+  discord: 'of fussy lest',
+  sourceId: 'lazily brr',
+  sourceChannel: 'robotics frankly',
+  total: 'consult notwithstanding anti',
+  login: 'bah yum',
   id: null,
 };
 

@@ -53,12 +53,12 @@ describe('Job Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Detail query and add missing value', () => {
       const job: IJob = { id: 'CBA' };
-      const discord: IDetail = { id: 'cf5156f5-cbe0-4d14-8b1f-0dcba1d13cbc' };
+      const discord: IDetail = { id: '156f5cbe-0d14-4b1f-a0dc-ba1d13cbc29a' };
       job.discord = discord;
-      const total: IDetail = { id: '9a8efb9e-089f-4b7f-8bb3-eb4fe69d1c7d' };
+      const total: IDetail = { id: 'efb9e089-fb7f-4bb3-9eb4-fe69d1c7d30e' };
       job.total = total;
 
-      const detailCollection: IDetail[] = [{ id: '0e44c70a-25ae-4f02-8e62-6fe9b479c763' }];
+      const detailCollection: IDetail[] = [{ id: '4c70a25a-ef02-4e62-a6fe-9b479c763306' }];
       jest.spyOn(detailService, 'query').mockReturnValue(of(new HttpResponse({ body: detailCollection })));
       const additionalDetails = [discord, total];
       const expectedCollection: IDetail[] = [...additionalDetails, ...detailCollection];
@@ -99,9 +99,9 @@ describe('Job Management Update Component', () => {
 
     it('Should update editForm', () => {
       const job: IJob = { id: 'CBA' };
-      const discord: IDetail = { id: '06a49775-dd23-4e51-892f-bc6cd19ed866' };
+      const discord: IDetail = { id: '49775dd2-3e51-492f-9bc6-cd19ed8663c9' };
       job.discord = discord;
-      const total: IDetail = { id: 'c9716dd6-e024-4520-8ee9-6dc1639957f8' };
+      const total: IDetail = { id: '16dd6e02-4520-4ee9-86dc-1639957f8019' };
       job.total = total;
       const user: IUser = { id: '75aa936a-ae7a-4886-8d3f-d0c7eab04fc0' };
       job.user = user;

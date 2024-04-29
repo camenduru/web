@@ -10,7 +10,22 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "sourceId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "sourceChannel",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "total",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "login",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     }

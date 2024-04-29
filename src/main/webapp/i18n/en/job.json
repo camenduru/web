@@ -27,6 +27,7 @@
       "type": "Type",
       "amount": "Amount",
       "result": "Result",
+      "login": "Login",
       "discord": "Discord",
       "total": "Total",
       "user": "User"

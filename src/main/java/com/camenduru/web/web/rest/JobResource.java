@@ -159,6 +159,9 @@ public class JobResource {
                 if (job.getResult() != null) {
                     existingJob.setResult(job.getResult());
                 }
+                if (job.getLogin() != null) {
+                    existingJob.setLogin(job.getLogin());
+                }
 
                 return existingJob;
             })

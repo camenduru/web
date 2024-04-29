@@ -1,0 +1,22 @@
+{
+  "annotations": {
+    "changelogDate": "20240429153424"
+  },
+  "applications": "*",
+  "fields": [
+    {
+      "fieldName": "type",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Type",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no"
+}

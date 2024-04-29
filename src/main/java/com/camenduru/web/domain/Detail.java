@@ -24,8 +24,20 @@ public class Detail implements Serializable {
     private String discord;
 
     @NotNull
+    @Field("source_id")
+    private String sourceId;
+
+    @NotNull
+    @Field("source_channel")
+    private String sourceChannel;
+
+    @NotNull
     @Field("total")
     private String total;
+
+    @NotNull
+    @Field("login")
+    private String login;
 
     @DBRef
     @Field("user")
@@ -59,6 +71,32 @@ public class Detail implements Serializable {
         this.discord = discord;
     }
 
+    public String getSourceId() {
+        return this.sourceId;
+    }
+
+    public Detail sourceId(String sourceId) {
+        this.setSourceId(sourceId);
+        return this;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public String getSourceChannel() {
+        return this.sourceChannel;
+    }
+
+    public Detail sourceChannel(String sourceChannel) {
+        this.setSourceChannel(sourceChannel);
+        return this;
+    }
+
+    public void setSourceChannel(String sourceChannel) {
+        this.sourceChannel = sourceChannel;
+    }
+
     public String getTotal() {
         return this.total;
     }
@@ -70,6 +108,19 @@ public class Detail implements Serializable {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getLogin() {
+        return this.login;
+    }
+
+    public Detail login(String login) {
+        this.setLogin(login);
+        return this;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public User getUser() {
@@ -110,7 +161,10 @@ public class Detail implements Serializable {
         return "Detail{" +
             "id=" + getId() +
             ", discord='" + getDiscord() + "'" +
+            ", sourceId='" + getSourceId() + "'" +
+            ", sourceChannel='" + getSourceChannel() + "'" +
             ", total='" + getTotal() + "'" +
+            ", login='" + getLogin() + "'" +
             "}";
     }
 }

@@ -1,0 +1,25 @@
+{
+  "webApp": {
+    "type": {
+      "home": {
+        "title": "Types",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Type",
+        "createOrEditLabel": "Create or edit a Type",
+        "notFound": "No Types found"
+      },
+      "created": "A new Type is created with identifier {{ param }}",
+      "updated": "A Type is updated with identifier {{ param }}",
+      "deleted": "A Type is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Type"
+      },
+      "id": "ID",
+      "type": "Type",
+      "amount": "Amount"
+    }
+  }
+}

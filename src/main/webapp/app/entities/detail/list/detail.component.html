@@ -50,9 +50,30 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="sourceId">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.detail.sourceId">Source Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="sourceChannel">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.detail.sourceChannel">Source Channel</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col" jhiSortBy="total">
               <div class="d-flex">
                 <span jhiTranslate="webApp.detail.total">Total</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="login">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.detail.login">Login</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -71,8 +92,13 @@
             <tr data-cy="entityTable">
               <td>{{ detail.id }}</td>
               <td>{{ detail.discord }}</td>
+              <td>{{ detail.sourceId }}</td>
+              <td>{{ detail.sourceChannel }}</td>
               <td>{{ detail.total }}</td>
-              <td>{{ detail.user?.login }}</td>
+              <td>{{ detail.login }}</td>
+              <td>
+                {{ detail.user?.login }}
+              </td>
               <td class="text-end">
                 <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">
                   <a [routerLink]="['/detail', detail.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

@@ -139,8 +139,17 @@ public class DetailResource {
                 if (detail.getDiscord() != null) {
                     existingDetail.setDiscord(detail.getDiscord());
                 }
+                if (detail.getSourceId() != null) {
+                    existingDetail.setSourceId(detail.getSourceId());
+                }
+                if (detail.getSourceChannel() != null) {
+                    existingDetail.setSourceChannel(detail.getSourceChannel());
+                }
                 if (detail.getTotal() != null) {
                     existingDetail.setTotal(detail.getTotal());
+                }
+                if (detail.getLogin() != null) {
+                    existingDetail.setLogin(detail.getLogin());
                 }
 
                 return existingDetail;

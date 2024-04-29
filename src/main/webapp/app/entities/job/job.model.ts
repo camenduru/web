@@ -15,6 +15,7 @@ export interface IJob {
   type?: string | null;
   amount?: string | null;
   result?: string | null;
+  login?: string | null;
   discord?: IDetail | null;
   total?: IDetail | null;
   user?: Pick<IUser, 'id' | 'login'> | null;

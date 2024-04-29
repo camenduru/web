@@ -21,7 +21,10 @@ describe('Detail Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             discord: expect.any(Object),
+            sourceId: expect.any(Object),
+            sourceChannel: expect.any(Object),
             total: expect.any(Object),
+            login: expect.any(Object),
             user: expect.any(Object),
           }),
         );
@@ -34,7 +37,10 @@ describe('Detail Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             discord: expect.any(Object),
+            sourceId: expect.any(Object),
+            sourceChannel: expect.any(Object),
             total: expect.any(Object),
+            login: expect.any(Object),
             user: expect.any(Object),
           }),
         );

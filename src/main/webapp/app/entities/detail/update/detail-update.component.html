@@ -28,11 +28,54 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_sourceId" jhiTranslate="webApp.detail.sourceId">Source Id</label>
+          <input type="text" class="form-control" name="sourceId" id="field_sourceId" data-cy="sourceId" formControlName="sourceId" />
+          @if (editForm.get('sourceId')!.invalid && (editForm.get('sourceId')!.dirty || editForm.get('sourceId')!.touched)) {
+            <div>
+              @if (editForm.get('sourceId')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_sourceChannel" jhiTranslate="webApp.detail.sourceChannel">Source Channel</label>
+          <input
+            type="text"
+            class="form-control"
+            name="sourceChannel"
+            id="field_sourceChannel"
+            data-cy="sourceChannel"
+            formControlName="sourceChannel"
+          />
+          @if (editForm.get('sourceChannel')!.invalid && (editForm.get('sourceChannel')!.dirty || editForm.get('sourceChannel')!.touched)) {
+            <div>
+              @if (editForm.get('sourceChannel')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_total" jhiTranslate="webApp.detail.total">Total</label>
           <input type="text" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
           @if (editForm.get('total')!.invalid && (editForm.get('total')!.dirty || editForm.get('total')!.touched)) {
             <div>
               @if (editForm.get('total')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_login" jhiTranslate="webApp.detail.login">Login</label>
+          <input type="text" class="form-control" name="login" id="field_login" data-cy="login" formControlName="login" />
+          @if (editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)) {
+            <div>
+              @if (editForm.get('login')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
               }
             </div>
