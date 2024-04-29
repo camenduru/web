@@ -14,13 +14,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface JobRepository extends MongoRepository<Job, String> {
-    @Query(value = "{$and: [{'user.id': ?0}, {'result': {$regex: '^http.*'}}]}", sort = "{date : -1}")
-    Page<Job> findAllByUserIsCurrentUser(Pageable pageable, String userId);
+    @Query(value = "{'login': ?0}", sort = "{date: -1}")
+    Page<Job> findAllByUserIsCurrentUser(Pageable pageable, String login);
 
-    @Query(value = "{}", sort = "{date : -1}")
+    @Query(value = "{}", sort = "{date: -1}")
     Page<Job> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query(value = "{}", sort = "{date : -1}")
+    @Query(value = "{}", sort = "{date: -1}")
     List<Job> findAllWithEagerRelationships();
 
     @Query("{'id': ?0}")

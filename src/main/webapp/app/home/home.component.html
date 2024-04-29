@@ -15,10 +15,20 @@
         ></textarea>
         <br />
         <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-secondary float-end">🧿 Enter</button>
+        <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
+        </button>
+        <select
+          class="me-2 float-end"
+          style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555; height: 37px"
+          formControlName="type"
+          [(ngModel)]="default_type"
+        >
+          <option *ngFor="let status_item of types">
+            {{ status_item }}
+          </option>
+        </select>
       </form>
-      <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
-      </button>
       <br /><br /><br /><br /><br />
     </div>
   </div>

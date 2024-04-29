@@ -1,9 +1,8 @@
 package com.camenduru.web.web.rest;
 
 import com.camenduru.web.domain.Detail;
-import com.camenduru.web.domain.User;
 import com.camenduru.web.repository.DetailRepository;
-import com.camenduru.web.repository.UserRepository;
+import com.camenduru.web.security.AuthoritiesConstants;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -43,11 +42,8 @@ public class DetailResource {
 
     private final DetailRepository detailRepository;
 
-    private final UserRepository userRepository;
-
-    public DetailResource(DetailRepository detailRepository, UserRepository userRepository) {
+    public DetailResource(DetailRepository detailRepository) {
         this.detailRepository = detailRepository;
-        this.userRepository = userRepository;
     }
 
     /**
@@ -174,15 +170,14 @@ public class DetailResource {
     ) {
         log.debug("REST request to get a page of Details");
         Page<Detail> page;
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
-        if (user.getAuthorities().stream().anyMatch(authority -> authority.getName().equals("ROLE_ADMIN"))) {
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
             if (eagerload) {
                 page = detailRepository.findAllWithEagerRelationships(pageable);
             } else {
                 page = detailRepository.findAll(pageable);
             }
         } else {
-            page = detailRepository.findAllByUserIsCurrentUser(pageable, user.getId());
+            page = detailRepository.findAllByUserIsCurrentUser(pageable, SecurityUtils.getCurrentUserLogin().orElseThrow());
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

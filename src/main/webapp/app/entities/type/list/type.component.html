@@ -63,9 +63,7 @@
         <tbody>
           @for (type of types; track trackId) {
             <tr data-cy="entityTable">
-              <td>
-                <a [routerLink]="['/type', type.id, 'view']">{{ type.id }}</a>
-              </td>
+              <td>{{ type.id }}</td>
               <td>{{ type.type }}</td>
               <td>{{ type.amount }}</td>
               <td class="text-end">

@@ -187,4 +187,5 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+camenduru:
+  web.result: ${com_camenduru_web_result}

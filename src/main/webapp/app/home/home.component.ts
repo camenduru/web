@@ -60,6 +60,8 @@ export default class HomeComponent implements OnInit, OnDestroy {
   page = 1;
   isLoading = false;
   sortState = sortStateSignal({});
+  default_type: any = 'sdxl';
+  types: any = ['sdxl', 'sdxl-turbo'];
 
   readonly masonryLayoutBreakpointsMap: MasonryLayoutBreakpointsMap = {
     [Breakpoints.XSmall]: 1,
@@ -90,14 +92,14 @@ export default class HomeComponent implements OnInit, OnDestroy {
   save(): void {
     this.isSaving = true;
     const job = this.jobFormService.getJob(this.editForm);
-    job.type = 'sdxl';
-    job.amount = '1';
-    job.sourceChannel = '1234257765258494003';
-    job.sourceId = '616280178288623619';
+    job.amount = 'job.amount';
+    job.sourceChannel = 'job.sourceChannel';
+    job.sourceId = 'job.sourceId';
     job.date = dayjs();
     job.status = JobStatus.WAITING;
-    job.result = this.account()?.login;
+    job.result = 'job.result';
     job.source = JobSource.WEB;
+    job.login = 'job.login';
     if (job.id !== null) {
       this.subscribeToSaveResponse(this.jobService.update(job));
     } else {

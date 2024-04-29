@@ -1,15 +1,23 @@
 package com.camenduru.web.web.rest;
 
+import com.camenduru.web.domain.Detail;
 import com.camenduru.web.domain.Job;
+import com.camenduru.web.domain.Type;
 import com.camenduru.web.domain.User;
+import com.camenduru.web.domain.enumeration.JobSource;
+import com.camenduru.web.domain.enumeration.JobStatus;
+import com.camenduru.web.repository.DetailRepository;
 import com.camenduru.web.repository.JobRepository;
+import com.camenduru.web.repository.TypeRepository;
 import com.camenduru.web.repository.UserRepository;
+import com.camenduru.web.security.AuthoritiesConstants;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -41,13 +49,24 @@ public class JobResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    @Value("${camenduru.web.result}")
+    private String camenduruWebResult;
+
     private final JobRepository jobRepository;
-
+    private final DetailRepository detailRepository;
     private final UserRepository userRepository;
+    private final TypeRepository typeRepository;
 
-    public JobResource(JobRepository jobRepository, UserRepository userRepository) {
+    public JobResource(
+        JobRepository jobRepository,
+        DetailRepository detailRepository,
+        UserRepository userRepository,
+        TypeRepository typeRepository
+    ) {
         this.jobRepository = jobRepository;
+        this.detailRepository = detailRepository;
         this.userRepository = userRepository;
+        this.typeRepository = typeRepository;
     }
 
     /**
@@ -60,14 +79,40 @@ public class JobResource {
     @PostMapping("")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<Job> createJob(@Valid @RequestBody Job job) throws URISyntaxException {
-        log.debug("REST request to save Job : {}", job);
-        if (job.getId() != null) {
-            throw new BadRequestAlertException("A new job cannot already have an ID", ENTITY_NAME, "idexists");
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            log.debug("REST request to save Job : {}", job);
+            if (job.getId() != null) {
+                throw new BadRequestAlertException("A new job cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            job = jobRepository.save(job);
+            return ResponseEntity.created(new URI("/api/jobs/" + job.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, job.getId()))
+                .body(job);
+        } else {
+            log.debug("REST request to save Job : {}", job);
+            if (job.getId() != null) {
+                throw new BadRequestAlertException("A new job cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+            Detail detail = detailRepository.findAllByUserIsCurrentUser(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+            Type typeC = typeRepository.findByType(job.getType()).orElseThrow();
+            job.setType(typeC.getType());
+            job.setAmount(typeC.getAmount());
+            job.setSourceChannel(detail.getSourceChannel());
+            job.setSourceId(detail.getSourceId());
+            job.setDate(Instant.now());
+            job.setStatus(JobStatus.WAITING);
+            job.setResult(camenduruWebResult);
+            job.setLogin(SecurityUtils.getCurrentUserLogin().orElseThrow());
+            job.setSource(JobSource.WEB);
+            job.setDiscord(detail);
+            job.setTotal(detail);
+            job.setUser(user);
+            job = jobRepository.save(job);
+            return ResponseEntity.created(new URI("/api/jobs/" + job.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, job.getId()))
+                .body(job);
         }
-        job = jobRepository.save(job);
-        return ResponseEntity.created(new URI("/api/jobs/" + job.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, job.getId()))
-            .body(job);
     }
 
     /**
@@ -185,15 +230,14 @@ public class JobResource {
     ) {
         log.debug("REST request to get a page of Jobs");
         Page<Job> page;
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
-        if (user.getAuthorities().stream().anyMatch(authority -> authority.getName().equals("ROLE_ADMIN"))) {
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
             if (eagerload) {
                 page = jobRepository.findAllWithEagerRelationships(pageable);
             } else {
                 page = jobRepository.findAll(pageable);
             }
         } else {
-            page = jobRepository.findAllByUserIsCurrentUser(pageable, user.getId());
+            page = jobRepository.findAllByUserIsCurrentUser(pageable, SecurityUtils.getCurrentUserLogin().orElseThrow());
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

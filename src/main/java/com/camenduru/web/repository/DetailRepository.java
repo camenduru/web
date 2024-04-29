@@ -14,8 +14,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface DetailRepository extends MongoRepository<Detail, String> {
-    @Query("{'user.id': ?0}")
-    Page<Detail> findAllByUserIsCurrentUser(Pageable pageable, String userId);
+    @Query("{'login': ?0}")
+    Page<Detail> findAllByUserIsCurrentUser(Pageable pageable, String login);
+
+    @Query("{'login': ?0}")
+    Optional<Detail> findAllByUserIsCurrentUser(String login);
 
     @Query("{}")
     Page<Detail> findAllWithEagerRelationships(Pageable pageable);
