@@ -5,7 +5,7 @@
 
     <groupId>com.camenduru.web</groupId>
     <artifactId>web</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>jar</packaging>
     <name>Web</name>
     <description>Description for Web</description>
