@@ -48,10 +48,10 @@
           }
 
           @if (jobs && jobs.length > 0) {
-            <div NgxMasonryGrid [gap]="gap" [align]="align" [column]="4">
-              <!-- <div NgxJustifiedGrid [gap]="gap" [align]="align" [rowRange]="rowRange" [columnRange]="columnRange" [isCroppedSize]="isCroppedSize"> -->
+            <!-- <div NgxMasonryGrid [gap]="gap" [align]="align" [column]="4"> width="445" -->
+            <div NgxJustifiedGrid #grid [gap]="gap" [align]="align" [columnRange]="columnRange" [isCroppedSize]="isCroppedSize">
               @for (job of jobs; track trackId) {
-                <img class="rounded" src="{{ job.result }}" width="445" />
+                <img class="rounded" src="{{ job.result }}" />
               }
             </div>
           }

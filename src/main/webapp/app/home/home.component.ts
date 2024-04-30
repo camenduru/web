@@ -1,4 +1,4 @@
-import { Component, NgZone, inject, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, NgZone, inject, signal, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
@@ -23,7 +23,7 @@ import { UserService } from '../entities/user/service/user.service';
 import { JobStatus } from '../entities/enumerations/job-status.model';
 import { JobSource } from '../entities/enumerations/job-source.model';
 import dayjs from 'dayjs/esm';
-import { NgxGridModule } from '@egjs/ngx-grid';
+import { NgxGridModule, NgxMasonryGridComponent } from '@egjs/ngx-grid';
 
 @Component({
   standalone: true,
@@ -58,10 +58,12 @@ export default class HomeComponent implements OnInit, OnDestroy {
   default_type: any = 'sdxl-turbo';
   types: any = ['sdxl-turbo', 'sdxl'];
   gap = 5;
-  columnRange = 4;
-  rowRange = 4;
-  isCroppedSize = true;
+  columnRange = [1, 4];
+  // rowRange = 4;
+  isCroppedSize = false;
   align = 'justify' as const;
+
+  @ViewChild('grid') grid!: NgxMasonryGridComponent;
 
   protected jobFormService = inject(JobFormService);
   protected jobService = inject(JobService);
@@ -145,6 +147,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.jobs = dataFromBody;
+    this.grid.updateItems();
   }
 
   protected fillComponentAttributesFromResponseBody(data: IJob[] | null): IJob[] {
@@ -193,6 +196,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   protected onSaveSuccess(): void {
     this.load();
+    this.grid.updateItems();
   }
 
   protected onSaveError(): void {
