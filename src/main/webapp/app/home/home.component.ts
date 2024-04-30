@@ -1,10 +1,4 @@
 import { Component, NgZone, inject, signal, OnInit, OnDestroy } from '@angular/core';
-import {
-  MasonryLayoutBreakpointsMap,
-  unmatchedBreakpointKey,
-  MasonryLayoutContainerComponent,
-} from '../shared/masonry/masonry-layout-container.component';
-import { Breakpoints } from '@angular/cdk/layout';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
@@ -29,6 +23,7 @@ import { UserService } from '../entities/user/service/user.service';
 import { JobStatus } from '../entities/enumerations/job-status.model';
 import { JobSource } from '../entities/enumerations/job-source.model';
 import dayjs from 'dayjs/esm';
+import { NgxGridModule } from '@egjs/ngx-grid';
 
 @Component({
   standalone: true,
@@ -47,7 +42,7 @@ import dayjs from 'dayjs/esm';
     FormatMediumDatePipe,
     ItemCountComponent,
     HasAnyAuthorityDirective,
-    MasonryLayoutContainerComponent,
+    NgxGridModule,
   ],
 })
 export default class HomeComponent implements OnInit, OnDestroy {
@@ -62,14 +57,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
   sortState = sortStateSignal({});
   default_type: any = 'sdxl-turbo';
   types: any = ['sdxl-turbo', 'sdxl'];
-
-  readonly masonryLayoutBreakpointsMap: MasonryLayoutBreakpointsMap = {
-    [Breakpoints.XSmall]: 1,
-    [Breakpoints.Small]: 2,
-    [Breakpoints.Medium]: 2,
-    [Breakpoints.Large]: 3,
-    [unmatchedBreakpointKey]: 4,
-  };
+  gap = 5;
+  columnRange = 4;
+  rowRange = 4;
+  isCroppedSize = true;
+  align = 'justify' as const;
 
   protected jobFormService = inject(JobFormService);
   protected jobService = inject(JobService);

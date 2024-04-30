@@ -98,6 +98,7 @@
     "@angular/platform-browser": "17.3.3",
     "@angular/platform-browser-dynamic": "17.3.3",
     "@angular/router": "17.3.3",
+    "@egjs/ngx-grid": "^1.15.0",
     "@fortawesome/angular-fontawesome": "0.14.1",
     "@fortawesome/fontawesome-svg-core": "6.5.2",
     "@fortawesome/free-solid-svg-icons": "6.5.2",
