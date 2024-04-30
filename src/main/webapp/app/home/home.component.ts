@@ -57,11 +57,52 @@ export default class HomeComponent implements OnInit, OnDestroy {
   sortState = sortStateSignal({});
   default_type: any = 'sdxl-turbo';
   types: any = ['sdxl-turbo', 'sdxl'];
-  gap = 10;
-  columnRange = [1, 4];
-  column = 0;
-  isCroppedSize = true;
+
+  horizontal = false;
+  percentage = false;
+  isEqualSize = false;
+  isConstantSize = false;
+  gap = 5;
+  resizeDebounce = 100;
+  maxResizeDebounce = 0;
+  autoResize = true;
+  useFit = true;
+  useTransform = false;
+  renderOnPropertyChange = true;
+  preserveUIOnDestroy = false;
+  defaultDirection = 'end' as const;
+  outlineLength = 0;
+  outlineSize = 0;
+  useRoundedSize = true;
+  useResizeObserver = true;
+  observeChildren = true;
   align = 'center' as const;
+
+  column = 0;
+  columnSize = 0;
+  columnSizeRatio = 0;
+  contentAlign = 'masonry' as const;
+  columnCalculationThreshold = 1;
+  maxStretchColumnSize = Infinity;
+
+  columnRange = [1, 4];
+  rowRange = [1, Infinity];
+  sizeRange = [0, Infinity];
+  displayedRow = -1;
+  isCroppedSize = false;
+
+  aspectRatio = 1;
+  sizeWeight = 1;
+  ratioWeight = 100;
+  weightPriority = 'custom' as const;
+
+  frame = [
+    [1, 1, 2, 2],
+    [3, 3, 2, 2],
+    [4, 4, 4, 5],
+  ];
+  useFrameFill = false;
+  rectSize = 0;
 
   protected jobFormService = inject(JobFormService);
   protected jobService = inject(JobService);

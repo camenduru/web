@@ -48,12 +48,114 @@
           }
 
           @if (jobs && jobs.length > 0) {
-            <!-- <div NgxJustifiedGrid [gap]="gap" [columnRange]="columnRange" [isCroppedSize]="isCroppedSize"> -->
-            <div NgxMasonryGrid [gap]="gap" [align]="align" [column]="column">
+            <!-- <div NgxJustifiedGrid
+            [horizontal]="horizontal"
+            [percentage]="percentage"
+            [isEqualSize]="isEqualSize"
+            [isConstantSize]="isConstantSize"
+            [gap]="gap"
+            [resizeDebounce]="resizeDebounce"
+            [maxResizeDebounce]="maxResizeDebounce"
+            [autoResize]="autoResize"
+            [useFit]="useFit"
+            [useTransform]="useTransform"
+            [renderOnPropertyChange]="renderOnPropertyChange"
+            [preserveUIOnDestroy]="preserveUIOnDestroy"
+            [defaultDirection]="defaultDirection"
+            [outlineLength]="outlineLength"
+            [outlineSize]="outlineSize"
+            [useRoundedSize]="useRoundedSize"
+            [useResizeObserver]="useResizeObserver"
+            [observeChildren]="observeChildren"
+            [columnRange]="columnRange"
+            [rowRange]="rowRange"
+            [sizeRange]="sizeRange"
+            [align]="align"
+            [displayedRow]="displayedRow"
+            [isCroppedSize]="isCroppedSize"> -->
+
+            <div
+              NgxMasonryGrid
+              [horizontal]="horizontal"
+              [percentage]="percentage"
+              [isEqualSize]="isEqualSize"
+              [isConstantSize]="isConstantSize"
+              [gap]="gap"
+              [resizeDebounce]="resizeDebounce"
+              [maxResizeDebounce]="maxResizeDebounce"
+              [autoResize]="autoResize"
+              [useFit]="useFit"
+              [useTransform]="useTransform"
+              [renderOnPropertyChange]="renderOnPropertyChange"
+              [preserveUIOnDestroy]="preserveUIOnDestroy"
+              [defaultDirection]="defaultDirection"
+              [outlineLength]="outlineLength"
+              [outlineSize]="outlineSize"
+              [useRoundedSize]="useRoundedSize"
+              [useResizeObserver]="useResizeObserver"
+              [observeChildren]="observeChildren"
+              [column]="column"
+              [columnSize]="columnSize"
+              [columnSizeRatio]="columnSizeRatio"
+              [align]="align"
+              [contentAlign]="contentAlign"
+              [columnCalculationThreshold]="columnCalculationThreshold"
+              [maxStretchColumnSize]="maxStretchColumnSize"
+            >
+              <!-- <div NgxPackingGrid
+            [horizontal]="horizontal"
+            [percentage]="percentage"
+            [isEqualSize]="isEqualSize"
+            [isConstantSize]="isConstantSize"
+            [gap]="gap"
+            [resizeDebounce]="resizeDebounce"
+            [maxResizeDebounce]="maxResizeDebounce"
+            [autoResize]="autoResize"
+            [useFit]="useFit"
+            [useTransform]="useTransform"
+            [renderOnPropertyChange]="renderOnPropertyChange"
+            [preserveUIOnDestroy]="preserveUIOnDestroy"
+            [defaultDirection]="defaultDirection"
+            [outlineLength]="outlineLength"
+            [outlineSize]="outlineSize"
+            [useRoundedSize]="useRoundedSize"
+            [useResizeObserver]="useResizeObserver"
+            [observeChildren]="observeChildren"
+            [aspectRatio]="aspectRatio"
+            [sizeWeight]="sizeWeight"
+            [ratioWeight]="ratioWeight"
+            [align]="align"
+            [weightPriority]="weightPriority"> -->
+
+              <!-- <div NgxFrameGrid
+            [horizontal]="horizontal"
+            [percentage]="percentage"
+            [isEqualSize]="isEqualSize"
+            [isConstantSize]="isConstantSize"
+            [gap]="gap"
+            [resizeDebounce]="resizeDebounce"
+            [maxResizeDebounce]="maxResizeDebounce"
+            [autoResize]="autoResize"
+            [useFit]="useFit"
+            [useTransform]="useTransform"
+            [renderOnPropertyChange]="renderOnPropertyChange"
+            [preserveUIOnDestroy]="preserveUIOnDestroy"
+            [defaultDirection]="defaultDirection"
+            [outlineLength]="outlineLength"
+            [outlineSize]="outlineSize"
+            [useRoundedSize]="useRoundedSize"
+            [useResizeObserver]="useResizeObserver"
+            [observeChildren]="observeChildren"
+            [frame]="frame"
+            [useFrameFill]="useFrameFill"
+            [rectSize]="rectSize"
+            [align]="align"> -->
+
               <img class="item rounded" #gridItem *ngFor="let job of jobs; trackBy: trackId" [src]="job.result" width="445" />
             </div>
           }
           @if (jobs && jobs.length > 0) {
+            <br /><br /><br />
             <div>
               <div class="d-flex justify-content-center">
                 <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
