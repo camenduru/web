@@ -85,10 +85,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
 
-  previousState(): void {
-    window.history.back();
-  }
-
   save(): void {
     this.isSaving = true;
     const job = this.jobFormService.getJob(this.editForm);
@@ -204,7 +200,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   }
 
   protected onSaveSuccess(): void {
-    this.previousState();
+    this.load();
   }
 
   protected onSaveError(): void {
