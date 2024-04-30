@@ -1,6 +1,6 @@
 <div class="row">
   <div class="d-flex justify-content-center">
-    <div class="col-6">
+    <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
       <br /><br /><br />
       <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
         <textarea
@@ -48,8 +48,9 @@
           }
 
           @if (jobs && jobs.length > 0) {
-            <div NgxJustifiedGrid [gap]="gap" [align]="align" [columnRange]="columnRange" [isCroppedSize]="isCroppedSize">
-              <img class="item rounded" #gridItem *ngFor="let job of jobs; trackBy: trackId" [src]="job.result" />
+            <!-- <div NgxJustifiedGrid [gap]="gap" [columnRange]="columnRange" [isCroppedSize]="isCroppedSize"> -->
+            <div NgxMasonryGrid [gap]="gap" [align]="align" [column]="column">
+              <img class="item rounded" #gridItem *ngFor="let job of jobs; trackBy: trackId" [src]="job.result" width="445" />
             </div>
           }
           @if (jobs && jobs.length > 0) {

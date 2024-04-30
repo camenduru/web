@@ -1,4 +1,4 @@
-import { Component, NgZone, inject, signal, OnInit, OnDestroy, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, NgZone, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
@@ -57,18 +57,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
   sortState = sortStateSignal({});
   default_type: any = 'sdxl-turbo';
   types: any = ['sdxl-turbo', 'sdxl'];
-  gap = 5;
+  gap = 10;
   columnRange = [1, 4];
-  // rowRange = 4;
-  isCroppedSize = false;
-  align = 'justify' as const;
-
-  @ViewChild('grid') grid!: NgxJustifiedGridComponent;
-  // @ViewChildren('gridItem') gridItems!: QueryList<ElementRef>;
-  // ngAfterViewInit() {
-  //   this.gridItems.changes.subscribe(() => console.log(this.gridItems.get(0)?.nativeElement.parentNode.updateItems));
-  // .updateItems(items, { useOrgResize: true })
-  // }
+  column = 0;
+  isCroppedSize = true;
+  align = 'center' as const;
 
   protected jobFormService = inject(JobFormService);
   protected jobService = inject(JobService);
