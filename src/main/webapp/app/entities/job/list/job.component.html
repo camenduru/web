@@ -36,13 +36,7 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="global.field.id">ID</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col"></th>
             <th scope="col" jhiSortBy="date">
               <div class="d-flex">
                 <span jhiTranslate="webApp.job.date">Date</span>
@@ -60,20 +54,6 @@
             <th scope="col" jhiSortBy="source">
               <div class="d-flex">
                 <span jhiTranslate="webApp.job.source">Source</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="sourceId">
-              <div class="d-flex">
-                <span jhiTranslate="webApp.job.sourceId">Source Id</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="sourceChannel">
-              <div class="d-flex">
-                <span jhiTranslate="webApp.job.sourceChannel">Source Channel</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -99,13 +79,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="result">
-              <div class="d-flex">
-                <span jhiTranslate="webApp.job.result">Result</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="login">
               <div class="d-flex">
                 <span jhiTranslate="webApp.job.login">Login</span>
@@ -125,20 +98,35 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="user.login">
+            <th scope="col" jhiSortBy="result">
               <div class="d-flex">
-                <span jhiTranslate="webApp.job.user">User</span>
+                <span jhiTranslate="webApp.job.result">Result</span>
+
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           @for (job of jobs; track trackId) {
             <tr data-cy="entityTable">
-              <td>
-                {{ job.id }}
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'" class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/job', job.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/job', job.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(job)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
               </td>
               <td>{{ job.date | formatMediumDatetime }}</td>
               <td [jhiTranslate]="'webApp.JobStatus.' + (job.status ?? 'null')">
@@ -169,12 +157,9 @@
                   }[job.source ?? 'null']
                 }}
               </td>
-              <td>{{ job.sourceId }}</td>
-              <td>{{ job.sourceChannel }}</td>
               <td>{{ job.command }}</td>
               <td>{{ job.type }}</td>
               <td>{{ job.amount }}</td>
-              <td>{{ job.result }}</td>
               <td>{{ job.login }}</td>
               <td>
                 @if (job.discord) {
@@ -190,27 +175,7 @@
                   </div>
                 }
               </td>
-              <td>
-                {{ job.user?.login }}
-              </td>
-              <td class="text-end">
-                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">
-                  <a [routerLink]="['/job', job.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                    <fa-icon icon="eye"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                  </a>
-
-                  <a [routerLink]="['/job', job.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                  </a>
-
-                  <button type="submit" (click)="delete(job)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                    <fa-icon icon="times"></fa-icon>
-                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                  </button>
-                </div>
-              </td>
+              <td>{{ job.result }}</td>
             </tr>
           }
         </tbody>

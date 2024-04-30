@@ -36,13 +36,6 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="id">
-              <div class="d-flex">
-                <span jhiTranslate="global.field.id">ID</span>
-
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="type">
               <div class="d-flex">
                 <span jhiTranslate="webApp.type.type">Type</span>
@@ -63,7 +56,6 @@
         <tbody>
           @for (type of types; track trackId) {
             <tr data-cy="entityTable">
-              <td>{{ type.id }}</td>
               <td>{{ type.type }}</td>
               <td>{{ type.amount }}</td>
               <td class="text-end">
