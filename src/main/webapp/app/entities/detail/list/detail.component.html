@@ -9,7 +9,6 @@
       </button>
 
       <button
-        *jhiHasAnyAuthority="'ROLE_ADMIN'"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-detail"
@@ -57,21 +56,21 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="total">
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="total">
               <div class="d-flex">
                 <span jhiTranslate="webApp.detail.total">Total</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="login">
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="login">
               <div class="d-flex">
                 <span jhiTranslate="webApp.detail.login">Login</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="user.login">
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="user.login">
               <div class="d-flex">
                 <span jhiTranslate="webApp.detail.user">User</span>
                 <fa-icon class="p-1" icon="sort"></fa-icon>
@@ -86,14 +85,19 @@
               <td>{{ detail.discord }}</td>
               <td>{{ detail.sourceId }}</td>
               <td>{{ detail.sourceChannel }}</td>
-              <td>{{ detail.total }}</td>
-              <td>{{ detail.login }}</td>
-              <td>
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ detail.total }}</td>
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ detail.login }}</td>
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 {{ detail.user?.login }}
               </td>
               <td class="text-end">
-                <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">
-                  <a [routerLink]="['/detail', detail.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <div class="btn-group">
+                  <a
+                    *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                    [routerLink]="['/detail', detail.id, 'view']"
+                    class="btn btn-info btn-sm"
+                    data-cy="entityDetailsButton"
+                  >
                     <fa-icon icon="eye"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                   </a>
@@ -103,7 +107,13 @@
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                   </a>
 
-                  <button type="submit" (click)="delete(detail)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                  <button
+                    *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                    type="submit"
+                    (click)="delete(detail)"
+                    class="btn btn-danger btn-sm"
+                    data-cy="entityDeleteButton"
+                  >
                     <fa-icon icon="times"></fa-icon>
                     <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                   </button>

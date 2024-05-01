@@ -4,7 +4,7 @@
       <span class="logo-img"></span>
       <span class="navbar-title" jhiTranslate="global.title">Web</span>
       <span class="navbar-version">{{ version }}</span>
-      <span *jhiHasAnyAuthority="'ROLE_ADMIN'" class="navbar-version">⛔ Admin Account</span>
+      <span *jhiHasAnyAuthority="'ROLE_ADMIN'" class="navbar-version">⛔ Admin Account ⛔</span>
     </a>
     <a
       class="navbar-toggler d-lg-none"
@@ -56,7 +56,7 @@
                   <span jhiTranslate="global.menu.entities.job">Job</span>
                 </a>
               </li>
-              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
+              <li>
                 <a
                   class="dropdown-item"
                   routerLink="/detail"

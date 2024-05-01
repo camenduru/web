@@ -1,7 +1,9 @@
 package com.camenduru.web.web.rest;
 
 import com.camenduru.web.domain.Detail;
+import com.camenduru.web.domain.User;
 import com.camenduru.web.repository.DetailRepository;
+import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.AuthoritiesConstants;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.web.rest.errors.BadRequestAlertException;
@@ -41,9 +43,11 @@ public class DetailResource {
     private String applicationName;
 
     private final DetailRepository detailRepository;
+    private final UserRepository userRepository;
 
-    public DetailResource(DetailRepository detailRepository) {
+    public DetailResource(DetailRepository detailRepository, UserRepository userRepository) {
         this.detailRepository = detailRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -54,16 +58,31 @@ public class DetailResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<Detail> createDetail(@Valid @RequestBody Detail detail) throws URISyntaxException {
-        log.debug("REST request to save Detail : {}", detail);
-        if (detail.getId() != null) {
-            throw new BadRequestAlertException("A new detail cannot already have an ID", ENTITY_NAME, "idexists");
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            log.debug("REST request to save Detail : {}", detail);
+            if (detail.getId() != null) {
+                throw new BadRequestAlertException("A new detail cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            detail = detailRepository.save(detail);
+            return ResponseEntity.created(new URI("/api/details/" + detail.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, detail.getId()))
+                .body(detail);
+        } else {
+            log.debug("REST request to save Detail : {}", detail);
+            if (detail.getId() != null) {
+                throw new BadRequestAlertException("A new detail cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+            detail.user(user);
+            detail.login(user.getLogin());
+            detail.total("0");
+            detail = detailRepository.save(detail);
+            return ResponseEntity.created(new URI("/api/details/" + detail.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, detail.getId()))
+                .body(detail);
         }
-        detail = detailRepository.save(detail);
-        return ResponseEntity.created(new URI("/api/details/" + detail.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, detail.getId()))
-            .body(detail);
     }
 
     /**
@@ -77,27 +96,52 @@ public class DetailResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<Detail> updateDetail(
         @PathVariable(value = "id", required = false) final String id,
         @Valid @RequestBody Detail detail
     ) throws URISyntaxException {
-        log.debug("REST request to update Detail : {}, {}", id, detail);
-        if (detail.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, detail.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            log.debug("REST request to update Detail : {}, {}", id, detail);
+            if (detail.getId() == null) {
+                throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            }
+            if (!Objects.equals(id, detail.getId())) {
+                throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            }
 
-        if (!detailRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
+            if (!detailRepository.existsById(id)) {
+                throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            }
 
-        detail = detailRepository.save(detail);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, detail.getId()))
-            .body(detail);
+            detail = detailRepository.save(detail);
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, detail.getId()))
+                .body(detail);
+        } else {
+            log.debug("REST request to update Detail : {}, {}", id, detail);
+            if (detail.getId() == null) {
+                throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            }
+            if (!Objects.equals(id, detail.getId())) {
+                throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            }
+
+            if (!detailRepository.existsById(id)) {
+                throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            }
+
+            Detail currectDetail = detailRepository
+                .findOneWithByUserIsCurrentUser(id, SecurityUtils.getCurrentUserLogin().orElseThrow())
+                .orElseThrow();
+            detail.user(currectDetail.getUser());
+            detail.login(currectDetail.getLogin());
+            detail.total(currectDetail.getTotal());
+            detail = detailRepository.save(detail);
+            return ResponseEntity.ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, detail.getId()))
+                .body(detail);
+        }
     }
 
     /**
@@ -112,47 +156,92 @@ public class DetailResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<Detail> partialUpdateDetail(
         @PathVariable(value = "id", required = false) final String id,
         @NotNull @RequestBody Detail detail
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Detail partially : {}, {}", id, detail);
-        if (detail.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            log.debug("REST request to partial update Detail partially : {}, {}", id, detail);
+            if (detail.getId() == null) {
+                throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            }
+            if (!Objects.equals(id, detail.getId())) {
+                throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            }
+
+            if (!detailRepository.existsById(id)) {
+                throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            }
+
+            Optional<Detail> result = detailRepository
+                .findById(detail.getId())
+                .map(existingDetail -> {
+                    if (detail.getDiscord() != null) {
+                        existingDetail.setDiscord(detail.getDiscord());
+                    }
+                    if (detail.getSourceId() != null) {
+                        existingDetail.setSourceId(detail.getSourceId());
+                    }
+                    if (detail.getSourceChannel() != null) {
+                        existingDetail.setSourceChannel(detail.getSourceChannel());
+                    }
+                    if (detail.getTotal() != null) {
+                        existingDetail.setTotal(detail.getTotal());
+                    }
+                    if (detail.getLogin() != null) {
+                        existingDetail.setLogin(detail.getLogin());
+                    }
+
+                    return existingDetail;
+                })
+                .map(detailRepository::save);
+
+            return ResponseUtil.wrapOrNotFound(
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, detail.getId())
+            );
+        } else {
+            log.debug("REST request to partial update Detail partially : {}, {}", id, detail);
+            if (detail.getId() == null) {
+                throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+            }
+            if (!Objects.equals(id, detail.getId())) {
+                throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+            }
+
+            if (!detailRepository.existsById(id)) {
+                throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+            }
+
+            Detail currectDetail = detailRepository
+                .findOneWithByUserIsCurrentUser(id, SecurityUtils.getCurrentUserLogin().orElseThrow())
+                .orElseThrow();
+            detail.user(currectDetail.getUser());
+            detail.login(currectDetail.getLogin());
+            detail.total(currectDetail.getTotal());
+            Optional<Detail> result = detailRepository
+                .findById(detail.getId())
+                .map(existingDetail -> {
+                    if (detail.getDiscord() != null) {
+                        existingDetail.setDiscord(detail.getDiscord());
+                    }
+                    if (detail.getSourceId() != null) {
+                        existingDetail.setSourceId(detail.getSourceId());
+                    }
+                    if (detail.getSourceChannel() != null) {
+                        existingDetail.setSourceChannel(detail.getSourceChannel());
+                    }
+
+                    return existingDetail;
+                })
+                .map(detailRepository::save);
+
+            return ResponseUtil.wrapOrNotFound(
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, detail.getId())
+            );
         }
-        if (!Objects.equals(id, detail.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!detailRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<Detail> result = detailRepository
-            .findById(detail.getId())
-            .map(existingDetail -> {
-                if (detail.getDiscord() != null) {
-                    existingDetail.setDiscord(detail.getDiscord());
-                }
-                if (detail.getSourceId() != null) {
-                    existingDetail.setSourceId(detail.getSourceId());
-                }
-                if (detail.getSourceChannel() != null) {
-                    existingDetail.setSourceChannel(detail.getSourceChannel());
-                }
-                if (detail.getTotal() != null) {
-                    existingDetail.setTotal(detail.getTotal());
-                }
-                if (detail.getLogin() != null) {
-                    existingDetail.setLogin(detail.getLogin());
-                }
-
-                return existingDetail;
-            })
-            .map(detailRepository::save);
-
-        return ResponseUtil.wrapOrNotFound(result, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, detail.getId()));
     }
 
     /**
@@ -190,11 +279,20 @@ public class DetailResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the detail, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<Detail> getDetail(@PathVariable("id") String id) {
-        log.debug("REST request to get Detail : {}", id);
-        Optional<Detail> detail = detailRepository.findOneWithEagerRelationships(id);
-        return ResponseUtil.wrapOrNotFound(detail);
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            log.debug("REST request to get Detail : {}", id);
+            Optional<Detail> detail = detailRepository.findOneWithEagerRelationships(id);
+            return ResponseUtil.wrapOrNotFound(detail);
+        } else {
+            log.debug("REST request to get Detail : {}", id);
+            Optional<Detail> detail = detailRepository.findOneWithByUserIsCurrentUser(
+                id,
+                SecurityUtils.getCurrentUserLogin().orElseThrow()
+            );
+            return ResponseUtil.wrapOrNotFound(detail);
+        }
     }
 
     /**

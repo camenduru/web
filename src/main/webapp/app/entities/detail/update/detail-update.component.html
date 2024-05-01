@@ -9,7 +9,7 @@
         <jhi-alert-error></jhi-alert-error>
 
         @if (editForm.controls.id.value !== null) {
-          <div class="mb-3">
+          <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="mb-3">
             <label class="form-label" for="field_id" jhiTranslate="webApp.detail.id">ID</label>
             <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
@@ -58,7 +58,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="mb-3">
           <label class="form-label" for="field_total" jhiTranslate="webApp.detail.total">Total</label>
           <input type="text" class="form-control" name="total" id="field_total" data-cy="total" formControlName="total" />
           @if (editForm.get('total')!.invalid && (editForm.get('total')!.dirty || editForm.get('total')!.touched)) {
@@ -70,7 +70,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="mb-3">
           <label class="form-label" for="field_login" jhiTranslate="webApp.detail.login">Login</label>
           <input type="text" class="form-control" name="login" id="field_login" data-cy="login" formControlName="login" />
           @if (editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)) {
@@ -82,7 +82,7 @@
           }
         </div>
 
-        <div class="mb-3">
+        <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="mb-3">
           <label class="form-label" for="field_user" jhiTranslate="webApp.detail.user">User</label>
           <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
             <option [ngValue]="null"></option>
@@ -98,13 +98,7 @@
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 
-        <button
-          type="submit"
-          id="save-entity"
-          data-cy="entityCreateSaveButton"
-          [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
-        >
+        <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-primary">
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
       </div>

@@ -28,4 +28,10 @@ public interface DetailRepository extends MongoRepository<Detail, String> {
 
     @Query("{'id': ?0}")
     Optional<Detail> findOneWithEagerRelationships(String id);
+
+    @Query("{'id': ?0, 'login': ?1}")
+    Optional<Detail> findOneWithByUserIsCurrentUser(String id, String login);
+
+    @Query("{'login': ?0}")
+    Optional<Detail> findOneWithByLogin(String login);
 }

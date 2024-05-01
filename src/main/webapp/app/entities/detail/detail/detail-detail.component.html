@@ -11,8 +11,8 @@
         <jhi-alert></jhi-alert>
 
         <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="global.field.id">ID</span></dt>
-          <dd>
+          <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{ detail()!.id }}</span>
           </dd>
           <dt><span jhiTranslate="webApp.detail.discord">Discord</span></dt>
@@ -27,16 +27,16 @@
           <dd>
             <span>{{ detail()!.sourceChannel }}</span>
           </dd>
-          <dt><span jhiTranslate="webApp.detail.total">Total</span></dt>
-          <dd>
+          <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="webApp.detail.total">Total</span></dt>
+          <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{ detail()!.total }}</span>
           </dd>
-          <dt><span jhiTranslate="webApp.detail.login">Login</span></dt>
-          <dd>
+          <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="webApp.detail.login">Login</span></dt>
+          <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{ detail()!.login }}</span>
           </dd>
-          <dt><span jhiTranslate="webApp.detail.user">User</span></dt>
-          <dd>
+          <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="webApp.detail.user">User</span></dt>
+          <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{ detail()!.user?.login }}</span>
           </dd>
         </dl>
