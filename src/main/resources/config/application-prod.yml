@@ -33,7 +33,7 @@ spring:
       enabled: false
   data:
     mongodb:
-      uri: ${com_camenduru_web_data_mongodb_uri}
+      uri: ${com_camenduru_mongodb_uri}
   mail:
     host: ${com_camenduru_web_mail_host}
     port: ${com_camenduru_web_mail_port}
