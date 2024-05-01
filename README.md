@@ -34,7 +34,7 @@ https://github.com/angular/angular <br />
 
 https://www.jhipster.tech/ <br />
 https://github.com/jhipster/generator-jhipster <br />
-📋 Tutorial: https://www.youtube.com/watch?v=IfyjKCt6YHE <br />
+https://www.youtube.com/watch?v=IfyjKCt6YHE <br />
 
 #### 🍱 Grid System
 
