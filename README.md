@@ -10,7 +10,7 @@ This project aims to create a UI for https://github.com/camenduru/camenduru
 
 - https://github.com/camenduru/web <br />
 - https://github.com/camenduru/discord <br />
-- https://github.com/camenduru/service <br />
+- https://github.com/camenduru/dispatcher <br />
 
 ### 🗃️ Database Provider
 
