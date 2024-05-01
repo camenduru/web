@@ -1,0 +1,18 @@
+[Unit]
+Description=Web
+After=syslog.target network.target
+[Service]
+User=root
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/cuda/bin"
+Environment="com_camenduru_mongodb_uri=mongodb://127.0.0.1:27017/web?waitQueueMultiple=1000"
+Environment="com_camenduru_web_result=/content/images/generating.jpg"
+Environment="com_camenduru_web_mail_host=smtp.gmail.com"
+Environment="com_camenduru_web_mail_password=password"
+Environment="com_camenduru_web_mail_port=587"
+Environment="com_camenduru_web_mail_smtp_ssl_trust=smtp.gmail.com"
+Environment="com_camenduru_web_mail_username=mail@gmail.com"
+WorkingDirectory=/content/com.camenduru/web
+ExecStart=/bin/bash -c 'java -Dserver.port=3000 -jar target/web-0.0.1.jar --spring.profiles.active=prod'
+Restart=always
+[Install]
+WantedBy=multi-user.target
