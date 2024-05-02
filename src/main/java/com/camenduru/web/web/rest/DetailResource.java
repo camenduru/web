@@ -58,31 +58,16 @@ public class DetailResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Detail> createDetail(@Valid @RequestBody Detail detail) throws URISyntaxException {
-        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
-            log.debug("REST request to save Detail : {}", detail);
-            if (detail.getId() != null) {
-                throw new BadRequestAlertException("A new detail cannot already have an ID", ENTITY_NAME, "idexists");
-            }
-            detail = detailRepository.save(detail);
-            return ResponseEntity.created(new URI("/api/details/" + detail.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, detail.getId()))
-                .body(detail);
-        } else {
-            log.debug("REST request to save Detail : {}", detail);
-            if (detail.getId() != null) {
-                throw new BadRequestAlertException("A new detail cannot already have an ID", ENTITY_NAME, "idexists");
-            }
-            User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
-            detail.user(user);
-            detail.login(user.getLogin());
-            detail.total("0");
-            detail = detailRepository.save(detail);
-            return ResponseEntity.created(new URI("/api/details/" + detail.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, detail.getId()))
-                .body(detail);
+        log.debug("REST request to save Detail : {}", detail);
+        if (detail.getId() != null) {
+            throw new BadRequestAlertException("A new detail cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        detail = detailRepository.save(detail);
+        return ResponseEntity.created(new URI("/api/details/" + detail.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, detail.getId()))
+            .body(detail);
     }
 
     /**
@@ -131,12 +116,12 @@ public class DetailResource {
                 throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
             }
 
-            Detail currectDetail = detailRepository
+            Detail currentDetail = detailRepository
                 .findOneWithByUserIsCurrentUser(id, SecurityUtils.getCurrentUserLogin().orElseThrow())
                 .orElseThrow();
-            detail.user(currectDetail.getUser());
-            detail.login(currectDetail.getLogin());
-            detail.total(currectDetail.getTotal());
+            detail.user(currentDetail.getUser());
+            detail.login(currentDetail.getLogin());
+            detail.total(currentDetail.getTotal());
             detail = detailRepository.save(detail);
             return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, detail.getId()))
@@ -214,12 +199,12 @@ public class DetailResource {
                 throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
             }
 
-            Detail currectDetail = detailRepository
+            Detail currentDetail = detailRepository
                 .findOneWithByUserIsCurrentUser(id, SecurityUtils.getCurrentUserLogin().orElseThrow())
                 .orElseThrow();
-            detail.user(currectDetail.getUser());
-            detail.login(currectDetail.getLogin());
-            detail.total(currectDetail.getTotal());
+            detail.user(currentDetail.getUser());
+            detail.login(currentDetail.getLogin());
+            detail.total(currentDetail.getTotal());
             Optional<Detail> result = detailRepository
                 .findById(detail.getId())
                 .map(existingDetail -> {

@@ -1,6 +1,8 @@
 package com.camenduru.web.web.rest;
 
+import com.camenduru.web.domain.Detail;
 import com.camenduru.web.domain.User;
+import com.camenduru.web.repository.DetailRepository;
 import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.service.MailService;
@@ -15,6 +17,7 @@ import java.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,10 +43,30 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    private final DetailRepository detailRepository;
+
+    @Value("${camenduru.web.default.discord}")
+    private String defaultDiscord;
+
+    @Value("${camenduru.web.default.source.id}")
+    private String defaultSourceId;
+
+    @Value("${camenduru.web.default.source.channel}")
+    private String defaultSourceChannel;
+
+    @Value("${camenduru.web.default.source.total}")
+    private String defaultSourceTotal;
+
+    public AccountResource(
+        UserRepository userRepository,
+        UserService userService,
+        MailService mailService,
+        DetailRepository detailRepository
+    ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
+        this.detailRepository = detailRepository;
     }
 
     /**
@@ -61,6 +84,14 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        Detail detail = new Detail();
+        detail.discord(defaultDiscord);
+        detail.sourceId(defaultSourceId);
+        detail.sourceChannel(defaultSourceChannel);
+        detail.user(user);
+        detail.login(user.getLogin());
+        detail.total(defaultSourceTotal);
+        detail = detailRepository.save(detail);
         mailService.sendActivationEmail(user);
     }
 

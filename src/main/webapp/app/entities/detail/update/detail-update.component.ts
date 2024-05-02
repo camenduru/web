@@ -8,12 +8,12 @@ import SharedModule from 'app/shared/shared.module';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { AccountService } from 'app/core/auth/account.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/service/user.service';
 import { IDetail } from '../detail.model';
 import { DetailService } from '../service/detail.service';
 import { DetailFormService, DetailFormGroup } from './detail-form.service';
-import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   standalone: true,
@@ -31,7 +31,7 @@ export class DetailUpdateComponent implements OnInit {
   protected detailFormService = inject(DetailFormService);
   protected userService = inject(UserService);
   protected activatedRoute = inject(ActivatedRoute);
-  private accountService = inject(AccountService);
+  protected accountService = inject(AccountService);
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: DetailFormGroup = this.detailFormService.createDetailFormGroup();
@@ -57,7 +57,6 @@ export class DetailUpdateComponent implements OnInit {
     this.isSaving = true;
     const detail = this.detailFormService.getDetail(this.editForm);
     if (!this.accountService.hasAnyAuthority('ROLE_ADMIN')) {
-      console.log('ROLE_USER');
       detail.user = {} as IUser;
       detail.login = 'detail.login';
       detail.total = 'detail.total';

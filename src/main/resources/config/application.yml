@@ -188,4 +188,8 @@ jhipster:
 # ===================================================================
 
 camenduru:
-  web.result: ${com_camenduru_web_result}
+  web.default.result: ${com_camenduru_web_default_result}
+  web.default.discord: ${com_camenduru_web_default_discord}
+  web.default.source.id: ${com_camenduru_web_default_source_id}
+  web.default.source.channel: ${com_camenduru_web_default_source_channel}
+  web.default.source.total: ${com_camenduru_web_default_source_total}

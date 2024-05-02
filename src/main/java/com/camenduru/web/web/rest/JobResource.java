@@ -49,7 +49,7 @@ public class JobResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    @Value("${camenduru.web.result}")
+    @Value("${camenduru.web.default.result}")
     private String camenduruWebResult;
 
     private final JobRepository jobRepository;
