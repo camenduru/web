@@ -8,12 +8,14 @@ import FindLanguageFromKeyPipe from './language/find-language-from-key.pipe';
 import TranslateDirective from './language/translate.directive';
 import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
+import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
+import { MyWidgetRegistry } from '../shared/widgets/MyWidgetRegistry';
 
 /**
  * Application wide Module
  */
 @NgModule({
-  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective],
+  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective, SchemaFormModule.forRoot()],
   exports: [
     CommonModule,
     NgbModule,
@@ -23,6 +25,8 @@ import { AlertErrorComponent } from './alert/alert-error.component';
     TranslateModule,
     FindLanguageFromKeyPipe,
     TranslateDirective,
+    SchemaFormModule,
   ],
+  providers: [{ provide: WidgetRegistry, useClass: MyWidgetRegistry }],
 })
 export default class SharedModule {}

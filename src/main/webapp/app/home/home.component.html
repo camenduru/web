@@ -1,56 +1,36 @@
 <div class="row">
   @if (account() !== null) {
-    <div class="d-flex justify-content-center">
-      <div class="col-sm-12 col-md-8 col-lg-6 col-xl-6">
-        <br /><br /><br />
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-          <textarea
-            placeholder='{"prompt": "totoro", "negative_prompt": "blurry", "width": 512, "height": 1024}'
-            type="text"
-            class="form-control me-sm-2"
-            name="command"
-            id="field_command"
-            data-cy="command"
-            formControlName="command"
-            style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555"
-          ></textarea>
-          <br />
-          <button type="submit" id="save-entity" data-cy="entityCreateSaveButton" class="btn btn-secondary float-end">
-            <span *jhiHasAnyAuthority="'ROLE_ADMIN'">⛔ </span>🧿 Enter
-          </button>
-          <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
-            <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
-          </button>
-          <select
-            class="me-2 float-end"
-            style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555; height: 37px"
-            formControlName="type"
-            [(ngModel)]="default_type"
-          >
-            <option *ngFor="let status_item of types">
-              {{ status_item }}
-            </option>
-          </select>
-        </form>
-        <br /><br /><br /><br /><br />
-      </div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      <sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>
+      <form name="editForm" role="form" novalidate [formGroup]="editForm">
+        <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
+        </button>
+        <select
+          class="me-2 float-end"
+          style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555; height: 37px"
+          formControlName="type"
+          [(ngModel)]="default_type"
+        >
+          <option *ngFor="let status_item of types">
+            {{ status_item }}
+          </option>
+        </select>
+      </form>
+      <br /><br /><br />
     </div>
   }
-
-  <div class="col-md-12">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
     <div>
       @if (account() !== null) {
         <div>
           <jhi-alert-error></jhi-alert-error>
-
           <jhi-alert></jhi-alert>
-
           @if (jobs?.length === 0) {
             <div class="alert alert-warning" id="no-result">
               <span jhiTranslate="webApp.job.home.notFound">No Jobs found</span>
             </div>
           }
-
           @if (jobs && jobs.length > 0) {
             <div
               NgxMasonryGrid
@@ -84,12 +64,11 @@
             </div>
           }
           @if (jobs && jobs.length > 0) {
-            <br /><br /><br />
+            <br />
             <div>
               <div class="d-flex justify-content-center">
                 <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
               </div>
-
               <div class="d-flex justify-content-center">
                 <ngb-pagination
                   [collectionSize]="totalItems"
