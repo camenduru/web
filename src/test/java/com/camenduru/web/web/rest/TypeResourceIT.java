@@ -34,6 +34,36 @@ class TypeResourceIT {
     private static final String DEFAULT_AMOUNT = "AAAAAAAAAA";
     private static final String UPDATED_AMOUNT = "BBBBBBBBBB";
 
+    private static final String DEFAULT_SCHEMA = "AAAAAAAAAA";
+    private static final String UPDATED_SCHEMA = "BBBBBBBBBB";
+
+    private static final String DEFAULT_MODEL = "AAAAAAAAAA";
+    private static final String UPDATED_MODEL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_TITLE = "AAAAAAAAAA";
+    private static final String UPDATED_TITLE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_IMAGE = "AAAAAAAAAA";
+    private static final String UPDATED_IMAGE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_README = "AAAAAAAAAA";
+    private static final String UPDATED_README = "BBBBBBBBBB";
+
+    private static final String DEFAULT_WEB = "AAAAAAAAAA";
+    private static final String UPDATED_WEB = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PAPER = "AAAAAAAAAA";
+    private static final String UPDATED_PAPER = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_CODE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_JUPYTER = "AAAAAAAAAA";
+    private static final String UPDATED_JUPYTER = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/types";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -55,7 +85,19 @@ class TypeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Type createEntity() {
-        Type type = new Type().type(DEFAULT_TYPE).amount(DEFAULT_AMOUNT);
+        Type type = new Type()
+            .type(DEFAULT_TYPE)
+            .amount(DEFAULT_AMOUNT)
+            .schema(DEFAULT_SCHEMA)
+            .model(DEFAULT_MODEL)
+            .title(DEFAULT_TITLE)
+            .description(DEFAULT_DESCRIPTION)
+            .image(DEFAULT_IMAGE)
+            .readme(DEFAULT_README)
+            .web(DEFAULT_WEB)
+            .paper(DEFAULT_PAPER)
+            .code(DEFAULT_CODE)
+            .jupyter(DEFAULT_JUPYTER);
         return type;
     }
 
@@ -66,7 +108,19 @@ class TypeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Type createUpdatedEntity() {
-        Type type = new Type().type(UPDATED_TYPE).amount(UPDATED_AMOUNT);
+        Type type = new Type()
+            .type(UPDATED_TYPE)
+            .amount(UPDATED_AMOUNT)
+            .schema(UPDATED_SCHEMA)
+            .model(UPDATED_MODEL)
+            .title(UPDATED_TITLE)
+            .description(UPDATED_DESCRIPTION)
+            .image(UPDATED_IMAGE)
+            .readme(UPDATED_README)
+            .web(UPDATED_WEB)
+            .paper(UPDATED_PAPER)
+            .code(UPDATED_CODE)
+            .jupyter(UPDATED_JUPYTER);
         return type;
     }
 
@@ -142,6 +196,156 @@ class TypeResourceIT {
     }
 
     @Test
+    void checkSchemaIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setSchema(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkModelIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setModel(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkTitleIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setTitle(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkDescriptionIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setDescription(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkImageIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setImage(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkReadmeIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setReadme(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkWebIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setWeb(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkPaperIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setPaper(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkCodeIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setCode(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkJupyterIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setJupyter(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllTypes() throws Exception {
         // Initialize the database
         typeRepository.save(type);
@@ -153,7 +357,17 @@ class TypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(type.getId())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
-            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)));
+            .andExpect(jsonPath("$.[*].amount").value(hasItem(DEFAULT_AMOUNT)))
+            .andExpect(jsonPath("$.[*].schema").value(hasItem(DEFAULT_SCHEMA)))
+            .andExpect(jsonPath("$.[*].model").value(hasItem(DEFAULT_MODEL)))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].image").value(hasItem(DEFAULT_IMAGE)))
+            .andExpect(jsonPath("$.[*].readme").value(hasItem(DEFAULT_README)))
+            .andExpect(jsonPath("$.[*].web").value(hasItem(DEFAULT_WEB)))
+            .andExpect(jsonPath("$.[*].paper").value(hasItem(DEFAULT_PAPER)))
+            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
+            .andExpect(jsonPath("$.[*].jupyter").value(hasItem(DEFAULT_JUPYTER)));
     }
 
     @Test
@@ -168,7 +382,17 @@ class TypeResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(type.getId()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
-            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT));
+            .andExpect(jsonPath("$.amount").value(DEFAULT_AMOUNT))
+            .andExpect(jsonPath("$.schema").value(DEFAULT_SCHEMA))
+            .andExpect(jsonPath("$.model").value(DEFAULT_MODEL))
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.image").value(DEFAULT_IMAGE))
+            .andExpect(jsonPath("$.readme").value(DEFAULT_README))
+            .andExpect(jsonPath("$.web").value(DEFAULT_WEB))
+            .andExpect(jsonPath("$.paper").value(DEFAULT_PAPER))
+            .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
+            .andExpect(jsonPath("$.jupyter").value(DEFAULT_JUPYTER));
     }
 
     @Test
@@ -186,7 +410,19 @@ class TypeResourceIT {
 
         // Update the type
         Type updatedType = typeRepository.findById(type.getId()).orElseThrow();
-        updatedType.type(UPDATED_TYPE).amount(UPDATED_AMOUNT);
+        updatedType
+            .type(UPDATED_TYPE)
+            .amount(UPDATED_AMOUNT)
+            .schema(UPDATED_SCHEMA)
+            .model(UPDATED_MODEL)
+            .title(UPDATED_TITLE)
+            .description(UPDATED_DESCRIPTION)
+            .image(UPDATED_IMAGE)
+            .readme(UPDATED_README)
+            .web(UPDATED_WEB)
+            .paper(UPDATED_PAPER)
+            .code(UPDATED_CODE)
+            .jupyter(UPDATED_JUPYTER);
 
         restTypeMockMvc
             .perform(
@@ -258,7 +494,14 @@ class TypeResourceIT {
         Type partialUpdatedType = new Type();
         partialUpdatedType.setId(type.getId());
 
-        partialUpdatedType.amount(UPDATED_AMOUNT);
+        partialUpdatedType
+            .amount(UPDATED_AMOUNT)
+            .title(UPDATED_TITLE)
+            .image(UPDATED_IMAGE)
+            .readme(UPDATED_README)
+            .paper(UPDATED_PAPER)
+            .code(UPDATED_CODE)
+            .jupyter(UPDATED_JUPYTER);
 
         restTypeMockMvc
             .perform(
@@ -285,7 +528,19 @@ class TypeResourceIT {
         Type partialUpdatedType = new Type();
         partialUpdatedType.setId(type.getId());
 
-        partialUpdatedType.type(UPDATED_TYPE).amount(UPDATED_AMOUNT);
+        partialUpdatedType
+            .type(UPDATED_TYPE)
+            .amount(UPDATED_AMOUNT)
+            .schema(UPDATED_SCHEMA)
+            .model(UPDATED_MODEL)
+            .title(UPDATED_TITLE)
+            .description(UPDATED_DESCRIPTION)
+            .image(UPDATED_IMAGE)
+            .readme(UPDATED_README)
+            .web(UPDATED_WEB)
+            .paper(UPDATED_PAPER)
+            .code(UPDATED_CODE)
+            .jupyter(UPDATED_JUPYTER);
 
         restTypeMockMvc
             .perform(

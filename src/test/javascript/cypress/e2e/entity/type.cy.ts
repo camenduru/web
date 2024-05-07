@@ -15,7 +15,20 @@ describe('Type e2e test', () => {
   const typePageUrlPattern = new RegExp('/type(\\?.*)?$');
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
-  const typeSample = { type: 'agitate on gah', amount: 'ugh' };
+  const typeSample = {
+    type: 'inasmuch displease',
+    amount: 'modulo gadzooks',
+    schema: 'provided supposing after',
+    model: 'woot yuck punctually',
+    title: 'glut',
+    description: 'finally',
+    image: 'scram even',
+    readme: 'beyond',
+    web: 'versus',
+    paper: 'unto goodie',
+    code: 'ack wonderfully shallow',
+    jupyter: 'demonise junk lest',
+  };
 
   let type;
 
@@ -160,11 +173,41 @@ describe('Type e2e test', () => {
     });
 
     it('should create an instance of Type', () => {
-      cy.get(`[data-cy="type"]`).type('against');
-      cy.get(`[data-cy="type"]`).should('have.value', 'against');
+      cy.get(`[data-cy="type"]`).type('alongside keyboard worriedly');
+      cy.get(`[data-cy="type"]`).should('have.value', 'alongside keyboard worriedly');
 
-      cy.get(`[data-cy="amount"]`).type('over oh abnormally');
-      cy.get(`[data-cy="amount"]`).should('have.value', 'over oh abnormally');
+      cy.get(`[data-cy="amount"]`).type('spry disguised');
+      cy.get(`[data-cy="amount"]`).should('have.value', 'spry disguised');
+
+      cy.get(`[data-cy="schema"]`).type('hmph');
+      cy.get(`[data-cy="schema"]`).should('have.value', 'hmph');
+
+      cy.get(`[data-cy="model"]`).type('junior yet landscape');
+      cy.get(`[data-cy="model"]`).should('have.value', 'junior yet landscape');
+
+      cy.get(`[data-cy="title"]`).type('reboot unwelcome on');
+      cy.get(`[data-cy="title"]`).should('have.value', 'reboot unwelcome on');
+
+      cy.get(`[data-cy="description"]`).type('in along');
+      cy.get(`[data-cy="description"]`).should('have.value', 'in along');
+
+      cy.get(`[data-cy="image"]`).type('amid pique wherever');
+      cy.get(`[data-cy="image"]`).should('have.value', 'amid pique wherever');
+
+      cy.get(`[data-cy="readme"]`).type('exceed shore');
+      cy.get(`[data-cy="readme"]`).should('have.value', 'exceed shore');
+
+      cy.get(`[data-cy="web"]`).type('the soggy screen');
+      cy.get(`[data-cy="web"]`).should('have.value', 'the soggy screen');
+
+      cy.get(`[data-cy="paper"]`).type('properly');
+      cy.get(`[data-cy="paper"]`).should('have.value', 'properly');
+
+      cy.get(`[data-cy="code"]`).type('phooey');
+      cy.get(`[data-cy="code"]`).should('have.value', 'phooey');
+
+      cy.get(`[data-cy="jupyter"]`).type('yuck reproachfully emit');
+      cy.get(`[data-cy="jupyter"]`).should('have.value', 'yuck reproachfully emit');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

@@ -19,7 +19,17 @@
       },
       "id": "ID",
       "type": "Type",
-      "amount": "Amount"
+      "amount": "Amount",
+      "schema": "Schema",
+      "model": "Model",
+      "title": "Title",
+      "description": "Description",
+      "image": "Image",
+      "readme": "Readme",
+      "web": "Web",
+      "paper": "Paper",
+      "code": "Code",
+      "jupyter": "Jupyter"
     }
   }
 }

@@ -1,26 +1,66 @@
 import { IType, NewType } from './type.model';
 
 export const sampleWithRequiredData: IType = {
-  id: 'fa7f60c2-56ef-4e59-9449-d79266a7023c',
-  type: 'swindle',
-  amount: 'apprehensive',
+  id: 'efe59449-d792-466a-8702-3c7172185be0',
+  type: 'gosh how',
+  amount: 'submissive',
+  schema: 'brown ultimately supposing',
+  model: 'phooey',
+  title: 'lampoon',
+  description: 'suspiciously',
+  image: 'bony through disarrange',
+  readme: 'fort',
+  web: 'fabric quickly wonder',
+  paper: 'against sweatshirt write',
+  code: 'vent formulate gadzooks',
+  jupyter: 'or',
 };
 
 export const sampleWithPartialData: IType = {
-  id: 'ad815ca1-40cf-4c5f-9cde-8eb56a149b3b',
-  type: 'supposing astride recliner',
-  amount: 'an mesh',
+  id: 'a30b0755-4221-411c-b5a8-839aa627b605',
+  type: 'opposite',
+  amount: 'producer actually herring',
+  schema: 'since',
+  model: 'now shore tugboat',
+  title: 'yowza faraway',
+  description: 'opposite near',
+  image: 'medal gadzooks',
+  readme: 'tiny',
+  web: 'annually fate',
+  paper: 'whoa reincarnate now',
+  code: 'ah',
+  jupyter: 'enable',
 };
 
 export const sampleWithFullData: IType = {
-  id: 'fa13a582-dc0f-44e6-8833-c93b465b3865',
-  type: 'absentmindedly ouch',
-  amount: 'plead boo vice',
+  id: '65408456-4009-487d-9fbf-9ae5c2eced33',
+  type: 'sadly beneath stamp',
+  amount: 'mistake',
+  schema: 'long-term weekend',
+  model: 'mmm messy utensil',
+  title: 'zowie',
+  description: 'gander instead',
+  image: 'afore',
+  readme: 'ouch',
+  web: 'out',
+  paper: 'plus except',
+  code: 'who mercerize surprisingly',
+  jupyter: 'critical likewise',
 };
 
 export const sampleWithNewData: NewType = {
-  type: 'over plantation namecheck',
-  amount: 'mockingly instance',
+  type: 'huzzah',
+  amount: 'dual queasily',
+  schema: 'soundproof that above',
+  model: 'yesterday aggravating',
+  title: 'nervously shampoo reassert',
+  description: 'aw',
+  image: 'rarely drat',
+  readme: 'unselfish rarely woefully',
+  web: 'cathedral less apud',
+  paper: 'er mister warmhearted',
+  code: 'innocently hmph',
+  jupyter: 'whose burn oregano',
   id: null,
 };
 

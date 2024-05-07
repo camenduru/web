@@ -1,4 +1,4 @@
-import { Component, NgZone, inject, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, NgZone, inject, signal, OnInit, OnDestroy, Type } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
@@ -17,7 +17,9 @@ import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'ap
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { IJob } from '../entities/job/job.model';
-import { EntityArrayResponseType, JobService } from '../entities/job/service/job.service';
+import { EntityArrayResponseType as JobEntityArrayResponseType, JobService } from '../entities/job/service/job.service';
+import { IType } from '../entities/type/type.model';
+import { EntityArrayResponseType as TypeEntityArrayResponseType, TypeService } from '../entities/type/service/type.service';
 import { JobFormService, JobFormGroup } from '../entities/job/update/job-form.service';
 import { UserService } from '../entities/user/service/user.service';
 import { JobStatus } from '../entities/enumerations/job-status.model';
@@ -51,6 +53,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   isSaving = false;
   subscription: Subscription | null = null;
   account = signal<Account | null>(null);
+  types?: IType[];
   jobs?: IJob[];
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
@@ -60,9 +63,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   mySchema: ISchema = {};
   myModel: any = {};
-
-  default_type: any = 'sdxl-turbo';
-  types: any = ['sdxl-turbo', 'sdxl'];
+  default_type: any = {};
 
   horizontal = false;
   percentage = false;
@@ -133,6 +134,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   protected jobFormService = inject(JobFormService);
   protected jobService = inject(JobService);
+  protected typeService = inject(TypeService);
   protected sortService = inject(SortService);
   protected activatedRoute = inject(ActivatedRoute);
   protected ngZone = inject(NgZone);
@@ -145,14 +147,13 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   changeSchema(event: Event): void {
     const selectedValue = (event.target as HTMLInputElement).value;
-    const schemaUrl: string = '/content/models/' + selectedValue + '/schema.json';
-    this.http.get(schemaUrl).subscribe(response => {
-      this.mySchema = response;
-    });
-    const modelUrl: string = '/content/models/' + selectedValue + '/model.json';
-    this.http.get(modelUrl).subscribe(response => {
-      this.myModel = response;
-    });
+    if (this.types && this.types.length > 0) {
+      var type = this.types.find(item => item.title === selectedValue);
+      const jsonSchema = type?.schema ? JSON.parse(type?.schema) : null;
+      this.mySchema = jsonSchema as unknown as ISchema;
+      const jsonModel = type?.model ? JSON.parse(type?.model) : null;
+      this.myModel = jsonModel;
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
@@ -171,13 +172,10 @@ export default class HomeComponent implements OnInit, OnDestroy {
         tap(() => this.load()),
       )
       .subscribe();
-    const schemaUrl: string = '/content/models/' + this.default_type + '/schema.json';
-    this.http.get(schemaUrl).subscribe(response => {
-      this.mySchema = response;
-    });
-    const modelUrl: string = '/content/models/' + this.default_type + '/model.json';
-    this.http.get(modelUrl).subscribe(response => {
-      this.myModel = response;
+    this.queryTypeBackend().subscribe({
+      next: (res: TypeEntityArrayResponseType) => {
+        this.onTypeResponseSuccess(res);
+      },
     });
   }
 
@@ -191,9 +189,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
   }
 
   load(): void {
-    this.queryBackend().subscribe({
-      next: (res: EntityArrayResponseType) => {
-        this.onResponseSuccess(res);
+    this.queryJobBackend().subscribe({
+      next: (res: JobEntityArrayResponseType) => {
+        this.onJobResponseSuccess(res);
       },
     });
   }
@@ -212,21 +210,21 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.sortState.set(this.sortService.parseSortParam(params.get(SORT) ?? data[DEFAULT_SORT_DATA]));
   }
 
-  protected onResponseSuccess(response: EntityArrayResponseType): void {
-    this.fillComponentAttributesFromResponseHeader(response.headers);
-    const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
+  protected onJobResponseSuccess(response: JobEntityArrayResponseType): void {
+    this.fillComponentAttributesFromJobResponseHeader(response.headers);
+    const dataFromBody = this.fillComponentAttributesFromJobResponseBody(response.body);
     this.jobs = dataFromBody;
   }
 
-  protected fillComponentAttributesFromResponseBody(data: IJob[] | null): IJob[] {
+  protected fillComponentAttributesFromJobResponseBody(data: IJob[] | null): IJob[] {
     return data ?? [];
   }
 
-  protected fillComponentAttributesFromResponseHeader(headers: HttpHeaders): void {
+  protected fillComponentAttributesFromJobResponseHeader(headers: HttpHeaders): void {
     this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
   }
 
-  protected queryBackend(): Observable<EntityArrayResponseType> {
+  protected queryJobBackend(): Observable<JobEntityArrayResponseType> {
     const { page } = this;
 
     this.isLoading = true;
@@ -238,6 +236,39 @@ export default class HomeComponent implements OnInit, OnDestroy {
       sort: this.sortService.buildSortParam(this.sortState()),
     };
     return this.jobService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+  }
+
+  protected onTypeResponseSuccess(response: TypeEntityArrayResponseType): void {
+    this.fillComponentAttributesFromTypeResponseHeader(response.headers);
+    const dataFromBody = this.fillComponentAttributesFromTypeResponseBody(response.body);
+    this.types = dataFromBody;
+    this.default_type = this.types[0].type;
+    const jsonSchema = this.types[0].schema ? JSON.parse(this.types[0].schema) : null;
+    this.mySchema = jsonSchema as unknown as ISchema;
+    const jsonModel = this.types[0].model ? JSON.parse(this.types[0].model) : null;
+    this.myModel = jsonModel;
+  }
+
+  protected fillComponentAttributesFromTypeResponseBody(data: IJob[] | null): IJob[] {
+    return data ?? [];
+  }
+
+  protected fillComponentAttributesFromTypeResponseHeader(headers: HttpHeaders): void {
+    this.totalItems = Number(headers.get(TOTAL_COUNT_RESPONSE_HEADER));
+  }
+
+  protected queryTypeBackend(): Observable<TypeEntityArrayResponseType> {
+    const { page } = this;
+
+    this.isLoading = true;
+    const pageToLoad: number = page;
+    const queryObject: any = {
+      page: pageToLoad - 1,
+      size: this.itemsPerPage,
+      eagerload: true,
+      sort: this.sortService.buildSortParam(this.sortState()),
+    };
+    return this.typeService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
   protected handleNavigation(page: number, sortState: SortState): void {

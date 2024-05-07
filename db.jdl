@@ -29,6 +29,16 @@ entity Detail {
 entity Type {
     type String required
     amount String required
+    schema String required
+    model String required
+    title String required
+    description String required
+    image String required
+    readme String required
+    web String required
+    paper String required
+    code String required
+    jupyter String required
 }
 
 entity Job {

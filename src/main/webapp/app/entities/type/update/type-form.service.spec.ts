@@ -22,6 +22,16 @@ describe('Type Form Service', () => {
             id: expect.any(Object),
             type: expect.any(Object),
             amount: expect.any(Object),
+            schema: expect.any(Object),
+            model: expect.any(Object),
+            title: expect.any(Object),
+            description: expect.any(Object),
+            image: expect.any(Object),
+            readme: expect.any(Object),
+            web: expect.any(Object),
+            paper: expect.any(Object),
+            code: expect.any(Object),
+            jupyter: expect.any(Object),
           }),
         );
       });
@@ -34,6 +44,16 @@ describe('Type Form Service', () => {
             id: expect.any(Object),
             type: expect.any(Object),
             amount: expect.any(Object),
+            schema: expect.any(Object),
+            model: expect.any(Object),
+            title: expect.any(Object),
+            description: expect.any(Object),
+            image: expect.any(Object),
+            readme: expect.any(Object),
+            web: expect.any(Object),
+            paper: expect.any(Object),
+            code: expect.any(Object),
+            jupyter: expect.any(Object),
           }),
         );
       });

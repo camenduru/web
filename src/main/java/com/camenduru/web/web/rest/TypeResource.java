@@ -132,6 +132,36 @@ public class TypeResource {
                 if (type.getAmount() != null) {
                     existingType.setAmount(type.getAmount());
                 }
+                if (type.getSchema() != null) {
+                    existingType.setSchema(type.getSchema());
+                }
+                if (type.getModel() != null) {
+                    existingType.setModel(type.getModel());
+                }
+                if (type.getTitle() != null) {
+                    existingType.setTitle(type.getTitle());
+                }
+                if (type.getDescription() != null) {
+                    existingType.setDescription(type.getDescription());
+                }
+                if (type.getImage() != null) {
+                    existingType.setImage(type.getImage());
+                }
+                if (type.getReadme() != null) {
+                    existingType.setReadme(type.getReadme());
+                }
+                if (type.getWeb() != null) {
+                    existingType.setWeb(type.getWeb());
+                }
+                if (type.getPaper() != null) {
+                    existingType.setPaper(type.getPaper());
+                }
+                if (type.getCode() != null) {
+                    existingType.setCode(type.getCode());
+                }
+                if (type.getJupyter() != null) {
+                    existingType.setJupyter(type.getJupyter());
+                }
 
                 return existingType;
             })

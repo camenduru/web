@@ -13,8 +13,8 @@
           formControlName="type"
           [(ngModel)]="default_type"
         >
-          <option *ngFor="let status_item of types">
-            {{ status_item }}
+          <option *ngFor="let type of types">
+            {{ type.title }}
           </option>
         </select>
       </form>
