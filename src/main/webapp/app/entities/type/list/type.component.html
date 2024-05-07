@@ -36,9 +36,9 @@
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
           <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
-            <th scope="col" jhiSortBy="type">
+            <th scope="col" jhiSortBy="title">
               <div class="d-flex">
-                <span jhiTranslate="webApp.type.type">Type</span>
+                <span jhiTranslate="webApp.type.title">Title</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
@@ -50,14 +50,14 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="isDefault">
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="isDefault">
               <div class="d-flex">
                 <span jhiTranslate="webApp.type.isDefault">Is Default</span>
 
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="isActive">
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="isActive">
               <div class="d-flex">
                 <span jhiTranslate="webApp.type.isActive">Is Active</span>
 
@@ -70,10 +70,10 @@
         <tbody>
           @for (type of types; track trackId) {
             <tr data-cy="entityTable">
-              <td>{{ type.type }}</td>
+              <td>{{ type.title }}</td>
               <td>{{ type.amount }}</td>
-              <td>{{ type.isDefault }}</td>
-              <td>{{ type.isActive }}</td>
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isDefault }}</td>
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isActive }}</td>
               <td class="text-end">
                 <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">
                   <a [routerLink]="['/type', type.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
