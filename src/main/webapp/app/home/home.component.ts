@@ -106,6 +106,58 @@ export default class HomeComponent implements OnInit, OnDestroy {
   useFrameFill = false;
   rectSize = 0;
 
+  mySchema: ISchema = {
+    properties: {
+      prompt: {
+        type: 'string',
+        description: 'prompt',
+        widget: 'textarea',
+      },
+      negative_prompt: {
+        type: 'string',
+        description: 'negative_prompt',
+        widget: 'textarea',
+      },
+      width: {
+        type: 'integer',
+        description: 'width',
+      },
+      height: {
+        type: 'integer',
+        description: 'height',
+      },
+    },
+    buttons: [
+      {
+        id: 'enter',
+        label: '🧿 Enter',
+      },
+    ],
+  };
+
+  myModel = { prompt: 'totoro', negative_prompt: 'blurry', width: 512, height: 512 };
+
+  myActions = {
+    enter: (property: any) => {
+      this.isSaving = true;
+      const job = this.jobFormService.getJob(this.editForm);
+      job.command = JSON.stringify(property.value);
+      job.amount = 'job.amount';
+      job.sourceChannel = 'job.sourceChannel';
+      job.sourceId = 'job.sourceId';
+      job.date = dayjs();
+      job.status = JobStatus.WAITING;
+      job.result = 'job.result';
+      job.source = JobSource.WEB;
+      job.login = 'job.login';
+      if (job.id !== null) {
+        this.subscribeToSaveResponse(this.jobService.update(job));
+      } else {
+        this.subscribeToSaveResponse(this.jobService.create(job));
+      }
+    },
+  };
+
   protected jobFormService = inject(JobFormService);
   protected jobService = inject(JobService);
   protected sortService = inject(SortService);
@@ -245,56 +297,4 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected onSaveFinalize(): void {
     this.isSaving = false;
   }
-
-  mySchema: ISchema = {
-    properties: {
-      prompt: {
-        type: 'string',
-        description: 'prompt',
-        widget: 'textarea',
-      },
-      negative_prompt: {
-        type: 'string',
-        description: 'negative_prompt',
-        widget: 'textarea',
-      },
-      width: {
-        type: 'integer',
-        description: 'width',
-      },
-      height: {
-        type: 'integer',
-        description: 'height',
-      },
-    },
-    buttons: [
-      {
-        id: 'enter',
-        label: '🧿 Enter',
-      },
-    ],
-  };
-
-  myModel = { prompt: 'totoro', negative_prompt: 'blurry', width: 512, height: 512 };
-
-  myActions = {
-    enter: (property: any) => {
-      this.isSaving = true;
-      const job = this.jobFormService.getJob(this.editForm);
-      job.command = JSON.stringify(property.value);
-      job.amount = 'job.amount';
-      job.sourceChannel = 'job.sourceChannel';
-      job.sourceId = 'job.sourceId';
-      job.date = dayjs();
-      job.status = JobStatus.WAITING;
-      job.result = 'job.result';
-      job.source = JobSource.WEB;
-      job.login = 'job.login';
-      if (job.id !== null) {
-        this.subscribeToSaveResponse(this.jobService.update(job));
-      } else {
-        this.subscribeToSaveResponse(this.jobService.create(job));
-      }
-    },
-  };
 }

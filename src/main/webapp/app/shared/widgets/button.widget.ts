@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Component } from '@angular/core';
 
 @Component({
