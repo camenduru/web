@@ -1,12 +1,13 @@
 <div class="row">
   @if (account() !== null) {
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-      <sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>
+      <sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"> </sf-form>
       <form name="editForm" role="form" novalidate [formGroup]="editForm">
         <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
           <fa-icon icon="sync" [spin]="isLoading"></fa-icon><span *jhiHasAnyAuthority="'ROLE_ADMIN'">⛔</span> Refresh
         </button>
         <select
+          (change)="changeSchema($event)"
           class="me-2 float-end"
           style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555; height: 37px"
           formControlName="type"

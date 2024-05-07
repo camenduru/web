@@ -1,5 +1,5 @@
 import { Component, NgZone, inject, signal, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
 import { Subject } from 'rxjs';
@@ -57,6 +57,10 @@ export default class HomeComponent implements OnInit, OnDestroy {
   page = 1;
   isLoading = false;
   sortState = sortStateSignal({});
+
+  mySchema: ISchema = {};
+  myModel: any = {};
+
   default_type: any = 'sdxl-turbo';
   types: any = ['sdxl-turbo', 'sdxl'];
 
@@ -106,37 +110,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
   useFrameFill = false;
   rectSize = 0;
 
-  mySchema: ISchema = {
-    properties: {
-      prompt: {
-        type: 'string',
-        description: 'prompt',
-        widget: 'textarea',
-      },
-      negative_prompt: {
-        type: 'string',
-        description: 'negative_prompt',
-        widget: 'textarea',
-      },
-      width: {
-        type: 'integer',
-        description: 'width',
-      },
-      height: {
-        type: 'integer',
-        description: 'height',
-      },
-    },
-    buttons: [
-      {
-        id: 'enter',
-        label: '🧿 Enter',
-      },
-    ],
-  };
-
-  myModel = { prompt: 'totoro', negative_prompt: 'blurry', width: 512, height: 512 };
-
   myActions = {
     enter: (property: any) => {
       this.isSaving = true;
@@ -169,6 +142,8 @@ export default class HomeComponent implements OnInit, OnDestroy {
   private accountService = inject(AccountService);
   private router = inject(Router);
 
+  public constructor(private http: HttpClient) {}
+
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
 
@@ -185,6 +160,14 @@ export default class HomeComponent implements OnInit, OnDestroy {
         tap(() => this.load()),
       )
       .subscribe();
+    const schemaUrl: string = 'https://raw.githubusercontent.com/camenduru/sdxl-camenduru/main/schema.json';
+    this.http.get(schemaUrl).subscribe(response => {
+      this.mySchema = response;
+    });
+    const modelUrl: string = 'https://raw.githubusercontent.com/camenduru/sdxl-camenduru/main/model.json';
+    this.http.get(modelUrl).subscribe(response => {
+      this.myModel = response;
+    });
   }
 
   login(): void {
@@ -278,5 +261,17 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   protected onSaveFinalize(): void {
     this.isSaving = false;
+  }
+
+  changeSchema(event: Event) {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    const schemaUrl: string = 'https://raw.githubusercontent.com/camenduru/' + selectedValue + '-camenduru/main/schema.json';
+    this.http.get(schemaUrl).subscribe(response => {
+      this.mySchema = response;
+    });
+    const modelUrl: string = 'https://raw.githubusercontent.com/camenduru/' + selectedValue + '-camenduru/main/model.json';
+    this.http.get(modelUrl).subscribe(response => {
+      this.myModel = response;
+    });
   }
 }
