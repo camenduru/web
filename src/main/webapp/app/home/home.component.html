@@ -4,7 +4,7 @@
       <sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>
       <form name="editForm" role="form" novalidate [formGroup]="editForm">
         <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
-          <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon><span *jhiHasAnyAuthority="'ROLE_ADMIN'">⛔</span> Refresh
         </button>
         <select
           class="me-2 float-end"
