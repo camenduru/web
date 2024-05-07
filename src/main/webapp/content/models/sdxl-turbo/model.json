@@ -1,0 +1,6 @@
+{
+  "prompt": "totoro",
+  "negative_prompt": "blurry",
+  "width": 512,
+  "height": 512
+}

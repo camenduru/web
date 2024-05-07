@@ -137,12 +137,23 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected activatedRoute = inject(ActivatedRoute);
   protected ngZone = inject(NgZone);
   protected userService = inject(UserService);
+  protected accountService = inject(AccountService);
+  protected router = inject(Router);
 
   private readonly destroy$ = new Subject<void>();
-  private accountService = inject(AccountService);
-  private router = inject(Router);
-
   public constructor(private http: HttpClient) {}
+
+  changeSchema(event: Event): void {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    const schemaUrl: string = '/content/models/' + selectedValue + '/schema.json';
+    this.http.get(schemaUrl).subscribe(response => {
+      this.mySchema = response;
+    });
+    const modelUrl: string = '/content/models/' + selectedValue + '/model.json';
+    this.http.get(modelUrl).subscribe(response => {
+      this.myModel = response;
+    });
+  }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
@@ -160,11 +171,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
         tap(() => this.load()),
       )
       .subscribe();
-    const schemaUrl: string = 'https://raw.githubusercontent.com/camenduru/sdxl-camenduru/main/schema.json';
+    const schemaUrl: string = '/content/models/' + this.default_type + '/schema.json';
     this.http.get(schemaUrl).subscribe(response => {
       this.mySchema = response;
     });
-    const modelUrl: string = 'https://raw.githubusercontent.com/camenduru/sdxl-camenduru/main/model.json';
+    const modelUrl: string = '/content/models/' + this.default_type + '/model.json';
     this.http.get(modelUrl).subscribe(response => {
       this.myModel = response;
     });
@@ -261,17 +272,5 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   protected onSaveFinalize(): void {
     this.isSaving = false;
-  }
-
-  changeSchema(event: Event) {
-    const selectedValue = (event.target as HTMLInputElement).value;
-    const schemaUrl: string = 'https://raw.githubusercontent.com/camenduru/' + selectedValue + '-camenduru/main/schema.json';
-    this.http.get(schemaUrl).subscribe(response => {
-      this.mySchema = response;
-    });
-    const modelUrl: string = 'https://raw.githubusercontent.com/camenduru/' + selectedValue + '-camenduru/main/model.json';
-    this.http.get(modelUrl).subscribe(response => {
-      this.myModel = response;
-    });
   }
 }

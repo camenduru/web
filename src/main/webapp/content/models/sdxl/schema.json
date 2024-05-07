@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/hyper-schema#",
+  "type": "object",
+  "properties": {
+    "prompt": {
+      "type": "string",
+      "description": "prompt",
+      "widget": "textarea"
+    },
+    "negative_prompt": {
+      "type": "string",
+      "description": "negative_prompt",
+      "widget": "textarea"
+    },
+    "width": {
+      "type": "integer",
+      "description": "width"
+    },
+    "height": {
+      "type": "integer",
+      "description": "height"
+    }
+  },
+  "buttons": [
+    {
+      "id": "enter",
+      "label": "🧿 Enter"
+    }
+  ]
+}
