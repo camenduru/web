@@ -172,24 +172,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
 
-  save(): void {
-    this.isSaving = true;
-    const job = this.jobFormService.getJob(this.editForm);
-    job.amount = 'job.amount';
-    job.sourceChannel = 'job.sourceChannel';
-    job.sourceId = 'job.sourceId';
-    job.date = dayjs();
-    job.status = JobStatus.WAITING;
-    job.result = 'job.result';
-    job.source = JobSource.WEB;
-    job.login = 'job.login';
-    if (job.id !== null) {
-      this.subscribeToSaveResponse(this.jobService.update(job));
-    } else {
-      this.subscribeToSaveResponse(this.jobService.create(job));
-    }
-  }
-
   trackId = (_index: number, item: IJob): string => this.jobService.getJobIdentifier(item);
 
   ngOnInit(): void {

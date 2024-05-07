@@ -1,9 +1,7 @@
 package com.camenduru.web.web.rest;
 
 import com.camenduru.web.domain.Detail;
-import com.camenduru.web.domain.User;
 import com.camenduru.web.repository.DetailRepository;
-import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.AuthoritiesConstants;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.web.rest.errors.BadRequestAlertException;
@@ -43,11 +41,9 @@ public class DetailResource {
     private String applicationName;
 
     private final DetailRepository detailRepository;
-    private final UserRepository userRepository;
 
-    public DetailResource(DetailRepository detailRepository, UserRepository userRepository) {
+    public DetailResource(DetailRepository detailRepository) {
         this.detailRepository = detailRepository;
-        this.userRepository = userRepository;
     }
 
     /**
