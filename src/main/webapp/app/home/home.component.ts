@@ -147,7 +147,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   changeSchema(event: Event): void {
     const selectedValue = (event.target as HTMLInputElement).value;
     if (this.types && this.types.length > 0) {
-      var type = this.types.find(item => item.type === selectedValue);
+      const type = this.types.find(item => item.type === selectedValue);
       const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
       this.mySchema = jsonSchema as unknown as ISchema;
       const jsonModel = type?.model ? JSON.parse(type.model) : null;
@@ -241,7 +241,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.fillComponentAttributesFromTypeResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromTypeResponseBody(response.body);
     this.types = dataFromBody.filter(item => item.isActive === true);
-    var type = this.types.find(item => item.isDefault === true);
+    const type = this.types.find(item => item.isDefault === true);
     const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
     this.mySchema = jsonSchema as unknown as ISchema;
     const jsonModel = type?.model ? JSON.parse(type.model) : null;
