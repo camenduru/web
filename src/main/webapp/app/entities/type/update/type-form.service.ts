@@ -14,7 +14,7 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type TypeFormGroupInput = IType | PartialWithRequiredKeyOf<NewType>;
 
-type TypeFormDefaults = Pick<NewType, 'id'>;
+type TypeFormDefaults = Pick<NewType, 'id' | 'isDefault' | 'isActive'>;
 
 type TypeFormGroupContent = {
   id: FormControl<IType['id'] | NewType['id']>;
@@ -30,6 +30,8 @@ type TypeFormGroupContent = {
   paper: FormControl<IType['paper']>;
   code: FormControl<IType['code']>;
   jupyter: FormControl<IType['jupyter']>;
+  isDefault: FormControl<IType['isDefault']>;
+  isActive: FormControl<IType['isActive']>;
 };
 
 export type TypeFormGroup = FormGroup<TypeFormGroupContent>;
@@ -85,6 +87,12 @@ export class TypeFormService {
       jupyter: new FormControl(typeRawValue.jupyter, {
         validators: [Validators.required],
       }),
+      isDefault: new FormControl(typeRawValue.isDefault, {
+        validators: [Validators.required],
+      }),
+      isActive: new FormControl(typeRawValue.isActive, {
+        validators: [Validators.required],
+      }),
     });
   }
 
@@ -105,6 +113,8 @@ export class TypeFormService {
   private getFormDefaults(): TypeFormDefaults {
     return {
       id: null,
+      isDefault: false,
+      isActive: false,
     };
   }
 }

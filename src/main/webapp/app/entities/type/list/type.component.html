@@ -50,6 +50,20 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="isDefault">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.type.isDefault">Is Default</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="isActive">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.type.isActive">Is Active</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -58,6 +72,8 @@
             <tr data-cy="entityTable">
               <td>{{ type.type }}</td>
               <td>{{ type.amount }}</td>
+              <td>{{ type.isDefault }}</td>
+              <td>{{ type.isActive }}</td>
               <td class="text-end">
                 <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">
                   <a [routerLink]="['/type', type.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

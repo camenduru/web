@@ -12,6 +12,8 @@ export interface IType {
   paper?: string | null;
   code?: string | null;
   jupyter?: string | null;
+  isDefault?: boolean | null;
+  isActive?: boolean | null;
 }
 
 export type NewType = Omit<IType, 'id'> & { id: null };

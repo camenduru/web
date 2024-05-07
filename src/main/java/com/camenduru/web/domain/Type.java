@@ -66,6 +66,14 @@ public class Type implements Serializable {
     @Field("jupyter")
     private String jupyter;
 
+    @NotNull
+    @Field("is_default")
+    private Boolean isDefault;
+
+    @NotNull
+    @Field("is_active")
+    private Boolean isActive;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getId() {
@@ -237,6 +245,32 @@ public class Type implements Serializable {
         this.jupyter = jupyter;
     }
 
+    public Boolean getIsDefault() {
+        return this.isDefault;
+    }
+
+    public Type isDefault(Boolean isDefault) {
+        this.setIsDefault(isDefault);
+        return this;
+    }
+
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    public Boolean getIsActive() {
+        return this.isActive;
+    }
+
+    public Type isActive(Boolean isActive) {
+        this.setIsActive(isActive);
+        return this;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -273,6 +307,8 @@ public class Type implements Serializable {
             ", paper='" + getPaper() + "'" +
             ", code='" + getCode() + "'" +
             ", jupyter='" + getJupyter() + "'" +
+            ", isDefault='" + getIsDefault() + "'" +
+            ", isActive='" + getIsActive() + "'" +
             "}";
     }
 }

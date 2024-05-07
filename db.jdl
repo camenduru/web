@@ -39,6 +39,8 @@ entity Type {
     paper String required
     code String required
     jupyter String required
+    isDefault Boolean required
+    isActive Boolean required
 }
 
 entity Job {

@@ -162,6 +162,12 @@ public class TypeResource {
                 if (type.getJupyter() != null) {
                     existingType.setJupyter(type.getJupyter());
                 }
+                if (type.getIsDefault() != null) {
+                    existingType.setIsDefault(type.getIsDefault());
+                }
+                if (type.getIsActive() != null) {
+                    existingType.setIsActive(type.getIsActive());
+                }
 
                 return existingType;
             })

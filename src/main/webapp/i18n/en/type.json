@@ -29,7 +29,9 @@
       "web": "Web",
       "paper": "Paper",
       "code": "Code",
-      "jupyter": "Jupyter"
+      "jupyter": "Jupyter",
+      "isDefault": "Is Default",
+      "isActive": "Is Active"
     }
   }
 }

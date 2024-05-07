@@ -63,6 +63,14 @@
           <dd>
             <span>{{ type()!.jupyter }}</span>
           </dd>
+          <dt><span jhiTranslate="webApp.type.isDefault">Is Default</span></dt>
+          <dd>
+            <span>{{ type()!.isDefault }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.type.isActive">Is Active</span></dt>
+          <dd>
+            <span>{{ type()!.isActive }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

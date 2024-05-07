@@ -32,6 +32,8 @@ describe('Type Form Service', () => {
             paper: expect.any(Object),
             code: expect.any(Object),
             jupyter: expect.any(Object),
+            isDefault: expect.any(Object),
+            isActive: expect.any(Object),
           }),
         );
       });
@@ -54,6 +56,8 @@ describe('Type Form Service', () => {
             paper: expect.any(Object),
             code: expect.any(Object),
             jupyter: expect.any(Object),
+            isDefault: expect.any(Object),
+            isActive: expect.any(Object),
           }),
         );
       });

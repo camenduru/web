@@ -64,6 +64,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   mySchema: ISchema = {};
   myModel: any = {};
   default_type: any = {};
+  default_type_title: any = {};
 
   horizontal = false;
   percentage = false;
@@ -124,9 +125,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
       job.result = 'job.result';
       job.source = JobSource.WEB;
       job.login = 'job.login';
-      if (job.id !== null) {
-        this.subscribeToSaveResponse(this.jobService.update(job));
-      } else {
+      if (job.id === null) {
         this.subscribeToSaveResponse(this.jobService.create(job));
       }
     },
@@ -149,9 +148,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
     const selectedValue = (event.target as HTMLInputElement).value;
     if (this.types && this.types.length > 0) {
       var type = this.types.find(item => item.title === selectedValue);
-      const jsonSchema = type?.schema ? JSON.parse(type?.schema) : null;
+      const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
       this.mySchema = jsonSchema as unknown as ISchema;
-      const jsonModel = type?.model ? JSON.parse(type?.model) : null;
+      const jsonModel = type?.model ? JSON.parse(type.model) : null;
       this.myModel = jsonModel;
     }
   }
@@ -241,15 +240,16 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected onTypeResponseSuccess(response: TypeEntityArrayResponseType): void {
     this.fillComponentAttributesFromTypeResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromTypeResponseBody(response.body);
-    this.types = dataFromBody;
-    this.default_type = this.types[0].type;
-    const jsonSchema = this.types[0].schema ? JSON.parse(this.types[0].schema) : null;
+    this.types = dataFromBody.filter(item => item.isActive === true);
+    var type = this.types.find(item => item.isDefault === true);
+    const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
     this.mySchema = jsonSchema as unknown as ISchema;
-    const jsonModel = this.types[0].model ? JSON.parse(this.types[0].model) : null;
+    const jsonModel = type?.model ? JSON.parse(type.model) : null;
     this.myModel = jsonModel;
+    this.default_type_title = type?.title;
   }
 
-  protected fillComponentAttributesFromTypeResponseBody(data: IJob[] | null): IJob[] {
+  protected fillComponentAttributesFromTypeResponseBody(data: IType[] | null): IType[] {
     return data ?? [];
   }
 

@@ -64,6 +64,12 @@ class TypeResourceIT {
     private static final String DEFAULT_JUPYTER = "AAAAAAAAAA";
     private static final String UPDATED_JUPYTER = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_IS_DEFAULT = false;
+    private static final Boolean UPDATED_IS_DEFAULT = true;
+
+    private static final Boolean DEFAULT_IS_ACTIVE = false;
+    private static final Boolean UPDATED_IS_ACTIVE = true;
+
     private static final String ENTITY_API_URL = "/api/types";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -97,7 +103,9 @@ class TypeResourceIT {
             .web(DEFAULT_WEB)
             .paper(DEFAULT_PAPER)
             .code(DEFAULT_CODE)
-            .jupyter(DEFAULT_JUPYTER);
+            .jupyter(DEFAULT_JUPYTER)
+            .isDefault(DEFAULT_IS_DEFAULT)
+            .isActive(DEFAULT_IS_ACTIVE);
         return type;
     }
 
@@ -120,7 +128,9 @@ class TypeResourceIT {
             .web(UPDATED_WEB)
             .paper(UPDATED_PAPER)
             .code(UPDATED_CODE)
-            .jupyter(UPDATED_JUPYTER);
+            .jupyter(UPDATED_JUPYTER)
+            .isDefault(UPDATED_IS_DEFAULT)
+            .isActive(UPDATED_IS_ACTIVE);
         return type;
     }
 
@@ -346,6 +356,36 @@ class TypeResourceIT {
     }
 
     @Test
+    void checkIsDefaultIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setIsDefault(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
+    void checkIsActiveIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setIsActive(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllTypes() throws Exception {
         // Initialize the database
         typeRepository.save(type);
@@ -367,7 +407,9 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.[*].web").value(hasItem(DEFAULT_WEB)))
             .andExpect(jsonPath("$.[*].paper").value(hasItem(DEFAULT_PAPER)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
-            .andExpect(jsonPath("$.[*].jupyter").value(hasItem(DEFAULT_JUPYTER)));
+            .andExpect(jsonPath("$.[*].jupyter").value(hasItem(DEFAULT_JUPYTER)))
+            .andExpect(jsonPath("$.[*].isDefault").value(hasItem(DEFAULT_IS_DEFAULT.booleanValue())))
+            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
     }
 
     @Test
@@ -392,7 +434,9 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.web").value(DEFAULT_WEB))
             .andExpect(jsonPath("$.paper").value(DEFAULT_PAPER))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
-            .andExpect(jsonPath("$.jupyter").value(DEFAULT_JUPYTER));
+            .andExpect(jsonPath("$.jupyter").value(DEFAULT_JUPYTER))
+            .andExpect(jsonPath("$.isDefault").value(DEFAULT_IS_DEFAULT.booleanValue()))
+            .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()));
     }
 
     @Test
@@ -422,7 +466,9 @@ class TypeResourceIT {
             .web(UPDATED_WEB)
             .paper(UPDATED_PAPER)
             .code(UPDATED_CODE)
-            .jupyter(UPDATED_JUPYTER);
+            .jupyter(UPDATED_JUPYTER)
+            .isDefault(UPDATED_IS_DEFAULT)
+            .isActive(UPDATED_IS_ACTIVE);
 
         restTypeMockMvc
             .perform(
@@ -540,7 +586,9 @@ class TypeResourceIT {
             .web(UPDATED_WEB)
             .paper(UPDATED_PAPER)
             .code(UPDATED_CODE)
-            .jupyter(UPDATED_JUPYTER);
+            .jupyter(UPDATED_JUPYTER)
+            .isDefault(UPDATED_IS_DEFAULT)
+            .isActive(UPDATED_IS_ACTIVE);
 
         restTypeMockMvc
             .perform(

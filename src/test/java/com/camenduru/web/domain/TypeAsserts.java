@@ -58,7 +58,9 @@ public class TypeAsserts {
             .satisfies(e -> assertThat(e.getWeb()).as("check web").isEqualTo(actual.getWeb()))
             .satisfies(e -> assertThat(e.getPaper()).as("check paper").isEqualTo(actual.getPaper()))
             .satisfies(e -> assertThat(e.getCode()).as("check code").isEqualTo(actual.getCode()))
-            .satisfies(e -> assertThat(e.getJupyter()).as("check jupyter").isEqualTo(actual.getJupyter()));
+            .satisfies(e -> assertThat(e.getJupyter()).as("check jupyter").isEqualTo(actual.getJupyter()))
+            .satisfies(e -> assertThat(e.getIsDefault()).as("check isDefault").isEqualTo(actual.getIsDefault()))
+            .satisfies(e -> assertThat(e.getIsActive()).as("check isActive").isEqualTo(actual.getIsActive()));
     }
 
     /**
