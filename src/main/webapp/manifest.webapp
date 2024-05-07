@@ -3,7 +3,7 @@
   "short_name": "Web",
   "icons": [
     {
-      "src": "./content/images/logo.png",
+      "src": "./content/images/logo-jhipster.png",
       "sizes": "256x256",
       "type": "image/png"
     },
