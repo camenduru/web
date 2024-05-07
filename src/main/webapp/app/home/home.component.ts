@@ -64,7 +64,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   mySchema: ISchema = {};
   myModel: any = {};
   default_type: any = {};
-  default_type_title: any = {};
+  default_type_type: any = {};
 
   horizontal = false;
   percentage = false;
@@ -147,7 +147,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   changeSchema(event: Event): void {
     const selectedValue = (event.target as HTMLInputElement).value;
     if (this.types && this.types.length > 0) {
-      var type = this.types.find(item => item.title === selectedValue);
+      var type = this.types.find(item => item.type === selectedValue);
       const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
       this.mySchema = jsonSchema as unknown as ISchema;
       const jsonModel = type?.model ? JSON.parse(type.model) : null;
@@ -246,7 +246,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.mySchema = jsonSchema as unknown as ISchema;
     const jsonModel = type?.model ? JSON.parse(type.model) : null;
     this.myModel = jsonModel;
-    this.default_type_title = type?.title;
+    this.default_type_type = type?.type;
   }
 
   protected fillComponentAttributesFromTypeResponseBody(data: IType[] | null): IType[] {
