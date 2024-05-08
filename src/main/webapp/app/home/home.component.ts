@@ -1,4 +1,4 @@
-import { Component, NgZone, inject, signal, OnInit, OnDestroy, Type } from '@angular/core';
+import { Component, NgZone, inject, signal, OnInit, OnDestroy, Type, ViewChild } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
@@ -25,8 +25,9 @@ import { UserService } from '../entities/user/service/user.service';
 import { JobStatus } from '../entities/enumerations/job-status.model';
 import { JobSource } from '../entities/enumerations/job-source.model';
 import dayjs from 'dayjs/esm';
-import { NgxGridModule, NgxJustifiedGridComponent } from '@egjs/ngx-grid';
+
 import { ISchema } from 'ngx-schema-form';
+import { NgxMasonryGridComponent } from '@egjs/ngx-grid';
 
 @Component({
   standalone: true,
@@ -45,11 +46,11 @@ import { ISchema } from 'ngx-schema-form';
     FormatMediumDatePipe,
     ItemCountComponent,
     HasAnyAuthorityDirective,
-    NgxGridModule,
   ],
   template: '<sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>',
 })
 export default class HomeComponent implements OnInit, OnDestroy {
+  @ViewChild('grid') grid!: NgxMasonryGridComponent;
   isSaving = false;
   subscription: Subscription | null = null;
   account = signal<Account | null>(null);
@@ -205,6 +206,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
         this.onJobResponseSuccess(res);
       },
     });
+    this.grid.syncElements();
   }
 
   navigateToWithComponentValues(event: SortState): void {

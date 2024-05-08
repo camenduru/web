@@ -10,12 +10,13 @@ import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
 import { SchemaFormModule, WidgetRegistry, DefaultWidgetRegistry } from 'ngx-schema-form';
 import { MyWidgetRegistry } from '../shared/widgets/MyWidgetRegistry';
+import { NgxGridModule } from '@egjs/ngx-grid';
 
 /**
  * Application wide Module
  */
 @NgModule({
-  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective, SchemaFormModule.forRoot()],
+  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective, NgxGridModule, SchemaFormModule.forRoot()],
   exports: [
     CommonModule,
     NgbModule,
@@ -26,6 +27,7 @@ import { MyWidgetRegistry } from '../shared/widgets/MyWidgetRegistry';
     FindLanguageFromKeyPipe,
     TranslateDirective,
     SchemaFormModule,
+    NgxGridModule,
   ],
   providers: [{ provide: WidgetRegistry, useClass: MyWidgetRegistry }],
 })
