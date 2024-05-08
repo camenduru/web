@@ -189,6 +189,7 @@ jhipster:
 
 camenduru:
   web.default.result: ${com_camenduru_web_default_result}
+  web.default.result.suffix: ${com_camenduru_web_default_result_suffix}
   web.default.discord: ${com_camenduru_web_default_discord}
   web.default.source.id: ${com_camenduru_web_default_source_id}
   web.default.source.channel: ${com_camenduru_web_default_source_channel}

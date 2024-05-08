@@ -16,6 +16,7 @@ import com.camenduru.web.web.rest.errors.BadRequestAlertException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;
@@ -54,6 +55,9 @@ public class JobResource {
 
     @Value("${camenduru.web.default.result}")
     private String camenduruWebResult;
+
+    @Value("${camenduru.web.default.result.suffix}")
+    private String camenduruWebResultSuffix;
 
     private final JobRepository jobRepository;
     private final DetailRepository detailRepository;
@@ -99,12 +103,18 @@ public class JobResource {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
             Detail detail = detailRepository.findAllByUserIsCurrentUser(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
             Type typeC = typeRepository.findByType(job.getType()).orElseThrow();
+            int width = 512;
+            int height = 512;
             String jsonString = job.getCommand();
-            JsonElement jsonElement = JsonParser.parseString(jsonString);
-            JsonObject jsonObject = jsonElement.getAsJsonObject();
-            int width = jsonObject.get("width").getAsInt();
-            int height = jsonObject.get("height").getAsInt();
-            job.setResult(camenduruWebResult + "/" + width + "x" + height);
+            try {
+                JsonElement jsonElement = JsonParser.parseString(jsonString);
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                width = jsonObject.get("width").getAsInt();
+                height = jsonObject.get("height").getAsInt();
+            } catch (JsonSyntaxException e) {
+                System.err.println("Invalid JSON syntax: " + e.getMessage());
+            }
+            job.setResult(camenduruWebResult + width + "x" + height + camenduruWebResultSuffix);
             job.setType(typeC.getType());
             job.setAmount(typeC.getAmount());
             job.setSourceChannel(detail.getSourceChannel());
