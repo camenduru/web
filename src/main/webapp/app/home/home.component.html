@@ -1,15 +1,10 @@
 <div class="row">
   @if (account() !== null) {
     <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
-      <sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>
-      <form name="editForm" role="form" novalidate [formGroup]="editForm">
-        <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
-          <fa-icon icon="sync" [spin]="isLoading"></fa-icon><span *jhiHasAnyAuthority="'ROLE_ADMIN'">⛔</span> Refresh
-        </button>
+      <form class="d-flex" name="editForm" role="form" novalidate [formGroup]="editForm">
         <select
           (change)="changeSchema($event)"
-          class="me-2 float-end"
-          style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555; height: 37px"
+          style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555; height: 37px; width: 2000px"
           formControlName="type"
           [(ngModel)]="default_type_type"
         >
@@ -17,6 +12,14 @@
             {{ type.title }}
           </option>
         </select>
+      </form>
+      <br />
+      <sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>
+      <form name="editForm" role="form" novalidate [formGroup]="editForm">
+        <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
+          <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
+        </button>
+        <span class="btn btn-secondary me-2 float-end" *jhiHasAnyAuthority="'ROLE_ADMIN'">⛔</span>
       </form>
       <br /><br /><br />
     </div>
