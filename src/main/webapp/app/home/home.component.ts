@@ -170,6 +170,13 @@ export default class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  public divRemove(): void {
+    const divRemove = document.getElementById('divRemove');
+    if (divRemove) {
+      divRemove.remove();
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/member-ordering
   editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
 
