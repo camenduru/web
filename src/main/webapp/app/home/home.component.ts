@@ -1,7 +1,7 @@
-import { Component, NgZone, inject, signal, OnInit, OnDestroy, Type, ViewChild } from '@angular/core';
+import { Component, NgZone, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
+import { combineLatest, Observable, Subscription, tap } from 'rxjs';
 import { Subject } from 'rxjs';
 import { takeUntil, finalize } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
-import { SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
+import { SORT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { IJob } from '../entities/job/job.model';
 import { EntityArrayResponseType as JobEntityArrayResponseType, JobService } from '../entities/job/service/job.service';
 import { IType } from '../entities/type/type.model';
@@ -24,10 +24,8 @@ import { JobFormService, JobFormGroup } from '../entities/job/update/job-form.se
 import { UserService } from '../entities/user/service/user.service';
 import { JobStatus } from '../entities/enumerations/job-status.model';
 import { JobSource } from '../entities/enumerations/job-source.model';
-import dayjs from 'dayjs/esm';
-
 import { ISchema } from 'ngx-schema-form';
-import { NgxMasonryGridComponent } from '@egjs/ngx-grid';
+import dayjs from 'dayjs/esm';
 
 @Component({
   standalone: true,
@@ -50,7 +48,6 @@ import { NgxMasonryGridComponent } from '@egjs/ngx-grid';
   template: '<sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>',
 })
 export default class HomeComponent implements OnInit, OnDestroy {
-  @ViewChild('grid') grid?: NgxMasonryGridComponent;
   isSaving = false;
   subscription: Subscription | null = null;
   account = signal<Account | null>(null);
@@ -206,10 +203,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
         this.onJobResponseSuccess(res);
       },
     });
-    if (this.grid) {
-      const items = this.grid.getItems();
-      this.grid.updateItems(items);
-    }
   }
 
   navigateToWithComponentValues(event: SortState): void {
