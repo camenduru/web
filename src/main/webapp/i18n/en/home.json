@@ -1,19 +1,19 @@
 {
   "home": {
-    "title": "Welcome, Java Hipster!",
+    "title": "Tost AI",
     "subtitle": "This is your homepage",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
-    "question": "If you have any question on JHipster:",
+    "question": "If you have any question on Tost AI:",
     "link": {
-      "homepage": "JHipster homepage",
-      "stackoverflow": "JHipster on Stack Overflow",
-      "bugtracker": "JHipster bug tracker",
-      "chat": "JHipster public chat room",
-      "follow": "follow @jhipster on Twitter"
+      "homepage": "Tost AI homepage",
+      "stackoverflow": "Tost AI on Stack Overflow",
+      "bugtracker": "Tost AI bug tracker",
+      "chat": "Tost AI public chat room",
+      "follow": "follow @tost_ai on Twitter"
     },
-    "like": "If you like JHipster, don't forget to give us a star on",
+    "like": "If you like Tost AI, don't forget to give us a star on",
     "github": "GitHub"
   }
 }

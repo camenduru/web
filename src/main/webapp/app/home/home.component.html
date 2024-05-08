@@ -1,6 +1,6 @@
 <div class="row">
   @if (account() !== null) {
-    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
       <sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"> </sf-form>
       <form name="editForm" role="form" novalidate [formGroup]="editForm">
         <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
@@ -21,7 +21,7 @@
       <br /><br /><br />
     </div>
   }
-  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+  <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
     <div>
       @if (account() !== null) {
         <div>
