@@ -97,9 +97,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
   // [columnCalculationThreshold]="columnCalculationThreshold"
   // [maxStretchColumnSize]="maxStretchColumnSize"
 
-  columnRange = [2, Infinity];
+  columnRange = [4, Infinity];
   rowRange = [1, Infinity];
-  sizeRange = [0, 400];
+  sizeRange = [0, Infinity];
   displayedRow = -1;
   isCroppedSize = true;
   // [columnRange]="columnRange"
