@@ -43,27 +43,6 @@ class TypeResourceIT {
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
-    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
-
-    private static final String DEFAULT_IMAGE = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE = "BBBBBBBBBB";
-
-    private static final String DEFAULT_README = "AAAAAAAAAA";
-    private static final String UPDATED_README = "BBBBBBBBBB";
-
-    private static final String DEFAULT_WEB = "AAAAAAAAAA";
-    private static final String UPDATED_WEB = "BBBBBBBBBB";
-
-    private static final String DEFAULT_PAPER = "AAAAAAAAAA";
-    private static final String UPDATED_PAPER = "BBBBBBBBBB";
-
-    private static final String DEFAULT_CODE = "AAAAAAAAAA";
-    private static final String UPDATED_CODE = "BBBBBBBBBB";
-
-    private static final String DEFAULT_JUPYTER = "AAAAAAAAAA";
-    private static final String UPDATED_JUPYTER = "BBBBBBBBBB";
-
     private static final Boolean DEFAULT_IS_DEFAULT = false;
     private static final Boolean UPDATED_IS_DEFAULT = true;
 
@@ -97,13 +76,6 @@ class TypeResourceIT {
             .schema(DEFAULT_SCHEMA)
             .model(DEFAULT_MODEL)
             .title(DEFAULT_TITLE)
-            .description(DEFAULT_DESCRIPTION)
-            .image(DEFAULT_IMAGE)
-            .readme(DEFAULT_README)
-            .web(DEFAULT_WEB)
-            .paper(DEFAULT_PAPER)
-            .code(DEFAULT_CODE)
-            .jupyter(DEFAULT_JUPYTER)
             .isDefault(DEFAULT_IS_DEFAULT)
             .isActive(DEFAULT_IS_ACTIVE);
         return type;
@@ -122,13 +94,6 @@ class TypeResourceIT {
             .schema(UPDATED_SCHEMA)
             .model(UPDATED_MODEL)
             .title(UPDATED_TITLE)
-            .description(UPDATED_DESCRIPTION)
-            .image(UPDATED_IMAGE)
-            .readme(UPDATED_README)
-            .web(UPDATED_WEB)
-            .paper(UPDATED_PAPER)
-            .code(UPDATED_CODE)
-            .jupyter(UPDATED_JUPYTER)
             .isDefault(UPDATED_IS_DEFAULT)
             .isActive(UPDATED_IS_ACTIVE);
         return type;
@@ -251,111 +216,6 @@ class TypeResourceIT {
     }
 
     @Test
-    void checkDescriptionIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        type.setDescription(null);
-
-        // Create the Type, which fails.
-
-        restTypeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    void checkImageIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        type.setImage(null);
-
-        // Create the Type, which fails.
-
-        restTypeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    void checkReadmeIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        type.setReadme(null);
-
-        // Create the Type, which fails.
-
-        restTypeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    void checkWebIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        type.setWeb(null);
-
-        // Create the Type, which fails.
-
-        restTypeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    void checkPaperIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        type.setPaper(null);
-
-        // Create the Type, which fails.
-
-        restTypeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    void checkCodeIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        type.setCode(null);
-
-        // Create the Type, which fails.
-
-        restTypeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
-    void checkJupyterIsRequired() throws Exception {
-        long databaseSizeBeforeTest = getRepositoryCount();
-        // set the field null
-        type.setJupyter(null);
-
-        // Create the Type, which fails.
-
-        restTypeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
-            .andExpect(status().isBadRequest());
-
-        assertSameRepositoryCount(databaseSizeBeforeTest);
-    }
-
-    @Test
     void checkIsDefaultIsRequired() throws Exception {
         long databaseSizeBeforeTest = getRepositoryCount();
         // set the field null
@@ -401,13 +261,6 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.[*].schema").value(hasItem(DEFAULT_SCHEMA)))
             .andExpect(jsonPath("$.[*].model").value(hasItem(DEFAULT_MODEL)))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(DEFAULT_IMAGE)))
-            .andExpect(jsonPath("$.[*].readme").value(hasItem(DEFAULT_README)))
-            .andExpect(jsonPath("$.[*].web").value(hasItem(DEFAULT_WEB)))
-            .andExpect(jsonPath("$.[*].paper").value(hasItem(DEFAULT_PAPER)))
-            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
-            .andExpect(jsonPath("$.[*].jupyter").value(hasItem(DEFAULT_JUPYTER)))
             .andExpect(jsonPath("$.[*].isDefault").value(hasItem(DEFAULT_IS_DEFAULT.booleanValue())))
             .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
     }
@@ -428,13 +281,6 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.schema").value(DEFAULT_SCHEMA))
             .andExpect(jsonPath("$.model").value(DEFAULT_MODEL))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.image").value(DEFAULT_IMAGE))
-            .andExpect(jsonPath("$.readme").value(DEFAULT_README))
-            .andExpect(jsonPath("$.web").value(DEFAULT_WEB))
-            .andExpect(jsonPath("$.paper").value(DEFAULT_PAPER))
-            .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
-            .andExpect(jsonPath("$.jupyter").value(DEFAULT_JUPYTER))
             .andExpect(jsonPath("$.isDefault").value(DEFAULT_IS_DEFAULT.booleanValue()))
             .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()));
     }
@@ -460,13 +306,6 @@ class TypeResourceIT {
             .schema(UPDATED_SCHEMA)
             .model(UPDATED_MODEL)
             .title(UPDATED_TITLE)
-            .description(UPDATED_DESCRIPTION)
-            .image(UPDATED_IMAGE)
-            .readme(UPDATED_README)
-            .web(UPDATED_WEB)
-            .paper(UPDATED_PAPER)
-            .code(UPDATED_CODE)
-            .jupyter(UPDATED_JUPYTER)
             .isDefault(UPDATED_IS_DEFAULT)
             .isActive(UPDATED_IS_ACTIVE);
 
@@ -540,14 +379,7 @@ class TypeResourceIT {
         Type partialUpdatedType = new Type();
         partialUpdatedType.setId(type.getId());
 
-        partialUpdatedType
-            .amount(UPDATED_AMOUNT)
-            .title(UPDATED_TITLE)
-            .image(UPDATED_IMAGE)
-            .readme(UPDATED_README)
-            .paper(UPDATED_PAPER)
-            .code(UPDATED_CODE)
-            .jupyter(UPDATED_JUPYTER);
+        partialUpdatedType.amount(UPDATED_AMOUNT).title(UPDATED_TITLE).isActive(UPDATED_IS_ACTIVE);
 
         restTypeMockMvc
             .perform(
@@ -580,13 +412,6 @@ class TypeResourceIT {
             .schema(UPDATED_SCHEMA)
             .model(UPDATED_MODEL)
             .title(UPDATED_TITLE)
-            .description(UPDATED_DESCRIPTION)
-            .image(UPDATED_IMAGE)
-            .readme(UPDATED_README)
-            .web(UPDATED_WEB)
-            .paper(UPDATED_PAPER)
-            .code(UPDATED_CODE)
-            .jupyter(UPDATED_JUPYTER)
             .isDefault(UPDATED_IS_DEFAULT)
             .isActive(UPDATED_IS_ACTIVE);
 

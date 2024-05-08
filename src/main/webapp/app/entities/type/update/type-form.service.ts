@@ -23,13 +23,6 @@ type TypeFormGroupContent = {
   schema: FormControl<IType['schema']>;
   model: FormControl<IType['model']>;
   title: FormControl<IType['title']>;
-  description: FormControl<IType['description']>;
-  image: FormControl<IType['image']>;
-  readme: FormControl<IType['readme']>;
-  web: FormControl<IType['web']>;
-  paper: FormControl<IType['paper']>;
-  code: FormControl<IType['code']>;
-  jupyter: FormControl<IType['jupyter']>;
   isDefault: FormControl<IType['isDefault']>;
   isActive: FormControl<IType['isActive']>;
 };
@@ -64,27 +57,6 @@ export class TypeFormService {
         validators: [Validators.required],
       }),
       title: new FormControl(typeRawValue.title, {
-        validators: [Validators.required],
-      }),
-      description: new FormControl(typeRawValue.description, {
-        validators: [Validators.required],
-      }),
-      image: new FormControl(typeRawValue.image, {
-        validators: [Validators.required],
-      }),
-      readme: new FormControl(typeRawValue.readme, {
-        validators: [Validators.required],
-      }),
-      web: new FormControl(typeRawValue.web, {
-        validators: [Validators.required],
-      }),
-      paper: new FormControl(typeRawValue.paper, {
-        validators: [Validators.required],
-      }),
-      code: new FormControl(typeRawValue.code, {
-        validators: [Validators.required],
-      }),
-      jupyter: new FormControl(typeRawValue.jupyter, {
         validators: [Validators.required],
       }),
       isDefault: new FormControl(typeRawValue.isDefault, {

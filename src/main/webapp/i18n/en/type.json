@@ -23,13 +23,6 @@
       "schema": "Schema",
       "model": "Model",
       "title": "Title",
-      "description": "Description",
-      "image": "Image",
-      "readme": "Readme",
-      "web": "Web",
-      "paper": "Paper",
-      "code": "Code",
-      "jupyter": "Jupyter",
       "isDefault": "Is Default",
       "isActive": "Is Active"
     }

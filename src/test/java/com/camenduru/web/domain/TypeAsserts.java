@@ -52,13 +52,6 @@ public class TypeAsserts {
             .satisfies(e -> assertThat(e.getSchema()).as("check schema").isEqualTo(actual.getSchema()))
             .satisfies(e -> assertThat(e.getModel()).as("check model").isEqualTo(actual.getModel()))
             .satisfies(e -> assertThat(e.getTitle()).as("check title").isEqualTo(actual.getTitle()))
-            .satisfies(e -> assertThat(e.getDescription()).as("check description").isEqualTo(actual.getDescription()))
-            .satisfies(e -> assertThat(e.getImage()).as("check image").isEqualTo(actual.getImage()))
-            .satisfies(e -> assertThat(e.getReadme()).as("check readme").isEqualTo(actual.getReadme()))
-            .satisfies(e -> assertThat(e.getWeb()).as("check web").isEqualTo(actual.getWeb()))
-            .satisfies(e -> assertThat(e.getPaper()).as("check paper").isEqualTo(actual.getPaper()))
-            .satisfies(e -> assertThat(e.getCode()).as("check code").isEqualTo(actual.getCode()))
-            .satisfies(e -> assertThat(e.getJupyter()).as("check jupyter").isEqualTo(actual.getJupyter()))
             .satisfies(e -> assertThat(e.getIsDefault()).as("check isDefault").isEqualTo(actual.getIsDefault()))
             .satisfies(e -> assertThat(e.getIsActive()).as("check isActive").isEqualTo(actual.getIsActive()));
     }

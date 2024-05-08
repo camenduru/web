@@ -32,13 +32,6 @@ entity Type {
     schema String required
     model String required
     title String required
-    description String required
-    image String required
-    readme String required
-    web String required
-    paper String required
-    code String required
-    jupyter String required
     isDefault Boolean required
     isActive Boolean required
 }

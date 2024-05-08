@@ -16,19 +16,12 @@ describe('Type e2e test', () => {
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const typeSample = {
-    type: 'gosh often',
-    amount: 'hmph whereas',
-    schema: 'outweigh how faithfully',
-    model: 'artery',
-    title: 'harmonious unto',
-    description: 'soap',
-    image: 'medal unless worldly',
-    readme: 'defiantly',
-    web: 'where pasteurise',
-    paper: 'after',
-    code: 'suddenly whoever',
-    jupyter: 'emanate',
-    isDefault: true,
+    type: 'truthfully because',
+    amount: 'successfully hm which',
+    schema: 'meaningfully',
+    model: 'but yuck',
+    title: 'whoa armament',
+    isDefault: false,
     isActive: false,
   };
 
@@ -175,41 +168,20 @@ describe('Type e2e test', () => {
     });
 
     it('should create an instance of Type', () => {
-      cy.get(`[data-cy="type"]`).type('swipe striped');
-      cy.get(`[data-cy="type"]`).should('have.value', 'swipe striped');
+      cy.get(`[data-cy="type"]`).type('but beside');
+      cy.get(`[data-cy="type"]`).should('have.value', 'but beside');
 
-      cy.get(`[data-cy="amount"]`).type('on beyond enable');
-      cy.get(`[data-cy="amount"]`).should('have.value', 'on beyond enable');
+      cy.get(`[data-cy="amount"]`).type('adhere');
+      cy.get(`[data-cy="amount"]`).should('have.value', 'adhere');
 
-      cy.get(`[data-cy="schema"]`).type('poorly');
-      cy.get(`[data-cy="schema"]`).should('have.value', 'poorly');
+      cy.get(`[data-cy="schema"]`).type('passionate where');
+      cy.get(`[data-cy="schema"]`).should('have.value', 'passionate where');
 
-      cy.get(`[data-cy="model"]`).type('pique');
-      cy.get(`[data-cy="model"]`).should('have.value', 'pique');
+      cy.get(`[data-cy="model"]`).type('gadzooks mmm maximize');
+      cy.get(`[data-cy="model"]`).should('have.value', 'gadzooks mmm maximize');
 
-      cy.get(`[data-cy="title"]`).type('meanwhile exceed shore');
-      cy.get(`[data-cy="title"]`).should('have.value', 'meanwhile exceed shore');
-
-      cy.get(`[data-cy="description"]`).type('the soggy screen');
-      cy.get(`[data-cy="description"]`).should('have.value', 'the soggy screen');
-
-      cy.get(`[data-cy="image"]`).type('properly');
-      cy.get(`[data-cy="image"]`).should('have.value', 'properly');
-
-      cy.get(`[data-cy="readme"]`).type('phooey');
-      cy.get(`[data-cy="readme"]`).should('have.value', 'phooey');
-
-      cy.get(`[data-cy="web"]`).type('yuck reproachfully emit');
-      cy.get(`[data-cy="web"]`).should('have.value', 'yuck reproachfully emit');
-
-      cy.get(`[data-cy="paper"]`).type('inasmuch displease');
-      cy.get(`[data-cy="paper"]`).should('have.value', 'inasmuch displease');
-
-      cy.get(`[data-cy="code"]`).type('modulo gadzooks');
-      cy.get(`[data-cy="code"]`).should('have.value', 'modulo gadzooks');
-
-      cy.get(`[data-cy="jupyter"]`).type('provided supposing after');
-      cy.get(`[data-cy="jupyter"]`).should('have.value', 'provided supposing after');
+      cy.get(`[data-cy="title"]`).type('drake gosh');
+      cy.get(`[data-cy="title"]`).should('have.value', 'drake gosh');
 
       cy.get(`[data-cy="isDefault"]`).should('not.be.checked');
       cy.get(`[data-cy="isDefault"]`).click();
