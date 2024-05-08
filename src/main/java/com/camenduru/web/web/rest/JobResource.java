@@ -108,9 +108,11 @@ public class JobResource {
             String jsonString = job.getCommand();
             try {
                 JsonElement jsonElement = JsonParser.parseString(jsonString);
-                JsonObject jsonObject = jsonElement.getAsJsonObject();
-                width = jsonObject.get("width").getAsInt();
-                height = jsonObject.get("height").getAsInt();
+                if (jsonElement.isJsonObject()) {
+                    JsonObject jsonObject = jsonElement.getAsJsonObject();
+                    width = jsonObject.get("width").getAsInt();
+                    height = jsonObject.get("height").getAsInt();
+                }
             } catch (JsonSyntaxException e) {
                 System.err.println("Invalid JSON syntax: " + e.getMessage());
             }
