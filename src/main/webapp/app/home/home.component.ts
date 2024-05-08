@@ -92,12 +92,23 @@ export default class HomeComponent implements OnInit, OnDestroy {
   contentAlign = 'masonry' as const;
   columnCalculationThreshold = 1;
   maxStretchColumnSize = Infinity;
+  // [column]="column"
+  // [columnSize]="columnSize"
+  // [columnSizeRatio]="columnSizeRatio"
+  // [contentAlign]="contentAlign"
+  // [columnCalculationThreshold]="columnCalculationThreshold"
+  // [maxStretchColumnSize]="maxStretchColumnSize"
 
-  columnRange = [1, 4];
+  columnRange = [2, 4];
   rowRange = [1, Infinity];
-  sizeRange = [0, Infinity];
+  sizeRange = [0, 400];
   displayedRow = -1;
-  isCroppedSize = false;
+  isCroppedSize = true;
+  // [columnRange]="columnRange"
+  // [rowRange]="rowRange"
+  // [sizeRange]="sizeRange"
+  // [displayedRow]="displayedRow"
+  // [isCroppedSize]="isCroppedSize"
 
   aspectRatio = 1;
   sizeWeight = 1;
