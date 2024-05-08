@@ -129,10 +129,10 @@
 }
 .app-loading .lds-pacman > div:nth-child(1) div {
   position: absolute;
-  top: 97px;
+  top: 90px;
   left: -8px;
-  width: 24px;
-  height: 10px;
+  width: 21px;
+  height: 20px;
   background-image: url('/content/images/logo-jhipster.png');
   background-size: contain;
   -webkit-animation: lds-pacman-3 1s linear infinite;
