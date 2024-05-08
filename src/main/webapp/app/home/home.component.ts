@@ -50,7 +50,7 @@ import { NgxMasonryGridComponent } from '@egjs/ngx-grid';
   template: '<sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>',
 })
 export default class HomeComponent implements OnInit, OnDestroy {
-  @ViewChild('grid') grid!: NgxMasonryGridComponent;
+  @ViewChild('grid') grid?: NgxMasonryGridComponent;
   isSaving = false;
   subscription: Subscription | null = null;
   account = signal<Account | null>(null);
@@ -206,7 +206,10 @@ export default class HomeComponent implements OnInit, OnDestroy {
         this.onJobResponseSuccess(res);
       },
     });
-    this.grid.syncElements();
+    if (this.grid) {
+      const items = this.grid.getItems();
+      this.grid.updateItems(items);
+    }
   }
 
   navigateToWithComponentValues(event: SortState): void {

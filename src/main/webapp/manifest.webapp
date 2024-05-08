@@ -4,9 +4,9 @@
   "icons": [
     {
       "src": "./content/images/logo-jhipster.png",
-      "sizes": "256x256",
+      "sizes": "128x128",
       "type": "image/png"
-    },
+    }
   ],
   "theme_color": "#000000",
   "background_color": "#e0e0e0",
