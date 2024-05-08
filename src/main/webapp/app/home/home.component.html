@@ -26,7 +26,6 @@
       @if (account() !== null) {
         <div>
           <jhi-alert-error></jhi-alert-error>
-          <jhi-alert></jhi-alert>
           @if (jobs?.length === 0) {
             <div class="alert alert-warning" id="no-result">
               <span jhiTranslate="webApp.job.home.notFound">No Jobs found</span>
