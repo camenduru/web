@@ -153,7 +153,13 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected router = inject(Router);
 
   private readonly destroy$ = new Subject<void>();
-  public constructor(private http: HttpClient) {}
+  public constructor(private http: HttpClient) {
+    this.queryTypeBackend().subscribe({
+      next: (res: TypeEntityArrayResponseType) => {
+        this.onTypeResponseSuccess(res);
+      },
+    });
+  }
 
   changeSchema(event: Event): void {
     const selectedValue = (event.target as HTMLInputElement).value;
@@ -182,11 +188,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
         tap(() => this.load()),
       )
       .subscribe();
-    this.queryTypeBackend().subscribe({
-      next: (res: TypeEntityArrayResponseType) => {
-        this.onTypeResponseSuccess(res);
-      },
-    });
   }
 
   login(): void {

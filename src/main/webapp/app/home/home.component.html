@@ -4,7 +4,14 @@
       <form class="d-flex" name="editForm" role="form" novalidate [formGroup]="editForm">
         <select
           (change)="changeSchema($event)"
-          style="color: #adb5bd; background-color: #36363b; border: var(--bs-border-width) solid #555; height: 37px; width: 2000px"
+          style="
+            color: #adb5bd;
+            background-color: #36363b;
+            border: var(--bs-border-width) solid #555;
+            height: 40px;
+            width: 2000px;
+            font-size: 18px;
+          "
           formControlName="type"
           [(ngModel)]="default_type_type"
         >
