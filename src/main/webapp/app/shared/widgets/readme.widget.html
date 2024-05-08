@@ -1,14 +1,13 @@
-<div>
-  <h4>{{ schema.title }}</h4>
-  <br />
-  <h5>{{ schema.author }}</h5>
-  <br />
-  <h5>{{ schema.description }}</h5>
-  <br />
-  <h6>Code: <a href="{{ schema.code }}">{{ schema.code }}</a></h6>
-  <h6>Paper: <a href="{{ schema.paper }}">{{ schema.paper }}</a></h6>
-  <h6>Page: <a href="{{ schema.page }}">{{ schema.page }}</a></h6>
-  <h6>Jupyter: <a href="{{ schema.jupyter }}">{{ schema.jupyter }}</a></h6>
-  <h6>Replicate: <a href="{{ schema.replicate }}">{{ schema.replicate }}</a></h6>
-  <br />
+<div class="card mb-6">
+  <div class="card-header">{{ schema.title }}</div>
+  <div class="card-body">
+    <h5 class="card-title">{{ schema.author }}</h5>
+    <p class="card-text">{{ schema.description }}</p>
+    <a href="{{ schema.code }}" class="card-link">Code</a>
+    <a href="{{ schema.paper }}" class="card-link">Paper</a>
+    <a href="{{ schema.page }}" class="card-link">Page</a>
+    <a href="{{ schema.jupyter }}" class="card-link">Jupyter</a>
+    <a href="{{ schema.replicate }}" class="card-link">Replicate</a>
+  </div>
 </div>
+<br />
