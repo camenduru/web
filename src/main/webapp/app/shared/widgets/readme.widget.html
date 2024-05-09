@@ -3,11 +3,11 @@
   <div class="card-body">
     <p class="card-title">{{ schema.title }}</p>
     <p class="card-text">{{ schema.description }}</p>
-    <a href="{{ schema.code }}" class="card-link">Code</a>
-    <a href="{{ schema.paper }}" class="card-link">Paper</a>
-    <a href="{{ schema.page }}" class="card-link">Page</a>
-    <a href="{{ schema.jupyter }}" class="card-link">Jupyter</a>
-    <a href="{{ schema.replicate }}" class="card-link">Replicate</a>
+    <a *ngIf="schema.code" href="{{ schema.code }}" class="card-link">Code</a>
+    <a *ngIf="schema.paper" href="{{ schema.paper }}" class="card-link">Paper</a>
+    <a *ngIf="schema.page" href="{{ schema.page }}" class="card-link">Page</a>
+    <a *ngIf="schema.jupyter" href="{{ schema.jupyter }}" class="card-link">Jupyter Notebook</a>
+    <a *ngIf="schema.replicate" href="{{ schema.replicate }}" class="card-link">Replicate</a>
   </div>
 </div>
 <br />
