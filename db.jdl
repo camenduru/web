@@ -5,7 +5,8 @@ enum JobStatus {
     WORKING,
     DONE,
     FAILED,
-    CANCELED
+    CANCELED,
+    EXPIRED
 }
 
 enum JobSource {

@@ -12,4 +12,6 @@ export enum JobStatus {
   FAILED = 'FAILED',
 
   CANCELED = 'CANCELED',
+
+  EXPIRED = 'EXPIRED',
 }

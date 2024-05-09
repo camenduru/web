@@ -11,4 +11,5 @@ public enum JobStatus {
     DONE,
     FAILED,
     CANCELED,
+    EXPIRED,
 }
