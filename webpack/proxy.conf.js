@@ -3,13 +3,13 @@ function setupProxy({ tls }) {
   const conf = [
     {
       context: serverResources,
-      target: `http${tls ? 's' : ''}://localhost:8080`,
+      target: `http${tls ? 's' : ''}://localhost:3000`,
       secure: false,
       changeOrigin: tls,
     },
     {
       context: ['/websocket'],
-      target: 'ws://127.0.0.1:8080',
+      target: 'ws://localhost:3000',
       ws: true,
     },
   ];
