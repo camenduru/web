@@ -7,11 +7,6 @@ function setupProxy({ tls }) {
       secure: false,
       changeOrigin: tls,
     },
-    {
-      context: ['/websocket'],
-      target: 'ws://localhost:3000',
-      ws: true,
-    },
   ];
   return conf;
 }

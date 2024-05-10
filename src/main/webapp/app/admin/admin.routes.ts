@@ -32,11 +32,6 @@ const routes: Routes = [
     loadComponent: () => import('./metrics/metrics.component'),
     title: 'metrics.title',
   },
-  {
-    path: 'tracker',
-    loadComponent: () => import('./tracker/tracker.component'),
-    title: 'tracker.title',
-  },
   /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
 ];
 

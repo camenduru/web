@@ -37,7 +37,7 @@
     "serviceDiscoveryType": false,
     "syncUserWithIdp": null,
     "testFrameworks": ["cypress"],
-    "websocket": "spring-websocket",
+    "websocket": false,
     "withAdminUi": true
   }
 }
