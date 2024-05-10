@@ -9,6 +9,7 @@ import locale from '@angular/common/locales/en';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
 import MainComponent from './layouts/main/main.component';
+import { TrackerService } from './core/tracker/tracker.service';
 
 @Component({
   standalone: true,
@@ -22,9 +23,11 @@ import MainComponent from './layouts/main/main.component';
 export default class AppComponent {
   private applicationConfigService = inject(ApplicationConfigService);
   private iconLibrary = inject(FaIconLibrary);
+  private trackerService = inject(TrackerService);
   private dpConfig = inject(NgbDatepickerConfig);
 
   constructor() {
+    this.trackerService.setup();
     this.applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
     this.iconLibrary.addIcons(...fontAwesomeIcons);

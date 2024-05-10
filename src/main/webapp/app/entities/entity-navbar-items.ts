@@ -6,4 +6,14 @@ export const EntityNavbarItems: NavbarItem[] = [
     route: '/job',
     translationKey: 'global.menu.entities.job',
   },
+  {
+    name: 'Detail',
+    route: '/detail',
+    translationKey: 'global.menu.entities.detail',
+  },
+  {
+    name: 'Type',
+    route: '/type',
+    translationKey: 'global.menu.entities.type',
+  },
 ];
