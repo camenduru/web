@@ -277,6 +277,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
       const passiveSchema = passiveJsonSchema as unknown as ISchema;
       const passiveJsonModel = item.model ? JSON.parse(item.model) : null;
       this.passiveObjects.push({ schema: passiveSchema, model: passiveJsonModel });
+      this.passiveObjects.sort((a: PassiveObject, b: PassiveObject) => {
+        const tagA = a.schema.properties.readme.tags[0];
+        const tagB = b.schema.properties.readme.tags[0];
+        return tagA.localeCompare(tagB);
+      });
     });
   }
 
@@ -335,4 +340,14 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected onSaveFinalize(): void {
     this.isSaving = false;
   }
+}
+
+interface PassiveObject {
+  schema: {
+    properties: {
+      readme: {
+        tags: string[];
+      };
+    };
+  };
 }

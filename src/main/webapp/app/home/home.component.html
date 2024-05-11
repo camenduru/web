@@ -123,7 +123,7 @@
           >{{ item.schema.properties.readme.title }}
         </h5>
         <div class="card-body">
-          <h6 class="card-title">Thanks to {{ item.schema.properties.readme.author.split(',').join(' ❤') }} ❤</h6>
+          <h6 class="card-title">{{ item.schema.properties.readme.author }}</h6>
           <a class="card-link" *ngIf="item.schema.properties.readme.code" href="{{ item.schema.properties.readme.code }}">Code</a>
           <a class="card-link" *ngIf="item.schema.properties.readme.paper" href="{{ item.schema.properties.readme.paper }}">Paper</a>
           <a class="card-link" *ngIf="item.schema.properties.readme.page" href="{{ item.schema.properties.readme.page }}">Page</a>
