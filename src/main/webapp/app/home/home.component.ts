@@ -271,11 +271,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.activeModel = jsonModel;
     this.default_type_type = type?.type;
 
-    this.passiveTypes = dataFromBody.filter(item => item).reverse();
+    this.passiveTypes = dataFromBody.reverse();
     this.passiveTypes.forEach(item => {
-      const passiveJsonSchema = item?.schema ? JSON.parse(item.schema) : null;
+      const passiveJsonSchema = item.schema ? JSON.parse(item.schema) : null;
       const passiveSchema = passiveJsonSchema as unknown as ISchema;
-      const passiveJsonModel = item?.model ? JSON.parse(item.model) : null;
+      const passiveJsonModel = item.model ? JSON.parse(item.model) : null;
       this.passiveObjects.push({ schema: passiveSchema, model: passiveJsonModel });
     });
   }
