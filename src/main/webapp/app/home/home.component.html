@@ -114,24 +114,26 @@
     }
   </div>
 </div>
-<div class="card jh-card">
-  <div *ngFor="let item of passiveObjects; let i = index">
-    <div class="card">
-      <h5 class="card-header">
-        <span *ngFor="let tag of item.schema.properties.readme.tags" style="color: antiquewhite">[{{ tag }}] </span
-        >{{ item.schema.properties.readme.title }}
-      </h5>
-      <div class="card-body">
-        <h6 class="card-title">Thanks to {{ item.schema.properties.readme.author.split(',').join(' ❤') }} ❤</h6>
-        <a class="card-link" *ngIf="item.schema.properties.readme.code" href="{{ item.schema.properties.readme.code }}">Code</a>
-        <a class="card-link" *ngIf="item.schema.properties.readme.paper" href="{{ item.schema.properties.readme.paper }}">Paper</a>
-        <a class="card-link" *ngIf="item.schema.properties.readme.page" href="{{ item.schema.properties.readme.page }}">Page</a>
-        <a class="card-link" *ngIf="item.schema.properties.readme.jupyter" href="{{ item.schema.properties.readme.jupyter }}">Jupyter</a>
-        <a class="card-link" *ngIf="item.schema.properties.readme.replicate" href="{{ item.schema.properties.readme.replicate }}"
-          >Replicate</a
-        >
-        <a class="card-link" *ngIf="item.schema.properties.readme.post" href="{{ item.schema.properties.readme.post }}">Post</a>
+@if (account() !== null) {
+  <div class="card jh-card">
+    <div *ngFor="let item of passiveObjects; let i = index">
+      <div class="card">
+        <h5 class="card-header">
+          <span *ngFor="let tag of item.schema.properties.readme.tags" style="color: antiquewhite">[{{ tag }}] </span
+          >{{ item.schema.properties.readme.title }}
+        </h5>
+        <div class="card-body">
+          <h6 class="card-title">Thanks to {{ item.schema.properties.readme.author.split(',').join(' ❤') }} ❤</h6>
+          <a class="card-link" *ngIf="item.schema.properties.readme.code" href="{{ item.schema.properties.readme.code }}">Code</a>
+          <a class="card-link" *ngIf="item.schema.properties.readme.paper" href="{{ item.schema.properties.readme.paper }}">Paper</a>
+          <a class="card-link" *ngIf="item.schema.properties.readme.page" href="{{ item.schema.properties.readme.page }}">Page</a>
+          <a class="card-link" *ngIf="item.schema.properties.readme.jupyter" href="{{ item.schema.properties.readme.jupyter }}">Jupyter</a>
+          <a class="card-link" *ngIf="item.schema.properties.readme.replicate" href="{{ item.schema.properties.readme.replicate }}"
+            >Replicate</a
+          >
+          <a class="card-link" *ngIf="item.schema.properties.readme.post" href="{{ item.schema.properties.readme.post }}">Post</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
+}
