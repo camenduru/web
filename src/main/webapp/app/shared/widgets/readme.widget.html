@@ -1,7 +1,9 @@
 <div class="card mb-6">
-  <div class="card-header">{{ schema.title }}</div>
+  <div class="card-header" *ngIf="schema.title">
+    <span *ngFor="let tag of schema.tags" style="color: antiquewhite">[{{ tag }}] </span>{{ schema.title }}
+  </div>
   <div class="card-body">
-    <p class="card-title"><span *ngFor="let tag of schema.tags" style="color: antiquewhite">[{{ tag }}] </span>{{ schema.author }}</p>
+    <p class="card-title" *ngIf="schema.author">{{ schema.author }}</p>
     <a class="card-link" *ngIf="schema.code" href="{{ schema.code }}">Code</a>
     <a class="card-link" *ngIf="schema.paper" href="{{ schema.paper }}">Paper</a>
     <a class="card-link" *ngIf="schema.page" href="{{ schema.page }}">Page</a>
