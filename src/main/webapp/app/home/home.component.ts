@@ -24,7 +24,7 @@ import { JobFormService, JobFormGroup } from '../entities/job/update/job-form.se
 import { UserService } from '../entities/user/service/user.service';
 import { JobStatus } from '../entities/enumerations/job-status.model';
 import { JobSource } from '../entities/enumerations/job-source.model';
-import { ISchema } from 'ngx-schema-form';
+import { ISchema, TemplateSchemaModule } from 'ngx-schema-form';
 import dayjs from 'dayjs/esm';
 
 @Component({
@@ -44,14 +44,18 @@ import dayjs from 'dayjs/esm';
     FormatMediumDatePipe,
     ItemCountComponent,
     HasAnyAuthorityDirective,
+    TemplateSchemaModule,
   ],
-  template: '<sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>',
+  template:
+    '<sf-form [schema]="activeSchema" [model]="activeModel" [actions]="activeActions"></sf-form><sf-form [schema]="passiveSchema" [model]="passiveModel"></sf-form>',
 })
 export default class HomeComponent implements OnInit, OnDestroy {
   isSaving = false;
   subscription: Subscription | null = null;
   account = signal<Account | null>(null);
   types?: IType[];
+  passiveTypes?: IType[];
+  passiveObjects?: any = [];
   jobs?: IJob[];
   itemsPerPage = ITEMS_PER_PAGE;
   totalItems = 0;
@@ -59,8 +63,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
   isLoading = false;
   sortState = sortStateSignal({});
 
-  mySchema: ISchema = {};
-  myModel: any = {};
+  isActive = true;
+  activeSchema: ISchema = {};
+  activeModel: any = {};
   default_type: any = {};
   default_type_type: any = {};
 
@@ -121,7 +126,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   useFrameFill = false;
   rectSize = 0;
 
-  myActions = {
+  activeActions = {
     enter: (property: any) => {
       this.isSaving = true;
       const job = this.jobFormService.getJob(this.editForm);
@@ -164,9 +169,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (this.types && this.types.length > 0) {
       const type = this.types.find(item => item.type === selectedValue);
       const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
-      this.mySchema = jsonSchema as unknown as ISchema;
+      this.activeSchema = jsonSchema as unknown as ISchema;
       const jsonModel = type?.model ? JSON.parse(type.model) : null;
-      this.myModel = jsonModel;
+      this.activeModel = jsonModel;
     }
   }
 
@@ -257,13 +262,22 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected onTypeResponseSuccess(response: TypeEntityArrayResponseType): void {
     this.fillComponentAttributesFromTypeResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromTypeResponseBody(response.body);
-    this.types = dataFromBody.filter(item => item.isActive === true);
+
+    this.types = dataFromBody.filter(item => item.isActive === true).reverse();
     const type = this.types.find(item => item.isDefault === true);
     const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
-    this.mySchema = jsonSchema as unknown as ISchema;
+    this.activeSchema = jsonSchema as unknown as ISchema;
     const jsonModel = type?.model ? JSON.parse(type.model) : null;
-    this.myModel = jsonModel;
+    this.activeModel = jsonModel;
     this.default_type_type = type?.type;
+
+    this.passiveTypes = dataFromBody.filter(item => item).reverse();
+    this.passiveTypes.forEach(item => {
+      const passiveJsonSchema = item?.schema ? JSON.parse(item.schema) : null;
+      const passiveSchema = passiveJsonSchema as unknown as ISchema;
+      const passiveJsonModel = item?.model ? JSON.parse(item.model) : null;
+      this.passiveObjects.push({ schema: passiveSchema, model: passiveJsonModel });
+    });
   }
 
   protected fillComponentAttributesFromTypeResponseBody(data: IType[] | null): IType[] {

@@ -1,114 +1,137 @@
-<div class="row">
-  @if (account() !== null) {
-    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
-      <div id="divRemove" class="alert alert-dismissible alert-primary">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="divRemove()"></button>
-        <span class="text-warning">Tost AI</span> is a free, non-profit,
-        <a class="text-info" href="https://github.com/camenduru/web">open-source</a> service that serves inference for the latest AI papers
-        using the <a class="text-info" href="https://github.com/camenduru/non-profit-gpu-cluster">Non Profit GPU Cluster</a>.
-        <span class="text-warning">Tost</span>'s simple job pool architecture allows anyone to connect their home GPUs to the
-        <span class="text-warning">Tost</span> Server. <br /><br />
-        <span class="text-warning">Tost</span> does not store any inference data; all data expires within 12 hours. However,
-        <span class="text-warning">Tost</span> offers the option to send data to your Discord channel.
-        <span class="text-warning">Tost</span>'s budget is supported by companies and individual sponsors. <br /><br />
-        Please consider sponsoring us through: <a class="text-success" href="https://github.com/sponsors/camenduru">GitHub Sponsors</a> |
-        <a class="text-success" href="https://www.patreon.com/camenduru">Patreon</a>
+<div class="card jh-card">
+  <div class="row">
+    @if (account() !== null) {
+      <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+        <div id="divRemove" class="alert alert-dismissible alert-primary">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="divRemove()"></button>
+          <span class="text-warning">Tost AI</span> is a free, non-profit,
+          <a class="text-info" href="https://github.com/camenduru/web">open-source</a> service that serves inference for the latest AI
+          papers using the <a class="text-info" href="https://github.com/camenduru/non-profit-gpu-cluster">Non Profit GPU Cluster</a>.
+          <span class="text-warning">Tost</span>'s simple job pool architecture allows anyone to connect their home GPUs to the
+          <span class="text-warning">Tost</span> Server. <br /><br />
+          <span class="text-warning">Tost</span> does not store any inference data; all data expires within 12 hours. However,
+          <span class="text-warning">Tost</span> offers the option to send data to your Discord channel.
+          <span class="text-warning">Tost</span>'s budget is supported by companies and individual sponsors. <br /><br />
+          Please consider sponsoring us through: <a class="text-success" href="https://github.com/sponsors/camenduru">GitHub Sponsors</a> |
+          <a class="text-success" href="https://www.patreon.com/camenduru">Patreon</a>
+          <br />
+          Please Follow us for updates on: <a class="text-info" href="https://github.com/camenduru">GitHub</a> |
+          <a class="text-info" href="https://twitter.com/camenduru">Twitter</a> |
+          <a class="text-info" href="https://discord.gg/k5BwmmvJJU">Discord</a>
+        </div>
+        <form class="d-flex" name="editForm" role="form" novalidate [formGroup]="editForm">
+          <select
+            (change)="changeSchema($event)"
+            style="
+              color: #adb5bd;
+              background-color: #36363b;
+              border: var(--bs-border-width) solid #555;
+              height: 40px;
+              width: 2000px;
+              font-size: 18px;
+            "
+            formControlName="type"
+            [(ngModel)]="default_type_type"
+          >
+            <option *ngFor="let type of types" [value]="type.type">
+              {{ type.title }}
+            </option>
+          </select>
+        </form>
         <br />
-        Please Follow us for updates on: <a class="text-info" href="https://github.com/camenduru">GitHub</a> |
-        <a class="text-info" href="https://twitter.com/camenduru">Twitter</a> |
-        <a class="text-info" href="https://discord.gg/k5BwmmvJJU">Discord</a>
+        <sf-form [schema]="activeSchema" [model]="activeModel" [actions]="activeActions"></sf-form>
+        <form name="editForm" role="form" novalidate [formGroup]="editForm">
+          <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
+            <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
+          </button>
+          <span class="btn btn-secondary me-2 float-end" *jhiHasAnyAuthority="'ROLE_ADMIN'">⛔</span>
+        </form>
+        <br /><br /><br />
       </div>
-      <form class="d-flex" name="editForm" role="form" novalidate [formGroup]="editForm">
-        <select
-          (change)="changeSchema($event)"
-          style="
-            color: #adb5bd;
-            background-color: #36363b;
-            border: var(--bs-border-width) solid #555;
-            height: 40px;
-            width: 2000px;
-            font-size: 18px;
-          "
-          formControlName="type"
-          [(ngModel)]="default_type_type"
-        >
-          <option *ngFor="let type of types" [value]="type.type">
-            {{ type.title }}
-          </option>
-        </select>
-      </form>
-      <br />
-      <sf-form [schema]="mySchema" [model]="myModel" [actions]="myActions"></sf-form>
-      <form name="editForm" role="form" novalidate [formGroup]="editForm">
-        <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
-          <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
-        </button>
-        <span class="btn btn-secondary me-2 float-end" *jhiHasAnyAuthority="'ROLE_ADMIN'">⛔</span>
-      </form>
-      <br /><br /><br />
-    </div>
-    <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7">
-      <jhi-alert-error></jhi-alert-error>
-      @if (jobs?.length === 0) {
-        <div class="alert alert-warning" id="no-result">
-          <span jhiTranslate="webApp.job.home.notFound">No Jobs found</span>
-        </div>
-      }
-      @if (jobs && jobs.length > 0) {
-        <div
-          NgxJustifiedGrid
-          [horizontal]="horizontal"
-          [percentage]="percentage"
-          [isEqualSize]="isEqualSize"
-          [isConstantSize]="isConstantSize"
-          [gap]="gap"
-          [resizeDebounce]="resizeDebounce"
-          [maxResizeDebounce]="maxResizeDebounce"
-          [autoResize]="autoResize"
-          [useFit]="useFit"
-          [useTransform]="useTransform"
-          [renderOnPropertyChange]="renderOnPropertyChange"
-          [preserveUIOnDestroy]="preserveUIOnDestroy"
-          [defaultDirection]="defaultDirection"
-          [outlineLength]="outlineLength"
-          [outlineSize]="outlineSize"
-          [useRoundedSize]="useRoundedSize"
-          [useResizeObserver]="useResizeObserver"
-          [observeChildren]="observeChildren"
-          [align]="align"
-          [columnRange]="columnRange"
-          [rowRange]="rowRange"
-          [sizeRange]="sizeRange"
-          [displayedRow]="displayedRow"
-          [isCroppedSize]="isCroppedSize"
-        >
-          <img class="item rounded" #gridItem *ngFor="let job of jobs; trackBy: trackId" [src]="job.result" width="445" />
-        </div>
-        <br />
-        <div>
-          <div class="d-flex justify-content-center">
-            <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7">
+        <jhi-alert-error></jhi-alert-error>
+        @if (jobs?.length === 0) {
+          <div class="alert alert-warning" id="no-result">
+            <span jhiTranslate="webApp.job.home.notFound">No Jobs found</span>
           </div>
-          <div class="d-flex justify-content-center">
-            <ngb-pagination
-              [collectionSize]="totalItems"
-              [page]="page"
-              [pageSize]="itemsPerPage"
-              [maxSize]="5"
-              [rotate]="true"
-              [boundaryLinks]="true"
-              (pageChange)="navigateToPage($event)"
-            ></ngb-pagination>
+        }
+        @if (jobs && jobs.length > 0) {
+          <div
+            NgxJustifiedGrid
+            [horizontal]="horizontal"
+            [percentage]="percentage"
+            [isEqualSize]="isEqualSize"
+            [isConstantSize]="isConstantSize"
+            [gap]="gap"
+            [resizeDebounce]="resizeDebounce"
+            [maxResizeDebounce]="maxResizeDebounce"
+            [autoResize]="autoResize"
+            [useFit]="useFit"
+            [useTransform]="useTransform"
+            [renderOnPropertyChange]="renderOnPropertyChange"
+            [preserveUIOnDestroy]="preserveUIOnDestroy"
+            [defaultDirection]="defaultDirection"
+            [outlineLength]="outlineLength"
+            [outlineSize]="outlineSize"
+            [useRoundedSize]="useRoundedSize"
+            [useResizeObserver]="useResizeObserver"
+            [observeChildren]="observeChildren"
+            [align]="align"
+            [columnRange]="columnRange"
+            [rowRange]="rowRange"
+            [sizeRange]="sizeRange"
+            [displayedRow]="displayedRow"
+            [isCroppedSize]="isCroppedSize"
+          >
+            <img class="item rounded" #gridItem *ngFor="let job of jobs; trackBy: trackId" [src]="job.result" width="445" />
           </div>
+          <br />
+          <div>
+            <div class="d-flex justify-content-center">
+              <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+            </div>
+            <div class="d-flex justify-content-center">
+              <ngb-pagination
+                [collectionSize]="totalItems"
+                [page]="page"
+                [pageSize]="itemsPerPage"
+                [maxSize]="5"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                (pageChange)="navigateToPage($event)"
+              ></ngb-pagination>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="alert alert-warning">
+          <span jhiTranslate="global.messages.info.register.noaccount">You don&apos;t have an account yet?</span>&nbsp;
+          <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
         </div>
-      }
-    </div>
-  } @else {
-    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-      <div class="alert alert-warning">
-        <span jhiTranslate="global.messages.info.register.noaccount">You don&apos;t have an account yet?</span>&nbsp;
-        <a class="alert-link" routerLink="/account/register" jhiTranslate="global.messages.info.register.link">Register a new account</a>
+      </div>
+    }
+  </div>
+</div>
+<div class="card jh-card">
+  <div *ngFor="let item of passiveObjects; let i = index">
+    <div class="card">
+      <h5 class="card-header">
+        <span *ngFor="let tag of item.schema.properties.readme.tags" style="color: antiquewhite">[{{ tag }}] </span
+        >{{ item.schema.properties.readme.title }}
+      </h5>
+      <div class="card-body">
+        <h6 class="card-title">Thanks to {{ item.schema.properties.readme.author.split(',').join(' ❤') }} ❤</h6>
+        <a class="card-link" *ngIf="item.schema.properties.readme.code" href="{{ item.schema.properties.readme.code }}">Code</a>
+        <a class="card-link" *ngIf="item.schema.properties.readme.paper" href="{{ item.schema.properties.readme.paper }}">Paper</a>
+        <a class="card-link" *ngIf="item.schema.properties.readme.page" href="{{ item.schema.properties.readme.page }}">Page</a>
+        <a class="card-link" *ngIf="item.schema.properties.readme.jupyter" href="{{ item.schema.properties.readme.jupyter }}">Jupyter</a>
+        <a class="card-link" *ngIf="item.schema.properties.readme.replicate" href="{{ item.schema.properties.readme.replicate }}"
+          >Replicate</a
+        >
+        <a class="card-link" *ngIf="item.schema.properties.readme.output" href="{{ item.schema.properties.readme.output }}">Output</a>
       </div>
     </div>
-  }
+  </div>
 </div>
