@@ -73,4 +73,12 @@ describe('/admin', () => {
       });
     });
   });
+
+  describe('/tracker', () => {
+    it('should load the page', () => {
+      cy.clickOnAdminMenuItem('tracker');
+      cy.get('[data-cy="trackerPageHeading"]').should('be.visible');
+      cy.get('[data-cy="trackerTable"] > tbody > tr').should('have.length', 1);
+    });
+  });
 });

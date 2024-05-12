@@ -4,6 +4,6 @@
     "outDir": "./target/out-tsc/app",
     "types": ["@angular/localize"]
   },
-  "files": ["src/main/webapp/main.ts"],
+  "files": ["src/main/webapp/sockjs-client.polyfill.ts", "src/main/webapp/main.ts"],
   "include": ["src/main/webapp/**/*.d.ts"]
 }
