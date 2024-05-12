@@ -82,6 +82,12 @@ server:
 # ===================================================================
 
 jhipster:
+  cors:
+    allowed-origins: 'https://tost.ai'
+    # allowed-methods: "*"
+    # allowed-headers: "*"
+    # allow-credentials: true
+    # max-age: 1800
   http:
     cache: # Used by the CachingHttpHeadersFilter
       timeToLiveInDays: 1461
