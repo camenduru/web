@@ -17,7 +17,7 @@ public class MongoMessageListenerService implements MessageListener<ChangeStream
     public void onMessage(Message<ChangeStreamDocument<Document>, Job> message) {
         JobStatus status = message.getBody().getStatus();
         if (status == JobStatus.DONE) {
-            log.debug("{} : {}", status, message.getBody().getId());
+            log.info("{} : {}", status, message.getBody().getId());
         }
     }
 }
