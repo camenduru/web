@@ -26,6 +26,7 @@ import { JobStatus } from '../entities/enumerations/job-status.model';
 import { JobSource } from '../entities/enumerations/job-source.model';
 import { ISchema, TemplateSchemaModule } from 'ngx-schema-form';
 import dayjs from 'dayjs/esm';
+import { TrackerService } from 'app/core/tracker/tracker.service';
 
 @Component({
   standalone: true,
@@ -154,6 +155,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected userService = inject(UserService);
   protected accountService = inject(AccountService);
   protected router = inject(Router);
+  protected trackerService = inject(TrackerService);
 
   private readonly destroy$ = new Subject<void>();
   public constructor(private http: HttpClient) {
@@ -207,6 +209,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   load(): void {

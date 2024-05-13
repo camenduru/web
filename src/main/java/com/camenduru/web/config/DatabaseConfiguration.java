@@ -53,6 +53,12 @@ public class DatabaseConfiguration {
         return new MongoCustomConversions(converters);
     }
 
+    private final MongoMessageListenerService messageListenerService;
+
+    public DatabaseConfiguration(MongoMessageListenerService messageListenerService) {
+        this.messageListenerService = messageListenerService;
+    }
+
     @Bean
     MessageListenerContainer messageListenerContainer(MongoTemplate template) {
         Executor executor = Executors.newSingleThreadExecutor();
@@ -68,9 +74,6 @@ public class DatabaseConfiguration {
     }
 
     private ChangeStreamRequest<Job> buildMessageQueueRequest() {
-        return ChangeStreamRequest.builder(new MongoMessageListenerService())
-            .collection("job")
-            .fullDocumentLookup(FullDocument.UPDATE_LOOKUP)
-            .build();
+        return ChangeStreamRequest.builder(messageListenerService).collection("job").fullDocumentLookup(FullDocument.UPDATE_LOOKUP).build();
     }
 }

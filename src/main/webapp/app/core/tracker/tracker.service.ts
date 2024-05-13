@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, NavigationEnd, Event } from '@angular/router';
 import { Subscription, Observer } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 import SockJS from 'sockjs-client';
 import { RxStomp } from '@stomp/rx-stomp';
@@ -25,6 +25,8 @@ export class TrackerService {
   private authServerProvider = inject(AuthServerProvider);
   private location = inject(Location);
 
+  account: Account = {} as Account;
+
   setup(): void {
     this.rxStomp = new RxStomp();
     this.rxStomp.configure({
@@ -35,6 +37,7 @@ export class TrackerService {
     this.accountService.getAuthenticationState().subscribe({
       next: (account: Account | null) => {
         if (account) {
+          this.account = account;
           this.connect();
         } else {
           this.disconnect();
@@ -48,6 +51,8 @@ export class TrackerService {
       this.routerSubscription = this.router.events
         .pipe(filter((event: Event) => event instanceof NavigationEnd))
         .subscribe(() => this.sendActivity());
+
+      this.subscribeToQueue();
     });
   }
 
@@ -64,6 +69,24 @@ export class TrackerService {
         .watch(DESTINATION_TRACKER)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         .pipe(map(imessage => JSON.parse(imessage.body)))
+        .subscribe(observer)
+    );
+  }
+
+  notify(message: any) {
+    console.log('Notify Status:', message);
+  }
+
+  public subscribeToQueue(observer?: Partial<Observer<any>>): Subscription {
+    const DESTINATION_NOTIFICATION = '/queue/' + this.account.login + '/notification';
+    return (
+      this.stomp
+        .watch(DESTINATION_NOTIFICATION)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        .pipe(
+          map(imessage => JSON.parse(imessage.body)),
+          tap(message => this.notify(message)),
+        )
         .subscribe(observer)
     );
   }

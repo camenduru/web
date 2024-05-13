@@ -2,12 +2,17 @@ package com.camenduru.web.web.websocket;
 
 import static com.camenduru.web.config.WebsocketConfiguration.IP_ADDRESS;
 
+import com.camenduru.web.domain.Job;
+import com.camenduru.web.domain.enumeration.JobStatus;
 import com.camenduru.web.web.websocket.dto.ActivityDTO;
+import com.mongodb.client.model.changestream.ChangeStreamDocument;
 import java.security.Principal;
 import java.time.Instant;
+import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
+import org.springframework.data.mongodb.core.messaging.Message;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
@@ -42,5 +47,12 @@ public class ActivityService implements ApplicationListener<SessionDisconnectEve
         activityDTO.setSessionId(event.getSessionId());
         activityDTO.setPage("logout");
         messagingTemplate.convertAndSend("/topic/tracker", activityDTO);
+    }
+
+    public void sendLogMessage(Message<ChangeStreamDocument<Document>, Job> message) {
+        String destination = String.format("/queue/%s/notification", message.getBody().getLogin());
+        String payload = String.format("{\"status\": \"%s\"}", message.getBody().getStatus());
+        // log.info("{} : {}", destination, payload);
+        messagingTemplate.convertAndSend(destination, payload);
     }
 }
