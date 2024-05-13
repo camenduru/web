@@ -3,7 +3,6 @@ package com.camenduru.web.web.websocket;
 import static com.camenduru.web.config.WebsocketConfiguration.IP_ADDRESS;
 
 import com.camenduru.web.domain.Job;
-import com.camenduru.web.domain.enumeration.JobStatus;
 import com.camenduru.web.web.websocket.dto.ActivityDTO;
 import com.mongodb.client.model.changestream.ChangeStreamDocument;
 import java.security.Principal;
