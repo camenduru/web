@@ -30,7 +30,7 @@ module.exports = async (config, options, targetOptions) => {
         },
       }),
       new WebpackNotifierPlugin({
-        title: 'Web',
+        title: 'Tost AI',
         contentImage: path.join(__dirname, 'logo-jhipster.png'),
       }),
     );
