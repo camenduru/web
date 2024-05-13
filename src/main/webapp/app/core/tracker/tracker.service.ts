@@ -83,7 +83,11 @@ export class TrackerService {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         .pipe(
           map(imessage => JSON.parse(imessage.body) as string),
-          tap(message => this.subscribeToNotify(message)),
+          tap(message => {
+            if (message === 'DONE') {
+              this.subscribeToNotify(message);
+            }
+          }),
         )
         .subscribe(observer)
     );
