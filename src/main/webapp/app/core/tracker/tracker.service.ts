@@ -71,9 +71,7 @@ export class TrackerService {
   }
 
   public subscribeToNotify(message: string): Observable<string> {
-    if (message === 'DONE') {
-      this.messageSubject.next(message);
-    }
+    this.messageSubject.next(message);
     return this.messageSubject.asObservable();
   }
 
