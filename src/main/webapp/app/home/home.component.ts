@@ -165,16 +165,19 @@ export default class HomeComponent implements OnInit, OnDestroy {
       },
     });
 
-    this.trackerService.subscribeToNotify('').pipe(
-      tap(message => {
-        // eslint-disable-next-line no-console
-        console.log('Status:', message);
-
-        if (message === 'DONE') {
+    this.trackerService
+      .subscribeToNotify('')
+      .pipe(
+        tap(() => {
           this.load();
-        }
-      }),
-    );
+        }),
+      )
+      .subscribe({
+        next(message) {
+          // eslint-disable-next-line no-console
+          console.log('Status:', message);
+        },
+      });
   }
 
   changeSchema(event: Event): void {
