@@ -17,6 +17,8 @@ const DESTINATION_ACTIVITY = '/topic/activity';
 
 @Injectable({ providedIn: 'root' })
 export class TrackerService {
+  account: Account = {} as Account;
+
   private rxStomp?: RxStomp;
   private routerSubscription: Subscription | null = null;
 
@@ -24,8 +26,6 @@ export class TrackerService {
   private accountService = inject(AccountService);
   private authServerProvider = inject(AuthServerProvider);
   private location = inject(Location);
-
-  account: Account = {} as Account;
 
   setup(): void {
     this.rxStomp = new RxStomp();
@@ -73,18 +73,19 @@ export class TrackerService {
     );
   }
 
-  notify(message: any) {
+  notify(message: string): void {
+    // eslint-disable-next-line no-console
     console.log('Notify Status:', message);
   }
 
-  public subscribeToQueue(observer?: Partial<Observer<any>>): Subscription {
+  public subscribeToQueue(observer?: Partial<Observer<string>>): Subscription {
     const DESTINATION_NOTIFICATION = '/queue/' + this.account.login + '/notification';
     return (
       this.stomp
         .watch(DESTINATION_NOTIFICATION)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         .pipe(
-          map(imessage => JSON.parse(imessage.body)),
+          map(imessage => JSON.parse(imessage.body) as string),
           tap(message => this.notify(message)),
         )
         .subscribe(observer)
