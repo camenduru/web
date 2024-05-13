@@ -50,7 +50,7 @@ public class ActivityService implements ApplicationListener<SessionDisconnectEve
 
     public void sendLogMessage(Message<ChangeStreamDocument<Document>, Job> message) {
         String destination = String.format("/queue/%s/notification", message.getBody().getLogin());
-        String payload = String.format("{\"status\": \"%s\"}", message.getBody().getStatus());
+        String payload = String.format("%s", message.getBody().getStatus());
         messagingTemplate.convertAndSend(destination, payload);
     }
 }
