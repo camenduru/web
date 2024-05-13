@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, NavigationEnd, Event } from '@angular/router';
-import { Subscription, Observer } from 'rxjs';
+import { Subscription, Observer, Observable, Subject } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 
 import SockJS from 'sockjs-client';
@@ -18,6 +18,7 @@ const DESTINATION_ACTIVITY = '/topic/activity';
 @Injectable({ providedIn: 'root' })
 export class TrackerService {
   account: Account = {} as Account;
+  private messageSubject = new Subject<string>();
 
   private rxStomp?: RxStomp;
   private routerSubscription: Subscription | null = null;
@@ -29,10 +30,6 @@ export class TrackerService {
 
   setup(): void {
     this.rxStomp = new RxStomp();
-    this.rxStomp.configure({
-      // eslint-disable-next-line no-console
-      debug: (msg: string): void => console.log(new Date(), msg),
-    });
 
     this.accountService.getAuthenticationState().subscribe({
       next: (account: Account | null) => {
@@ -73,9 +70,9 @@ export class TrackerService {
     );
   }
 
-  notify(message: string): void {
-    // eslint-disable-next-line no-console
-    console.log('Notify Status:', message);
+  public subscribeToNotify(message: string): Observable<string> {
+    this.messageSubject.next(message);
+    return this.messageSubject.asObservable();
   }
 
   public subscribeToQueue(observer?: Partial<Observer<string>>): Subscription {
@@ -86,7 +83,7 @@ export class TrackerService {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         .pipe(
           map(imessage => JSON.parse(imessage.body) as string),
-          tap(message => this.notify(message)),
+          tap(message => this.subscribeToNotify(message)),
         )
         .subscribe(observer)
     );
