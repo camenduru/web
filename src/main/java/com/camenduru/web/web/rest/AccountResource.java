@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -45,6 +46,8 @@ public class AccountResource {
 
     private final DetailRepository detailRepository;
 
+    private final SimpMessageSendingOperations simpMessageSendingOperations;
+
     @Value("${camenduru.web.default.discord}")
     private String defaultDiscord;
 
@@ -61,12 +64,14 @@ public class AccountResource {
         UserRepository userRepository,
         UserService userService,
         MailService mailService,
-        DetailRepository detailRepository
+        DetailRepository detailRepository,
+        SimpMessageSendingOperations simpMessageSendingOperations
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.detailRepository = detailRepository;
+        this.simpMessageSendingOperations = simpMessageSendingOperations;
     }
 
     /**
@@ -107,6 +112,21 @@ public class AccountResource {
         if (!user.isPresent()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
+    }
+
+    /**
+     * {@code GET  /notify} : notify the registered user.
+     *
+     * @param key the activation key.
+     * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
+     */
+    @GetMapping("/notify")
+    public @ResponseBody String notifyAccount(@RequestParam(value = "login") String login) {
+        log.info(login);
+        String destination = String.format("/queue/%s/notification", login);
+        String payload = String.format("%s", "DONE");
+        simpMessageSendingOperations.convertAndSend(destination, payload);
+        return login;
     }
 
     /**
