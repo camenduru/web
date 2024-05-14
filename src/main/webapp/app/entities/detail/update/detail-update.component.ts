@@ -96,7 +96,9 @@ export class DetailUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.userService
-      .query()
+      .query({
+        size: 200,
+      })
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.detail?.user)))
       .subscribe((users: IUser[]) => (this.usersSharedCollection = users));

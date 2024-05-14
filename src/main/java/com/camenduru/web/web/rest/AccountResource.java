@@ -96,7 +96,9 @@ public class AccountResource {
         detail.user(user);
         detail.login(user.getLogin());
         detail.total(defaultSourceTotal);
-        detail = detailRepository.save(detail);
+        if (detail.getId() == null) {
+            detailRepository.save(detail);
+        }
         mailService.sendActivationEmail(user);
     }
 
