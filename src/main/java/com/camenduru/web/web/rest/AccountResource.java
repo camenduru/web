@@ -122,7 +122,6 @@ public class AccountResource {
      */
     @GetMapping("/notify")
     public @ResponseBody String notifyAccount(@RequestParam(value = "login") String login) {
-        log.info(login);
         String destination = String.format("/queue/%s/notification", login);
         String payload = String.format("%s", "DONE");
         simpMessageSendingOperations.convertAndSend(destination, payload);
