@@ -103,7 +103,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   // [columnCalculationThreshold]="columnCalculationThreshold"
   // [maxStretchColumnSize]="maxStretchColumnSize"
 
-  columnRange = [4, 4];
+  columnRange = [3, 3];
   rowRange = [1, Infinity];
   sizeRange = [0, Infinity];
   displayedRow = -1;
