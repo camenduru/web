@@ -86,7 +86,16 @@
             [displayedRow]="displayedRow"
             [isCroppedSize]="isCroppedSize"
           >
-            <img class="item rounded" #gridItem *ngFor="let job of jobs; trackBy: trackId" [src]="job.result" width="445" />
+            <ng-container *ngFor="let job of jobs; trackBy: trackId">
+              <ng-container *ngIf="job.result && job.result.includes('.png')">
+                <img class="item rounded" #gridItem [src]="job.result" width="445" />
+              </ng-container>
+              <ng-container *ngIf="job.result && job.result.includes('.mp4')">
+                <video width="445" height="445" controls>
+                  <source class="item rounded" [src]="job.result" type="video/mp4" />
+                </video>
+              </ng-container>
+            </ng-container>
           </div>
           <br />
           <div>
