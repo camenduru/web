@@ -4,7 +4,7 @@ After=syslog.target network.target
 [Service]
 User=root
 Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/cuda/bin"
-Environment="com_camenduru_mongodb_uri=mongodb://127.0.0.1:27017/web?waitQueueMultiple=1000"
+Environment="com_camenduru_mongodb_uri=mongodb://127.0.0.1:27017/web"
 Environment="com_camenduru_web_default_result=/content/images/generating.jpg"
 Environment="com_camenduru_web_default_result_suffix=result_suffix"
 Environment="com_camenduru_web_default_discord=discord"
