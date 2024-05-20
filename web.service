@@ -18,6 +18,7 @@ Environment="com_camenduru_web_mail_smtp_ssl_trust=smtp.gmail.com"
 Environment="com_camenduru_web_mail_username=mail@gmail.com"
 Environment="com_camenduru_web_base_url=base_url"
 Environment="com_camenduru_web_base64_secret=base64_secret"
+Environment="com_camenduru_web_token=web_token"
 WorkingDirectory=/content/com.camenduru/web
 ExecStart=/bin/bash -c 'java -Dserver.port=3000 -jar target/web-0.0.1.jar --spring.profiles.active=prod'
 Restart=always

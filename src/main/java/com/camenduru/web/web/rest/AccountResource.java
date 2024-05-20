@@ -1,13 +1,17 @@
 package com.camenduru.web.web.rest;
 
 import com.camenduru.web.domain.Detail;
+import com.camenduru.web.domain.Job;
 import com.camenduru.web.domain.User;
+import com.camenduru.web.domain.enumeration.JobStatus;
 import com.camenduru.web.repository.DetailRepository;
+import com.camenduru.web.repository.JobRepository;
 import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.service.MailService;
 import com.camenduru.web.service.UserService;
 import com.camenduru.web.service.dto.AdminUserDTO;
+import com.camenduru.web.service.dto.NotifyDTO;
 import com.camenduru.web.service.dto.PasswordChangeDTO;
 import com.camenduru.web.web.rest.errors.*;
 import com.camenduru.web.web.rest.vm.KeyAndPasswordVM;
@@ -19,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +51,8 @@ public class AccountResource {
 
     private final DetailRepository detailRepository;
 
+    private final JobRepository jobRepository;
+
     private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     @Value("${camenduru.web.default.discord}")
@@ -60,17 +67,22 @@ public class AccountResource {
     @Value("${camenduru.web.default.source.total}")
     private String defaultSourceTotal;
 
+    @Value("${camenduru.web.token}")
+    private String webToken;
+
     public AccountResource(
         UserRepository userRepository,
         UserService userService,
         MailService mailService,
         DetailRepository detailRepository,
+        JobRepository jobRepository,
         SimpMessageSendingOperations simpMessageSendingOperations
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.detailRepository = detailRepository;
+        this.jobRepository = jobRepository;
         this.simpMessageSendingOperations = simpMessageSendingOperations;
     }
 
@@ -117,17 +129,35 @@ public class AccountResource {
     }
 
     /**
-     * {@code GET  /notify} : notify the registered user.
+     * {@code POST  /notify} : notify the registered user.
      *
      * @param key the activation key.
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
      */
-    @GetMapping("/notify")
-    public @ResponseBody String notifyAccount(@RequestParam(value = "login") String login) {
-        String destination = String.format("/queue/%s/notification", login);
-        String payload = String.format("%s", "DONE");
-        simpMessageSendingOperations.convertAndSend(destination, payload);
-        return login;
+    @PostMapping("/notify")
+    public @ResponseBody ResponseEntity<String> notifyAccount(
+        @RequestBody NotifyDTO notify,
+        @RequestHeader(value = "authorization", required = true) String token
+    ) {
+        if (token.equals(webToken)) {
+            String jobId = notify.getJobId();
+            String result = notify.getResult();
+            Job job = jobRepository.findById(jobId).orElseThrow();
+            String login = job.getLogin();
+            job.setStatus(JobStatus.DONE);
+            job.setResult(result);
+            Detail detail = detailRepository.findAllByUserIsCurrentUser(login).orElseThrow();
+            int total = Integer.parseInt(detail.getTotal()) - Integer.parseInt(job.getAmount());
+            detail.setTotal(Integer.toString(total));
+            jobRepository.save(job);
+            detailRepository.save(detail);
+            String destination = String.format("/queue/%s/notification", login);
+            String payload = String.format("%s", "DONE");
+            simpMessageSendingOperations.convertAndSend(destination, payload);
+            return new ResponseEntity<String>(login, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     /**
