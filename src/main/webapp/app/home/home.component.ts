@@ -191,12 +191,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          return response.json();
-        } else {
-          return response.text();
-        }
+        return response.text();
       })
       .then(data => {
         this.responseText = data;
