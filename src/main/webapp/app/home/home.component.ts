@@ -181,8 +181,12 @@ export default class HomeComponent implements OnInit, OnDestroy {
           if (message.includes('insufficient')) {
             const notifyDiv = document.getElementById('notify');
             if (notifyDiv) {
+              notifyDiv.style.display = 'block';
               notifyDiv.classList.add('alert', 'alert-warning');
               notifyDiv.textContent = message;
+              setTimeout(function () {
+                notifyDiv.style.display = 'none';
+              }, 5000);
             }
           }
         },
