@@ -179,14 +179,19 @@ export default class HomeComponent implements OnInit, OnDestroy {
       .subscribe({
         next(message) {
           if (message.includes('insufficient')) {
-            const notifyDiv = document.getElementById('notify');
-            if (notifyDiv) {
-              notifyDiv.style.display = 'block';
-              notifyDiv.classList.add('alert', 'alert-warning');
-              notifyDiv.textContent = message;
-              setTimeout(function () {
-                notifyDiv.style.display = 'none';
-              }, 5000);
+            const notify = document.getElementById('notify');
+            const notifyDivHTML = `
+                <div id="notifyDiv" class="alert alert-dismissible alert-warning">
+                    <button id="notifyButton" type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    ${message}
+                </div>
+            `;
+            if (notify) {
+              notify.innerHTML = notifyDivHTML;
+              const notifyButton = document.getElementById('notifyButton');
+              if (notifyButton) {
+                notifyButton.addEventListener('click', notifyDivRemove);
+              }
             }
           }
         },
@@ -221,10 +226,10 @@ export default class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  public divRemove(): void {
-    const divRemove = document.getElementById('divRemove');
-    if (divRemove) {
-      divRemove.remove();
+  public aboutDivRemove(): void {
+    const aboutDiv = document.getElementById('aboutDiv');
+    if (aboutDiv) {
+      aboutDiv.remove();
     }
   }
 
@@ -406,4 +411,11 @@ interface PassiveObject {
       };
     };
   };
+}
+
+function notifyDivRemove(): void {
+  const notifyDiv = document.getElementById('notifyDiv');
+  if (notifyDiv) {
+    notifyDiv.remove();
+  }
 }
