@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { TranslateModule, TranslateService, MissingTranslationHandler } from '@ngx-translate/core';
+import { missingTranslationHandler } from 'app/config/translation.config';
 
 import HomeComponent from './home.component';
 
@@ -29,11 +31,22 @@ describe('Home Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [HomeComponent, RouterModule.forRoot([])],
+      imports: [
+        HomeComponent,
+        RouterModule.forRoot([]),
+        TranslateModule.forRoot({
+          missingTranslationHandler: {
+            provide: MissingTranslationHandler,
+            useFactory: missingTranslationHandler,
+          },
+        }),
+      ],
       providers: [AccountService, provideHttpClient()],
     })
       .overrideTemplate(HomeComponent, '')
       .compileComponents();
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setDefaultLang('en');
   }));
 
   beforeEach(() => {

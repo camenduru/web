@@ -147,23 +147,32 @@ public class AccountResource {
         @RequestHeader(value = "authorization", required = true) String token
     ) {
         if (token.equals(webToken)) {
-            String jobId = notify.getJobId();
             String result = notify.getResult();
+            String jobId = notify.getJobId();
             Job job = jobRepository.findById(jobId).orElseThrow();
             String login = job.getLogin();
-            job.setStatus(JobStatus.DONE);
-            job.setResult(result);
-            Detail detail = detailRepository.findAllByUserIsCurrentUser(login).orElseThrow();
-            int total = Integer.parseInt(detail.getTotal()) - Integer.parseInt(job.getAmount());
-            detail.setTotal(Integer.toString(total));
-            jobRepository.save(job);
-            detailRepository.save(detail);
-            String destination = String.format("/queue/%s/notification", login);
-            String payload = String.format("%s", "DONE");
-            simpMessageSendingOperations.convertAndSend(destination, payload);
-            return new ResponseEntity<String>(login, HttpStatus.OK);
+            if (result.contains("insufficient")) {
+                job.setStatus(JobStatus.EXPIRED);
+                jobRepository.save(job);
+                String destination = String.format("/queue/%s/notification", login);
+                String payload = String.format("%s", result);
+                simpMessageSendingOperations.convertAndSend(destination, payload);
+                return new ResponseEntity<String>("✔ Token Valid", HttpStatus.OK);
+            } else {
+                job.setStatus(JobStatus.DONE);
+                job.setResult(result);
+                Detail detail = detailRepository.findAllByUserIsCurrentUser(login).orElseThrow();
+                int total = Integer.parseInt(detail.getTotal()) - Integer.parseInt(job.getAmount());
+                detail.setTotal(Integer.toString(total));
+                jobRepository.save(job);
+                detailRepository.save(detail);
+                String destination = String.format("/queue/%s/notification", login);
+                String payload = String.format("%s", "DONE");
+                simpMessageSendingOperations.convertAndSend(destination, payload);
+                return new ResponseEntity<String>("✔ Token Valid", HttpStatus.OK);
+            }
         } else {
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>("❌ Token Invalid", HttpStatus.OK);
         }
     }
 

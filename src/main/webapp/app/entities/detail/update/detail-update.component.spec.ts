@@ -13,6 +13,9 @@ import { DetailFormService } from './detail-form.service';
 
 import { DetailUpdateComponent } from './detail-update.component';
 
+import { TranslateModule, TranslateService, MissingTranslationHandler } from '@ngx-translate/core';
+import { missingTranslationHandler } from 'app/config/translation.config';
+
 describe('Detail Management Update Component', () => {
   let comp: DetailUpdateComponent;
   let fixture: ComponentFixture<DetailUpdateComponent>;
@@ -23,7 +26,16 @@ describe('Detail Management Update Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, DetailUpdateComponent],
+      imports: [
+        HttpClientTestingModule,
+        DetailUpdateComponent,
+        TranslateModule.forRoot({
+          missingTranslationHandler: {
+            provide: MissingTranslationHandler,
+            useFactory: missingTranslationHandler,
+          },
+        }),
+      ],
       providers: [
         FormBuilder,
         {
@@ -36,6 +48,8 @@ describe('Detail Management Update Component', () => {
     })
       .overrideTemplate(DetailUpdateComponent, '')
       .compileComponents();
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setDefaultLang('en');
 
     fixture = TestBed.createComponent(DetailUpdateComponent);
     activatedRoute = TestBed.inject(ActivatedRoute);

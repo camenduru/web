@@ -178,8 +178,13 @@ export default class HomeComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next(message) {
-          // eslint-disable-next-line no-console
-          console.log('Status:', message);
+          if (message.includes('insufficient')) {
+            const notifyDiv = document.getElementById('notify');
+            if (notifyDiv) {
+              notifyDiv.classList.add('alert', 'alert-warning');
+              notifyDiv.textContent = message;
+            }
+          }
         },
       });
   }
