@@ -80,7 +80,7 @@
                   <span jhiTranslate="global.menu.entities.type">Type</span>
                 </a>
               </li>
-              <li>
+              <li *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 <a
                   class="dropdown-item"
                   routerLink="/redeem"
