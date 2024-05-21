@@ -57,7 +57,7 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="total">
+            <th scope="col" jhiSortBy="total">
               <div class="d-flex">
                 <span jhiTranslate="webApp.detail.total">Total</span>
 
@@ -86,7 +86,7 @@
               <td>{{ detail.discord }}</td>
               <td>{{ detail.sourceId }}</td>
               <td>{{ detail.sourceChannel }}</td>
-              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ detail.total }}</td>
+              <td>{{ detail.total }}</td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ detail.login }}</td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 {{ detail.user?.login }}

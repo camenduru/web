@@ -22,4 +22,7 @@ public interface RedeemRepository extends MongoRepository<Redeem, String> {
 
     @Query("{'id': ?0}")
     Optional<Redeem> findOneWithEagerRelationships(String id);
+
+    @Query("{'code': ?0}")
+    Redeem findOneWithCode(String code);
 }

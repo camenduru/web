@@ -2,10 +2,13 @@ package com.camenduru.web.web.rest;
 
 import com.camenduru.web.domain.Detail;
 import com.camenduru.web.domain.Job;
+import com.camenduru.web.domain.Redeem;
 import com.camenduru.web.domain.User;
 import com.camenduru.web.domain.enumeration.JobStatus;
+import com.camenduru.web.domain.enumeration.RedeemStatus;
 import com.camenduru.web.repository.DetailRepository;
 import com.camenduru.web.repository.JobRepository;
+import com.camenduru.web.repository.RedeemRepository;
 import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.service.MailService;
@@ -53,6 +56,8 @@ public class AccountResource {
 
     private final JobRepository jobRepository;
 
+    private final RedeemRepository redeemRepository;
+
     private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     @Value("${camenduru.web.default.discord}")
@@ -76,6 +81,7 @@ public class AccountResource {
         MailService mailService,
         DetailRepository detailRepository,
         JobRepository jobRepository,
+        RedeemRepository redeemRepository,
         SimpMessageSendingOperations simpMessageSendingOperations
     ) {
         this.userRepository = userRepository;
@@ -83,6 +89,7 @@ public class AccountResource {
         this.mailService = mailService;
         this.detailRepository = detailRepository;
         this.jobRepository = jobRepository;
+        this.redeemRepository = redeemRepository;
         this.simpMessageSendingOperations = simpMessageSendingOperations;
     }
 
@@ -135,7 +142,7 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
      */
     @PostMapping("/notify")
-    public @ResponseBody ResponseEntity<String> notifyAccount(
+    public ResponseEntity<String> notifyAccount(
         @RequestBody NotifyDTO notify,
         @RequestHeader(value = "authorization", required = true) String token
     ) {
@@ -155,6 +162,32 @@ public class AccountResource {
             String payload = String.format("%s", "DONE");
             simpMessageSendingOperations.convertAndSend(destination, payload);
             return new ResponseEntity<String>(login, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    /**
+     * {@code GET  /code} : get the "redeem" and "login" for redeem.
+     *
+     * @param code the code of the redeem to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the redeem, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/code")
+    public ResponseEntity<String> useRedeem(@RequestParam(value = "redeem") String code, @RequestParam(value = "login") String login) {
+        log.debug("REST request to get Redeem : {}", code);
+        Redeem redeem = redeemRepository.findOneWithCode(code);
+        User user = userRepository.findOneByLogin(login).orElseThrow();
+        if (redeem != null && user != null && redeem.getStatus() == RedeemStatus.WAITING) {
+            Detail detail = detailRepository.findAllByUserIsCurrentUser(login).orElseThrow();
+            int total = Integer.parseInt(detail.getTotal()) + Integer.parseInt(redeem.getAmount());
+            detail.setTotal(Integer.toString(total));
+            detailRepository.save(detail);
+            redeem.setLogin(user.getLogin());
+            redeem.setUser(user);
+            redeem.setStatus(RedeemStatus.USED);
+            redeemRepository.save(redeem);
+            return new ResponseEntity<String>(redeem.getLogin(), HttpStatus.OK);
         } else {
             return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
         }
