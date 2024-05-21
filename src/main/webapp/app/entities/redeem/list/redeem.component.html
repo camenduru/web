@@ -1,0 +1,149 @@
+<div>
+  <h2 id="page-heading" data-cy="RedeemHeading">
+    <span jhiTranslate="webApp.redeem.home.title">Redeems</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="webApp.redeem.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-redeem"
+        [routerLink]="['/redeem/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="webApp.redeem.home.createLabel">Create a new Redeem</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (redeems?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="webApp.redeem.home.notFound">No Redeems found</span>
+    </div>
+  }
+
+  @if (redeems && redeems.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="date">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.redeem.date">Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.redeem.status">Status</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="type">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.redeem.type">Type</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="author">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.redeem.author">Author</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="login">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.redeem.login">Login</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="amount">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.redeem.amount">Amount</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="code">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.redeem.code">Code</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="user.login">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.redeem.user">User</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (redeem of redeems; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/redeem', redeem.id, 'view']">{{ redeem.id }}</a>
+              </td>
+              <td>{{ redeem.date | formatMediumDatetime }}</td>
+              <td [jhiTranslate]="'webApp.RedeemStatus.' + (redeem.status ?? 'null')">
+                {{
+                  { null: '', WAITING: 'WAITING', USED: 'USED', FAILED: 'FAILED', CANCELED: 'CANCELED', EXPIRED: 'EXPIRED' }[
+                    redeem.status ?? 'null'
+                  ]
+                }}
+              </td>
+              <td>{{ redeem.type }}</td>
+              <td>{{ redeem.author }}</td>
+              <td>{{ redeem.login }}</td>
+              <td>{{ redeem.amount }}</td>
+              <td>{{ redeem.code }}</td>
+              <td>
+                {{ redeem.user?.login }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/redeem', redeem.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/redeem', redeem.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(redeem)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

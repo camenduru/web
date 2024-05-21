@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (redeem()) {
+      <div>
+        <h2 data-cy="redeemDetailsHeading"><span jhiTranslate="webApp.redeem.detail.title">Redeem</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ redeem()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.redeem.date">Date</span></dt>
+          <dd>
+            <span>{{ redeem()!.date | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.redeem.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'webApp.RedeemStatus.' + (redeem()!.status ?? 'null')">{{
+              { null: '', WAITING: 'WAITING', USED: 'USED', FAILED: 'FAILED', CANCELED: 'CANCELED', EXPIRED: 'EXPIRED' }[
+                redeem()!.status ?? 'null'
+              ]
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.redeem.type">Type</span></dt>
+          <dd>
+            <span>{{ redeem()!.type }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.redeem.author">Author</span></dt>
+          <dd>
+            <span>{{ redeem()!.author }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.redeem.login">Login</span></dt>
+          <dd>
+            <span>{{ redeem()!.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.redeem.amount">Amount</span></dt>
+          <dd>
+            <span>{{ redeem()!.amount }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.redeem.code">Code</span></dt>
+          <dd>
+            <span>{{ redeem()!.code }}</span>
+          </dd>
+          <dt><span jhiTranslate="webApp.redeem.user">User</span></dt>
+          <dd>
+            <span>{{ redeem()!.user?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/redeem', redeem()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

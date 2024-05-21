@@ -50,6 +50,28 @@ entity Job {
     login String required
 }
 
+enum RedeemStatus {
+    WAITING,
+    USED,
+    FAILED,
+    CANCELED,
+    EXPIRED
+}
+
+entity Redeem {
+    date Instant required
+    status RedeemStatus required
+    type String required
+    author String required
+    login String required
+    amount String required
+    code String required
+}
+
+relationship ManyToOne {
+    Redeem{user(login)} to User with builtInEntity
+}
+
 relationship ManyToOne {
     Job{user(login)} to User with builtInEntity
 }

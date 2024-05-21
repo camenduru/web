@@ -1,0 +1,12 @@
+{
+  "webApp": {
+    "RedeemStatus": {
+      "null": "",
+      "WAITING": "WAITING",
+      "USED": "USED",
+      "FAILED": "FAILED",
+      "CANCELED": "CANCELED",
+      "EXPIRED": "EXPIRED"
+    }
+  }
+}

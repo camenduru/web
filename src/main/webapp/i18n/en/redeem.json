@@ -1,0 +1,31 @@
+{
+  "webApp": {
+    "redeem": {
+      "home": {
+        "title": "Redeems",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Redeem",
+        "createOrEditLabel": "Create or edit a Redeem",
+        "notFound": "No Redeems found"
+      },
+      "created": "A new Redeem is created with identifier {{ param }}",
+      "updated": "A Redeem is updated with identifier {{ param }}",
+      "deleted": "A Redeem is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Redeem {{ id }}?"
+      },
+      "detail": {
+        "title": "Redeem"
+      },
+      "id": "ID",
+      "date": "Date",
+      "status": "Status",
+      "type": "Type",
+      "author": "Author",
+      "login": "Login",
+      "amount": "Amount",
+      "code": "Code",
+      "user": "User"
+    }
+  }
+}

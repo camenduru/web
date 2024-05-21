@@ -11,7 +11,8 @@
         "adminAuthority": "Authority",
         "job": "Job",
         "detail": "Detail",
-        "type": "Type"
+        "type": "Type",
+        "redeem": "Redeem"
       },
       "account": {
         "main": "Account",
