@@ -19,6 +19,11 @@
           Please Follow us for updates on: <a class="text-info" href="https://github.com/camenduru">GitHub</a> |
           <a class="text-info" href="https://twitter.com/camenduru">Twitter</a> |
           <a class="text-info" href="https://discord.gg/k5BwmmvJJU">Discord</a>
+          <br /><br />
+          <div>
+            <input type="text" [(ngModel)]="redeemCode" placeholder="Redeem Code" />
+            <button (click)="onRedeem()">Redeem</button> {{ responseText }}
+          </div>
         </div>
         <form class="d-flex" name="editForm" role="form" novalidate [formGroup]="editForm">
           <select

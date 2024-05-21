@@ -187,9 +187,9 @@ public class AccountResource {
             redeem.setUser(user);
             redeem.setStatus(RedeemStatus.USED);
             redeemRepository.save(redeem);
-            return new ResponseEntity<String>(redeem.getLogin(), HttpStatus.OK);
+            return new ResponseEntity<String>("✔ Code Redeemed", HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>("❌ Code Invalid", HttpStatus.OK);
         }
     }
 

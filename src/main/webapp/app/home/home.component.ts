@@ -54,6 +54,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   isSaving = false;
   subscription: Subscription | null = null;
   account = signal<Account | null>(null);
+  user: Account = {} as Account;
   types?: IType[];
   passiveTypes?: IType[];
   passiveObjects?: any = [];
@@ -146,6 +147,9 @@ export default class HomeComponent implements OnInit, OnDestroy {
     },
   };
 
+  redeemCode: string = '';
+  responseText: string = '';
+
   protected jobFormService = inject(JobFormService);
   protected jobService = inject(JobService);
   protected typeService = inject(TypeService);
@@ -180,6 +184,28 @@ export default class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  onRedeem(): void {
+    const url = `${location.protocol}/api/code?redeem=${this.redeemCode}&login=${this.user.login}`;
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return response.json();
+        } else {
+          return response.text();
+        }
+      })
+      .then(data => {
+        this.responseText = data;
+      })
+      .catch(error => {
+        this.responseText = error;
+      });
+  }
+
   changeSchema(event: Event): void {
     const selectedValue = (event.target as HTMLInputElement).value;
     if (this.types && this.types.length > 0) {
@@ -204,6 +230,13 @@ export default class HomeComponent implements OnInit, OnDestroy {
   trackId = (_index: number, item: IJob): string => this.jobService.getJobIdentifier(item);
 
   ngOnInit(): void {
+    this.accountService.getAuthenticationState().subscribe({
+      next: (user: Account | null) => {
+        if (user) {
+          this.user = user;
+        }
+      },
+    });
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
