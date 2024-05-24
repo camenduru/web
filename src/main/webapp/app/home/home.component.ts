@@ -401,6 +401,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected onSaveFinalize(): void {
     this.isSaving = false;
   }
+
+  protected openWindow(link: string) {
+    const url = `${link}`;
+    window.open(url);
+  }
 }
 
 interface PassiveObject {
