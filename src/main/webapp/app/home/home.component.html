@@ -161,37 +161,34 @@
               <ng-container *ngFor="let job of jobs; trackBy: trackId">
                 <ng-container *ngIf="job.result && job.result.includes(','); else resultNotArray">
                   <ng-container *ngFor="let link of job.result.slice(1, -1).trim().split(',')">
-                    <ng-container *ngIf="link.includes('.png')">
-                      <img
-                        class="item rounded"
-                        src="{{ link.slice(2, -1) }}"
-                        onclick="window.open(this.src)"
-                        style="cursor: pointer"
-                        width="445"
-                      />
-                    </ng-container>
-
                     <ng-container *ngIf="link.includes('.mp4')">
                       <video width="445" height="445" controls>
                         <source class="item rounded" src="{{ link.slice(1, -1) }}" type="video/mp4" />
                       </video>
                     </ng-container>
-
-                    <ng-container *ngIf="link.includes('.obj')">
+                    <ng-container *ngIf="link.includes('.png')">
                       <img
                         class="item rounded"
-                        src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[OBJ]#.png"
-                        (click)="openWindow(link.slice(2, -1))"
+                        src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[PNG]#.png"
+                        (click)="download(link.slice(2, -1))"
                         style="cursor: pointer"
                         width="445"
                       />
                     </ng-container>
-
+                    <ng-container *ngIf="link.includes('.obj')">
+                      <img
+                        class="item rounded"
+                        src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[OBJ]#.png"
+                        (click)="download(link.slice(2, -1))"
+                        style="cursor: pointer"
+                        width="445"
+                      />
+                    </ng-container>
                     <ng-container *ngIf="link.includes('.mtl')">
                       <img
                         class="item rounded"
                         src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[MTL]#.png"
-                        (click)="openWindow(link.slice(2, -1))"
+                        (click)="download(link.slice(2, -1))"
                         style="cursor: pointer"
                         width="445"
                       />
@@ -200,7 +197,7 @@
                 </ng-container>
                 <ng-template #resultNotArray>
                   <ng-container *ngIf="job.result && job.result.includes('.png')">
-                    <img class="item rounded" [src]="job.result" onclick="window.open(this.src)" style="cursor: pointer" width="445" />
+                    <img class="item rounded" [src]="job.result" (click)="download(job.result)" style="cursor: pointer" width="445" />
                   </ng-container>
                   <ng-container *ngIf="job.result && job.result.includes('.mp4')">
                     <video width="445" height="445" controls>
