@@ -402,7 +402,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.isSaving = false;
   }
 
-  protected download(link: string) {
+  protected download(link: string): void {
     const url = `${link}`;
     window.open(url);
   }
