@@ -57,6 +57,15 @@
                       <source class="item rounded" [src]="job.result" type="video/mp4" />
                     </video>
                   </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.glb')">
+                    <img
+                      class="item rounded"
+                      src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[GLB]#.png"
+                      (click)="download(job.result)"
+                      style="cursor: pointer"
+                      width="445"
+                    />
+                  </ng-container>
                 </ng-template>
               </ng-container>
             </div>
@@ -204,6 +213,15 @@
                         width="445"
                       />
                     </ng-container>
+                    <ng-container *ngIf="link.includes('.glb')">
+                      <img
+                        class="item rounded"
+                        src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[GLB]#.png"
+                        (click)="download(link.slice(2, -1))"
+                        style="cursor: pointer"
+                        width="445"
+                      />
+                    </ng-container>
                   </ng-container>
                 </ng-container>
                 <ng-template #resultNotArray>
@@ -214,6 +232,15 @@
                     <video width="445" height="445" controls>
                       <source class="item rounded" [src]="job.result" type="video/mp4" />
                     </video>
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.glb')">
+                    <img
+                      class="item rounded"
+                      src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[GLB]#.png"
+                      (click)="download(job.result)"
+                      style="cursor: pointer"
+                      width="445"
+                    />
                   </ng-container>
                 </ng-template>
               </ng-container>
