@@ -110,6 +110,7 @@
     "bootstrap": "5.3.3",
     "bootswatch": "5.3.3",
     "dayjs": "1.11.10",
+    "deep-chat": "^1.4.11",
     "ngx-infinite-scroll": "17.0.0",
     "ngx-schema-form": "^2.11.0",
     "rxjs": "7.8.1",

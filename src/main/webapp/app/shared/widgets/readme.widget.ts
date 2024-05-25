@@ -9,6 +9,4 @@ import { CommonModule } from '@angular/common';
   templateUrl: 'readme.widget.html',
   imports: [CommonModule],
 })
-export class ReadmeWidget extends ControlWidget {
-  showElement: boolean = true;
-}
+export class ReadmeWidget extends ControlWidget {}

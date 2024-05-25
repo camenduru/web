@@ -1,0 +1,66 @@
+<deep-chat
+  style="display: block; border-radius: 8px; width: 100%; height: 50vh; border: unset; background-color: #292929"
+  messageStyles='{
+    "default": {
+      "user": {"bubble": {"maxWidth": "100%", "backgroundColor": "#375a7f", "color": "white", "borderRadius": "4px"}},
+      "ai": {"bubble": {"maxWidth": "100%", "backgroundColor": "#545454", "color": "white", "borderRadius": "4px"}}
+    },
+    "loading": {
+      "bubble": {"backgroundColor": "#545454", "color": "white"}
+    }
+  }'
+  textInput='{
+    "styles": {
+      "container": {
+        "width": "100%",
+        "margin": "0",
+        "backgroundColor": "#36363b",
+        "border": "unset",
+        "color": "#adb5bd",
+        "borderTop": "1px solid #36363b",
+        "borderRadius": "0px",
+        "boxShadow": "unset"
+      },
+      "text": {
+        "fontSize": "1.05em",
+        "paddingTop": "11px",
+        "paddingBottom": "13px",
+        "paddingLeft": "12px",
+        "paddingRight": "2.4em"
+      }
+    },
+    "placeholder":{"text": "Welcome to the demo!"}
+  }'
+  submitButtonStyles='{
+    "submit": {
+      "container": {
+        "default": {"bottom": "0.7rem"}
+      },
+      "svg": {
+        "styles": {
+          "default": {
+            "filter": "brightness(0) saturate(100%) invert(70%) sepia(52%) saturate(5617%) hue-rotate(185deg) brightness(101%) contrast(101%)"
+          }
+        }
+      }
+    }
+  }'
+  auxiliaryStyle="
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: grey;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: unset;
+    }"
+  initialMessages='[
+    {"text": "What is the meaning of life?", "role": "user"},
+    {"text": "Seeking fulfillment and personal growth.", "role": "ai"}
+  ]'
+  demo="true"
+  stream="true"
+></deep-chat>
