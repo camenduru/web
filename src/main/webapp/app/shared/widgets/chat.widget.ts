@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ControlWidget } from 'ngx-schema-form';
 import { CommonModule } from '@angular/common';
 import 'deep-chat';
