@@ -200,13 +200,13 @@ export default class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
-  getBearerToken() {
-    var authToken = localStorage.getItem('jhi-authenticationToken') || sessionStorage.getItem('jhi-authenticationToken');
+  getBearerToken(): string {
+    let authToken = localStorage.getItem('jhi-authenticationToken') ?? sessionStorage.getItem('jhi-authenticationToken');
     if (authToken) {
       authToken = JSON.parse(authToken);
       return `Bearer ${authToken}`;
     }
-    return null;
+    return '';
   }
 
   onRedeem(): void {
