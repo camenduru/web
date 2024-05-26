@@ -25,6 +25,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -188,18 +191,25 @@ public class AccountResource {
      */
     @PostMapping(value = "/chat")
     public ChatTextRespose chatAccount(@RequestBody ChatRequestBody chat) {
-        String userLogin = SecurityUtils.getCurrentUserLogin()
-            .orElseThrow(() -> new AccountResourceException("Current user login not found"));
-
-        String stringChat = userLogin;
-
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResourceException("Current user login not found"));
+        String stringChat = login;
         try {
             stringChat = new ObjectMapper().writeValueAsString(chat);
-            System.out.println(stringChat);
+            String destination = String.format("/queue/%s/notification", login);
+            String payload = String.format("%s", stringChat);
+
+            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+            executorService.schedule(
+                () -> {
+                    simpMessageSendingOperations.convertAndSend(destination, payload);
+                    executorService.shutdown();
+                },
+                10,
+                TimeUnit.SECONDS
+            );
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
         return new ChatTextRespose(stringChat);
     }
 
