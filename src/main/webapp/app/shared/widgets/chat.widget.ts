@@ -41,6 +41,10 @@ export class ChatWidget extends ControlWidget implements OnInit {
   }
 
   requestInterceptor: RequestInterceptor = request => {
+    request.body = {
+      messages: request.body.messages,
+      model: JSON.stringify(this.schema.parameters),
+    };
     request.headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',

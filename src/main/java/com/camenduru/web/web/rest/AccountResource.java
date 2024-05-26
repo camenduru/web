@@ -21,6 +21,8 @@ import com.camenduru.web.service.dto.PasswordChangeDTO;
 import com.camenduru.web.web.rest.errors.*;
 import com.camenduru.web.web.rest.vm.KeyAndPasswordVM;
 import com.camenduru.web.web.rest.vm.ManagedUserVM;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -188,7 +190,17 @@ public class AccountResource {
     public ChatTextRespose chatAccount(@RequestBody ChatRequestBody chat) {
         String userLogin = SecurityUtils.getCurrentUserLogin()
             .orElseThrow(() -> new AccountResourceException("Current user login not found"));
-        return new ChatTextRespose(userLogin);
+
+        String stringChat = userLogin;
+
+        try {
+            stringChat = new ObjectMapper().writeValueAsString(chat);
+            System.out.println(stringChat);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return new ChatTextRespose(stringChat);
     }
 
     /**
