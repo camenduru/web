@@ -1,10 +1,10 @@
-package com.camenduru.web.service.dto;
+package com.camenduru.web.service.chat;
 
-public class DeepChatTextRespose {
+public class ChatTextRespose {
 
     private String text;
 
-    public DeepChatTextRespose(String text) {
+    public ChatTextRespose(String text) {
         if (text != null) {
             this.text = text;
         }

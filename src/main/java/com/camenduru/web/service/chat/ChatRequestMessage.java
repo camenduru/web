@@ -1,6 +1,6 @@
-package com.camenduru.web.service.dto;
+package com.camenduru.web.service.chat;
 
-public class DeepChatRequestMessageDTO {
+public class ChatRequestMessage {
 
     private String role;
     private String text;

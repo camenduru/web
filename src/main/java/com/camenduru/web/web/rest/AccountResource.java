@@ -13,9 +13,9 @@ import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.service.MailService;
 import com.camenduru.web.service.UserService;
+import com.camenduru.web.service.chat.ChatRequestBody;
+import com.camenduru.web.service.chat.ChatTextRespose;
 import com.camenduru.web.service.dto.AdminUserDTO;
-import com.camenduru.web.service.dto.DeepChatRequestBody;
-import com.camenduru.web.service.dto.DeepChatTextRespose;
 import com.camenduru.web.service.dto.NotifyDTO;
 import com.camenduru.web.service.dto.PasswordChangeDTO;
 import com.camenduru.web.web.rest.errors.*;
@@ -185,11 +185,11 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
      */
     @PostMapping(value = "/chat")
-    public DeepChatTextRespose chatAccount(
-        @RequestBody DeepChatRequestBody chat,
+    public ChatTextRespose chatAccount(
+        @RequestBody ChatRequestBody chat,
         @RequestHeader(value = "Authorization", required = true) String token
     ) {
-        return new DeepChatTextRespose("This is a response from a Java server. Thank you for your message!");
+        return new ChatTextRespose("This is a response from a Spring server.");
     }
 
     /**

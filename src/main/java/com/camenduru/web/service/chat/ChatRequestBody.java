@@ -1,12 +1,12 @@
-package com.camenduru.web.service.dto;
+package com.camenduru.web.service.chat;
 
-public class DeepChatRequestBody {
+public class ChatRequestBody {
 
-    private DeepChatRequestMessageDTO[] messages;
+    private ChatRequestMessage[] messages;
     private String model;
     private Boolean stream;
 
-    public DeepChatRequestMessageDTO[] getMessages() {
+    public ChatRequestMessage[] getMessages() {
         return this.messages;
     }
 
