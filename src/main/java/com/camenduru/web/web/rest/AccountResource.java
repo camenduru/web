@@ -185,11 +185,10 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
      */
     @PostMapping(value = "/chat")
-    public ChatTextRespose chatAccount(
-        @RequestBody ChatRequestBody chat,
-        @RequestHeader(value = "Authorization", required = true) String token
-    ) {
-        return new ChatTextRespose("This is a response from a Spring server.");
+    public ChatTextRespose chatAccount(@RequestBody ChatRequestBody chat) {
+        String userLogin = SecurityUtils.getCurrentUserLogin()
+            .orElseThrow(() -> new AccountResourceException("Current user login not found"));
+        return new ChatTextRespose(userLogin);
     }
 
     /**
@@ -199,9 +198,10 @@ public class AccountResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the redeem, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/code")
-    public ResponseEntity<String> useRedeem(@RequestParam(value = "redeem") String code, @RequestParam(value = "login") String login) {
+    public ResponseEntity<String> useRedeem(@RequestParam(value = "redeem") String code) {
         log.debug("REST request to get Redeem : {}", code);
         Redeem redeem = redeemRepository.findOneWithCode(code);
+        String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResourceException("Current user login not found"));
         User user = userRepository.findOneByLogin(login).orElseThrow();
         if (redeem != null && user != null && redeem.getStatus() == RedeemStatus.WAITING) {
             Detail detail = detailRepository.findAllByUserIsCurrentUser(login).orElseThrow();

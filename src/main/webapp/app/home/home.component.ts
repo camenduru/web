@@ -55,6 +55,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   subscription: Subscription | null = null;
   account = signal<Account | null>(null);
   user: Account = {} as Account;
+  authToken: any = {};
   types?: IType[];
   passiveTypes?: IType[];
   passiveObjects?: any = [];
@@ -162,6 +163,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   protected trackerService = inject(TrackerService);
 
   private readonly destroy$ = new Subject<void>();
+
   public constructor(private http: HttpClient) {
     this.queryTypeBackend().subscribe({
       next: (res: TypeEntityArrayResponseType) => {
@@ -198,9 +200,23 @@ export default class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
+  getBearerToken() {
+    var authToken = localStorage.getItem('jhi-authenticationToken') || sessionStorage.getItem('jhi-authenticationToken');
+    if (authToken) {
+      authToken = JSON.parse(authToken);
+      return `Bearer ${authToken}`;
+    }
+    return null;
+  }
+
   onRedeem(): void {
-    const url = `${location.protocol}/api/code?redeem=${this.redeemCode}&login=${this.user.login}`;
-    fetch(url)
+    const url = `${location.protocol}/api/code?redeem=${this.redeemCode}`;
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: this.authToken,
+      },
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -256,6 +272,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
         tap(() => this.load()),
       )
       .subscribe();
+    this.authToken = this.getBearerToken();
   }
 
   login(): void {

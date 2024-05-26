@@ -1,8 +1,8 @@
 <deep-chat
+  [requestInterceptor]="requestInterceptor"
   request='{
     "url": "/api/chat",
-    "method": "POST",
-    "headers": {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "token"}
+    "method": "POST"
   }'
   style="display: block; border-radius: 8px; width: 100%; height: 50vh; border: unset; background-color: #292929"
   messageStyles='{
