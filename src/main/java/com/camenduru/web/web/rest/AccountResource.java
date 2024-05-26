@@ -14,6 +14,8 @@ import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.service.MailService;
 import com.camenduru.web.service.UserService;
 import com.camenduru.web.service.dto.AdminUserDTO;
+import com.camenduru.web.service.dto.DeepChatRequestBody;
+import com.camenduru.web.service.dto.DeepChatTextRespose;
 import com.camenduru.web.service.dto.NotifyDTO;
 import com.camenduru.web.service.dto.PasswordChangeDTO;
 import com.camenduru.web.web.rest.errors.*;
@@ -144,7 +146,7 @@ public class AccountResource {
     @PostMapping("/notify")
     public ResponseEntity<String> notifyAccount(
         @RequestBody NotifyDTO notify,
-        @RequestHeader(value = "authorization", required = true) String token
+        @RequestHeader(value = "Authorization", required = true) String token
     ) {
         if (token.equals(webToken)) {
             String result = notify.getResult();
@@ -174,6 +176,20 @@ public class AccountResource {
         } else {
             return new ResponseEntity<String>("❌ Token Invalid", HttpStatus.OK);
         }
+    }
+
+    /**
+     * {@code POST  /chat} : chat the registered user.
+     *
+     * @param key the activation key.
+     * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
+     */
+    @PostMapping(value = "/chat")
+    public DeepChatTextRespose chatAccount(
+        @RequestBody DeepChatRequestBody chat,
+        @RequestHeader(value = "Authorization", required = true) String token
+    ) {
+        return new DeepChatTextRespose("This is a response from a Java server. Thank you for your message!");
     }
 
     /**

@@ -1,4 +1,9 @@
 <deep-chat
+  request='{
+    "url": "/api/chat",
+    "method": "POST",
+    "headers": {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "token"}
+  }'
   style="display: block; border-radius: 8px; width: 100%; height: 50vh; border: unset; background-color: #292929"
   messageStyles='{
     "default": {
@@ -34,7 +39,11 @@
   submitButtonStyles='{
     "submit": {
       "container": {
-        "default": {"bottom": "0.7rem"}
+        "default": {
+          "transform": "scale(1.21)",
+          "marginBottom": "-3px",
+          "marginRight": "0.4em"
+        }
       },
       "svg": {
         "styles": {
