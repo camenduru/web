@@ -45,6 +45,10 @@ https://github.com/naver/egjs-grid <br />
 
 https://github.com/guillotinaweb/ngx-schema-form <br />
 
+#### 💬 Chat System
+
+https://github.com/OvidijusParsiunas/deep-chat <br />
+
 ### 🖼 Output
 
 ![Screenshot 2024-05-01 062201](https://github.com/camenduru/web/assets/54370274/8785ceea-4871-405d-a10e-ef6855e1b907)
