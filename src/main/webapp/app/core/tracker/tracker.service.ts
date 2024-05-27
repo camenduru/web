@@ -77,10 +77,10 @@ export class TrackerService {
   }
 
   public subscribeToNotifyNotify(observer?: Partial<Observer<string>>): Subscription {
-    const DESTINATION_NOTIFICATION = '/notify/' + this.account.login;
+    const DESTINATION_NOTIFY = '/notify/' + this.account.login;
     return (
       this.stomp
-        .watch(DESTINATION_NOTIFICATION)
+        .watch(DESTINATION_NOTIFY)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         .pipe(
           map(imessage => imessage.body),
