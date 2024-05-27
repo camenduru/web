@@ -195,7 +195,7 @@ public class AccountResource {
         String stringChat = login;
         try {
             stringChat = new ObjectMapper().writeValueAsString(chat);
-            String destination = String.format("/queue/%s/notification", login);
+            String destination = String.format("/queue/%s/chat", login);
             String payload = String.format("%s", stringChat);
 
             ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -204,7 +204,7 @@ public class AccountResource {
                     simpMessageSendingOperations.convertAndSend(destination, payload);
                     executorService.shutdown();
                 },
-                10,
+                1,
                 TimeUnit.SECONDS
             );
         } catch (JsonProcessingException e) {

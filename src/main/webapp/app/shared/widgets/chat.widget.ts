@@ -74,7 +74,7 @@ export class ChatWidget extends ControlWidget implements OnInit {
           },
         );
 
-      this.trackerService.subscribeToNotify('').subscribe({
+      this.trackerService.subscribeToChat('').subscribe({
         next(message) {
           signals.onResponse({ text: message });
         },
