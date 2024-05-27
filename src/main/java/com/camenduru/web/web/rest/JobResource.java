@@ -264,6 +264,37 @@ public class JobResource {
     }
 
     /**
+     * {@code GET  /jobs} : get all the jobs with type not starting with chat.
+     *
+     * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of jobs in body.
+     */
+    @GetMapping("/home")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    public ResponseEntity<List<Job>> getAllJobsWithTypeNotStartingWithChat(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Jobs");
+        Page<Job> page;
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            if (eagerload) {
+                page = jobRepository.findAllWithEagerRelationshipsAndTypeNotStartingWithChat(pageable);
+            } else {
+                page = jobRepository.findAll(pageable);
+            }
+        } else {
+            page = jobRepository.findAllByUserIsCurrentUserAndTypeNotStartingWithChat(
+                pageable,
+                SecurityUtils.getCurrentUserLogin().orElseThrow()
+            );
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
      * {@code GET  /jobs/:id} : get the "id" job.
      *
      * @param id the id of the job to retrieve.

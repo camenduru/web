@@ -334,7 +334,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
       eagerload: true,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
-    return this.jobService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+    return this.jobService.queryForHome(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
   protected onTypeResponseSuccess(response: TypeEntityArrayResponseType): void {
