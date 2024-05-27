@@ -230,12 +230,6 @@ public class AccountResource {
         job.setCommand(combinedJsonChat.toString());
         job = jobRepository.save(job);
 
-        if (job.getType().startsWith("chat")) {
-            String destination = String.format("/topic/%s/chat", login);
-            String payload = combinedJsonChat.toString();
-            simpMessageSendingOperations.convertAndSend(destination, payload);
-        }
-
         return new ResponseEntity<String>("✔ Valid", HttpStatus.OK);
     }
 
