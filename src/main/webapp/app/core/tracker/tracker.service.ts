@@ -18,7 +18,8 @@ const DESTINATION_ACTIVITY = '/topic/activity';
 @Injectable({ providedIn: 'root' })
 export class TrackerService {
   account: Account = {} as Account;
-  private messageSubject = new Subject<string>();
+  private messageNotify = new Subject<string>();
+  private messageChat = new Subject<string>();
 
   private rxStomp?: RxStomp;
   private routerSubscription: Subscription | null = null;
@@ -49,8 +50,8 @@ export class TrackerService {
         .pipe(filter((event: Event) => event instanceof NavigationEnd))
         .subscribe(() => this.sendActivity());
 
-      this.subscribeToNotifyNotify();
-      this.subscribeToChatChat();
+      this.subscribeToNotifyUser();
+      this.subscribeToChatUser();
     });
   }
 
@@ -72,11 +73,11 @@ export class TrackerService {
   }
 
   public subscribeToNotify(message: string): Observable<string> {
-    this.messageSubject.next(message);
-    return this.messageSubject.asObservable();
+    this.messageNotify.next(message);
+    return this.messageNotify.asObservable();
   }
 
-  public subscribeToNotifyNotify(observer?: Partial<Observer<string>>): Subscription {
+  public subscribeToNotifyUser(observer?: Partial<Observer<string>>): Subscription {
     const DESTINATION_NOTIFY = '/notify/' + this.account.login;
     return (
       this.stomp
@@ -91,11 +92,11 @@ export class TrackerService {
   }
 
   public subscribeToChat(message: string): Observable<string> {
-    this.messageSubject.next(message);
-    return this.messageSubject.asObservable();
+    this.messageChat.next(message);
+    return this.messageChat.asObservable();
   }
 
-  public subscribeToChatChat(observer?: Partial<Observer<string>>): Subscription {
+  public subscribeToChatUser(observer?: Partial<Observer<string>>): Subscription {
     const DESTINATION_CHAT = '/chat/' + this.account.login;
     return (
       this.stomp
