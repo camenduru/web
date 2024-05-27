@@ -1,13 +1,31 @@
 <div class="footer">
   <div class="card jh-card">
-    <div class="card-body text-center">
-      <a class="card-link" href="https://github.com/camenduru">GitHub</a>
-      <a class="card-link" href="https://github.com/camenduru/web">Privacy</a>
-      <a class="card-link" href="https://github.com/camenduru/web">TOS</a>
-      <a class="card-link" href="https://www.youtube.com/@camenduru">YouTube</a>
-      <a class="card-link" href="https://twitter.com/camenduru">X</a>
-      <a class="card-link" href="https://discord.gg/k5BwmmvJJU">Discord</a>
-      <span>&nbsp;&nbsp;&nbsp;</span>
+    <div class="card-body text-start">
+      <span class="text-warning">Tost</span> is a free, non-profit,
+      <a class="text-info" href="https://github.com/camenduru/web">open-source</a> service that serves inference for the latest AI papers
+      using the <a class="text-info" href="https://github.com/camenduru/non-profit-gpu-cluster">Non Profit GPU Cluster</a>.
+      <span class="text-warning">Tost</span>'s simple job pool architecture allows anyone to connect their home GPUs to the
+      <span class="text-warning">Tost</span> Server. <span class="text-warning">Tost</span> does not store any inference data; all data
+      expires within 12 hours. However, <span class="text-warning">Tost</span> offers the option to
+      <a class="text-info" href="https://www.youtube.com/watch?v=dtMStkmWKJY">send data to your Discord channel</a>.
+      <span class="text-warning">Tost</span>'s budget is supported by companies and individual sponsors.
+      <span class="card-link">Please consider sponsoring us through:</span>
+      <a class="card-link text-success" href="https://github.com/sponsors/camenduru">GitHub Sponsors</a>
+      <a class="card-link text-success" href="https://www.patreon.com/camenduru">Patreon</a>
+      <br /><br />
+      <div class="card-body text-end">
+        <span class="card-link">Please Follow us for updates on:</span>
+        <a class="card-link" href="https://github.com/camenduru">GitHub</a>
+        <a class="card-link" href="https://twitter.com/camenduru">X</a>
+        <a class="card-link" href="https://discord.gg/k5BwmmvJJU">Discord</a>
+        <a class="card-link" href="https://www.youtube.com/@camenduru">YouTube</a>
+        <a class="card-link" href="https://github.com/camenduru/web">Privacy</a>
+        <a class="card-link" href="https://github.com/camenduru/web">TOS</a>
+        <span class="card-link">
+          <input type="text" [(ngModel)]="redeemCode" placeholder="Tost Wallet Code" />
+          <button (click)="onRedeem()">Redeem</button> {{ responseText }}
+        </span>
+      </div>
     </div>
   </div>
 </div>

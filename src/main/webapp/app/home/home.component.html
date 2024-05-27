@@ -90,30 +90,6 @@
         </div>
       } @else {
         <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
-          <div id="aboutDiv" class="alert alert-dismissible alert-primary">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" (click)="aboutDivRemove()"></button>
-            <span class="text-warning">Tost</span> is a free, non-profit,
-            <a class="text-info" href="https://github.com/camenduru/web">open-source</a> service that serves inference for the latest AI
-            papers using the <a class="text-info" href="https://github.com/camenduru/non-profit-gpu-cluster">Non Profit GPU Cluster</a>.
-            <span class="text-warning">Tost</span>'s simple job pool architecture allows anyone to connect their home GPUs to the
-            <span class="text-warning">Tost</span> Server. <br /><br />
-            <span class="text-warning">Tost</span> does not store any inference data; all data expires within 12 hours. However,
-            <span class="text-warning">Tost</span> offers the option to
-            <a class="text-info" href="https://www.youtube.com/watch?v=dtMStkmWKJY">send data to your Discord channel</a>.
-            <span class="text-warning">Tost</span>'s budget is supported by companies and individual sponsors. <br /><br />
-            Please consider sponsoring us through:
-            <a class="text-success" href="https://github.com/sponsors/camenduru">GitHub Sponsors</a> |
-            <a class="text-success" href="https://www.patreon.com/camenduru">Patreon</a>
-            <br />
-            Please Follow us for updates on: <a class="text-info" href="https://github.com/camenduru">GitHub</a> |
-            <a class="text-info" href="https://twitter.com/camenduru">Twitter</a> |
-            <a class="text-info" href="https://discord.gg/k5BwmmvJJU">Discord</a>
-            <br /><br />
-            <div>
-              <input type="text" [(ngModel)]="redeemCode" placeholder="Tost Wallet Code" />
-              <button (click)="onRedeem()">Redeem</button> {{ responseText }}
-            </div>
-          </div>
           <form class="d-flex" name="editForm" role="form" novalidate [formGroup]="editForm">
             <select
               (change)="changeSchema($event)"

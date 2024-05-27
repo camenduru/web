@@ -55,7 +55,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
   subscription: Subscription | null = null;
   account = signal<Account | null>(null);
   user: Account = {} as Account;
-  authToken: any = {};
   types?: IType[];
   passiveTypes?: IType[];
   passiveObjects?: any = [];
@@ -148,9 +147,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
     },
   };
 
-  redeemCode: string = '';
-  responseText: string = '';
-
   protected jobFormService = inject(JobFormService);
   protected jobService = inject(JobService);
   protected typeService = inject(TypeService);
@@ -200,37 +196,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
       });
   }
 
-  getBearerToken(): string {
-    let authToken = localStorage.getItem('jhi-authenticationToken') ?? sessionStorage.getItem('jhi-authenticationToken');
-    if (authToken) {
-      authToken = JSON.parse(authToken);
-      return `Bearer ${authToken}`;
-    }
-    return '';
-  }
-
-  onRedeem(): void {
-    const url = `${location.protocol}/api/code?redeem=${this.redeemCode}`;
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: this.authToken,
-      },
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.text();
-      })
-      .then(data => {
-        this.responseText = data;
-      })
-      .catch(error => {
-        this.responseText = error;
-      });
-  }
-
   changeSchema(event: Event): void {
     const selectedValue = (event.target as HTMLInputElement).value;
     if (this.types && this.types.length > 0) {
@@ -239,13 +204,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
       this.activeSchema = jsonSchema as unknown as ISchema;
       const jsonModel = type?.model ? JSON.parse(type.model) : null;
       this.activeModel = jsonModel;
-    }
-  }
-
-  public aboutDivRemove(): void {
-    const aboutDiv = document.getElementById('aboutDiv');
-    if (aboutDiv) {
-      aboutDiv.remove();
     }
   }
 
@@ -272,7 +230,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
         tap(() => this.load()),
       )
       .subscribe();
-    this.authToken = this.getBearerToken();
   }
 
   login(): void {
