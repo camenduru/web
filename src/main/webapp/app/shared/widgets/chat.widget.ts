@@ -53,12 +53,12 @@ export class ChatWidget extends ControlWidget implements OnInit {
     url: '/api/chat',
     method: 'POST',
     handler: (body, signals: Signals) => {
-      body.model = JSON.stringify(this.formProperty.findRoot().value);
+      body.model = this.formProperty.findRoot().value;
 
       this.http
         .post(
           '/api/chat',
-          { messages: body.messages, model: body.model },
+          { messages: body.messages, model: JSON.stringify(body.model) },
           {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',

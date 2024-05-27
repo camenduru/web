@@ -3,18 +3,20 @@ package com.camenduru.web.web.rest;
 import com.camenduru.web.domain.Detail;
 import com.camenduru.web.domain.Job;
 import com.camenduru.web.domain.Redeem;
+import com.camenduru.web.domain.Type;
 import com.camenduru.web.domain.User;
+import com.camenduru.web.domain.enumeration.JobSource;
 import com.camenduru.web.domain.enumeration.JobStatus;
 import com.camenduru.web.domain.enumeration.RedeemStatus;
 import com.camenduru.web.repository.DetailRepository;
 import com.camenduru.web.repository.JobRepository;
 import com.camenduru.web.repository.RedeemRepository;
+import com.camenduru.web.repository.TypeRepository;
 import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.SecurityUtils;
 import com.camenduru.web.service.MailService;
 import com.camenduru.web.service.UserService;
 import com.camenduru.web.service.chat.ChatRequestBody;
-import com.camenduru.web.service.chat.ChatTextRespose;
 import com.camenduru.web.service.dto.AdminUserDTO;
 import com.camenduru.web.service.dto.NotifyDTO;
 import com.camenduru.web.service.dto.PasswordChangeDTO;
@@ -23,11 +25,12 @@ import com.camenduru.web.web.rest.vm.KeyAndPasswordVM;
 import com.camenduru.web.web.rest.vm.ManagedUserVM;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import jakarta.validation.Valid;
+import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,17 +57,12 @@ public class AccountResource {
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
 
     private final UserRepository userRepository;
-
     private final UserService userService;
-
     private final MailService mailService;
-
     private final DetailRepository detailRepository;
-
     private final JobRepository jobRepository;
-
     private final RedeemRepository redeemRepository;
-
+    private final TypeRepository typeRepository;
     private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     @Value("${camenduru.web.default.discord}")
@@ -89,6 +87,7 @@ public class AccountResource {
         DetailRepository detailRepository,
         JobRepository jobRepository,
         RedeemRepository redeemRepository,
+        TypeRepository typeRepository,
         SimpMessageSendingOperations simpMessageSendingOperations
     ) {
         this.userRepository = userRepository;
@@ -97,6 +96,7 @@ public class AccountResource {
         this.detailRepository = detailRepository;
         this.jobRepository = jobRepository;
         this.redeemRepository = redeemRepository;
+        this.typeRepository = typeRepository;
         this.simpMessageSendingOperations = simpMessageSendingOperations;
     }
 
@@ -164,7 +164,7 @@ public class AccountResource {
                 String destination = String.format("/queue/%s/notification", login);
                 String payload = String.format("%s", result);
                 simpMessageSendingOperations.convertAndSend(destination, payload);
-                return new ResponseEntity<String>("✔ Token Valid", HttpStatus.OK);
+                return new ResponseEntity<String>("✔ Valid", HttpStatus.OK);
             } else {
                 job.setStatus(JobStatus.DONE);
                 job.setResult(result);
@@ -173,13 +173,19 @@ public class AccountResource {
                 detail.setTotal(Integer.toString(total));
                 jobRepository.save(job);
                 detailRepository.save(detail);
-                String destination = String.format("/queue/%s/notification", login);
-                String payload = String.format("%s", "DONE");
-                simpMessageSendingOperations.convertAndSend(destination, payload);
-                return new ResponseEntity<String>("✔ Token Valid", HttpStatus.OK);
+                if (job.getType().startsWith("chat")) {
+                    String destination = String.format("/queue/%s/chat", login);
+                    String payload = String.format("%s", result);
+                    simpMessageSendingOperations.convertAndSend(destination, payload);
+                } else {
+                    String destination = String.format("/queue/%s/notification", login);
+                    String payload = String.format("%s", "DONE");
+                    simpMessageSendingOperations.convertAndSend(destination, payload);
+                }
+                return new ResponseEntity<String>("✔ Valid", HttpStatus.OK);
             }
         } else {
-            return new ResponseEntity<String>("❌ Token Invalid", HttpStatus.OK);
+            return new ResponseEntity<String>("❌ Invalid", HttpStatus.OK);
         }
     }
 
@@ -190,27 +196,41 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
      */
     @PostMapping(value = "/chat")
-    public ChatTextRespose chatAccount(@RequestBody ChatRequestBody chat) {
+    public ResponseEntity<String> chatAccount(@RequestBody ChatRequestBody chat) {
         String login = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResourceException("Current user login not found"));
-        String stringChat = login;
-        try {
-            stringChat = new ObjectMapper().writeValueAsString(chat);
-            String destination = String.format("/queue/%s/chat", login);
-            String payload = String.format("%s", stringChat);
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+        Detail detail = detailRepository.findAllByUserIsCurrentUser(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+        JsonObject jsonModel = JsonParser.parseString(chat.getModel()).getAsJsonObject();
+        Type typeC = typeRepository.findByType(jsonModel.get("model").getAsString()).orElseThrow();
 
-            ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-            executorService.schedule(
-                () -> {
-                    simpMessageSendingOperations.convertAndSend(destination, payload);
-                    executorService.shutdown();
-                },
-                1,
-                TimeUnit.SECONDS
-            );
+        JsonObject combinedJsonChat = new JsonObject();
+        try {
+            JsonObject jsonChat = JsonParser.parseString(new ObjectMapper().writeValueAsString(chat)).getAsJsonObject();
+            JsonArray jsonChatMessages = jsonChat.get("messages").getAsJsonArray();
+            JsonObject jsonChatModel = JsonParser.parseString(jsonChat.get("model").getAsString()).getAsJsonObject();
+            combinedJsonChat.add("messages", jsonChatMessages);
+            combinedJsonChat.add("model", jsonChatModel);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        return new ChatTextRespose(stringChat);
+
+        Job job = new Job();
+        job.setDate(Instant.now());
+        job.setStatus(JobStatus.WAITING);
+        job.setLogin(login);
+        job.setSource(JobSource.WEB);
+        job.setUser(user);
+        job.setSourceChannel(detail.getSourceChannel());
+        job.setSourceId(detail.getSourceId());
+        job.setDiscord(detail);
+        job.setTotal(detail);
+        job.setType(typeC.getType());
+        job.setAmount(typeC.getAmount());
+        job.setResult(combinedJsonChat.get("messages").toString());
+        job.setCommand(combinedJsonChat.toString());
+        job = jobRepository.save(job);
+
+        return new ResponseEntity<String>("✔ Valid", HttpStatus.OK);
     }
 
     /**
