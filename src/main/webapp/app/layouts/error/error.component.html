@@ -1,12 +1,7 @@
 <div>
   <div class="row">
-    <div class="col-md-4">
-      <span class="hipster img-fluid rounded"></span>
-    </div>
-
-    <div class="col-md-8">
-      <h1 jhiTranslate="error.title">Error page!</h1>
-
+    <div class="col-md-12">
+      <h3 jhiTranslate="error.title">Error page!</h3>
       @if (errorMessage()) {
         <div class="alert alert-danger">{{ errorMessage() }}</div>
       }
