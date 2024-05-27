@@ -161,7 +161,7 @@ public class AccountResource {
             if (result.contains("insufficient")) {
                 job.setStatus(JobStatus.EXPIRED);
                 jobRepository.save(job);
-                String destination = String.format("/topic/%s/notification", login);
+                String destination = String.format("/notify/%s", login);
                 String payload = String.format("%s", result);
                 simpMessageSendingOperations.convertAndSend(destination, payload);
                 return new ResponseEntity<String>("✔ Valid", HttpStatus.OK);
@@ -174,11 +174,11 @@ public class AccountResource {
                 jobRepository.save(job);
                 detailRepository.save(detail);
                 if (job.getType().startsWith("chat")) {
-                    String destination = String.format("/topic/%s/chat", login);
+                    String destination = String.format("/chat/%s", login);
                     String payload = String.format("%s", result);
                     simpMessageSendingOperations.convertAndSend(destination, payload);
                 } else {
-                    String destination = String.format("/topic/%s/notification", login);
+                    String destination = String.format("/notify/%s", login);
                     String payload = String.format("%s", "DONE");
                     simpMessageSendingOperations.convertAndSend(destination, payload);
                 }
@@ -229,7 +229,11 @@ public class AccountResource {
         job.setResult(combinedJsonChat.get("messages").toString());
         job.setCommand(combinedJsonChat.toString());
         job = jobRepository.save(job);
-
+        if (job.getType().startsWith("chat")) {
+            String destination = String.format("/chat/%s", login);
+            String payload = combinedJsonChat.toString();
+            simpMessageSendingOperations.convertAndSend(destination, payload);
+        }
         return new ResponseEntity<String>("✔ Valid", HttpStatus.OK);
     }
 

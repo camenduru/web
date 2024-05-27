@@ -49,8 +49,8 @@ export class TrackerService {
         .pipe(filter((event: Event) => event instanceof NavigationEnd))
         .subscribe(() => this.sendActivity());
 
-      this.subscribeToNotifyTopic();
-      this.subscribeToChatTopic();
+      this.subscribeToNotifyNotify();
+      this.subscribeToChatChat();
     });
   }
 
@@ -76,8 +76,8 @@ export class TrackerService {
     return this.messageSubject.asObservable();
   }
 
-  public subscribeToNotifyTopic(observer?: Partial<Observer<string>>): Subscription {
-    const DESTINATION_NOTIFICATION = '/topic/' + this.account.login + '/notification';
+  public subscribeToNotifyNotify(observer?: Partial<Observer<string>>): Subscription {
+    const DESTINATION_NOTIFICATION = '/notify/' + this.account.login;
     return (
       this.stomp
         .watch(DESTINATION_NOTIFICATION)
@@ -95,8 +95,8 @@ export class TrackerService {
     return this.messageSubject.asObservable();
   }
 
-  public subscribeToChatTopic(observer?: Partial<Observer<string>>): Subscription {
-    const DESTINATION_CHAT = '/topic/' + this.account.login + '/chat';
+  public subscribeToChatChat(observer?: Partial<Observer<string>>): Subscription {
+    const DESTINATION_CHAT = '/chat/' + this.account.login;
     return (
       this.stomp
         .watch(DESTINATION_CHAT)
