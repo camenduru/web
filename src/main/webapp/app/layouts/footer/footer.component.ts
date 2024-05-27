@@ -48,11 +48,4 @@ export default class FooterComponent implements OnInit {
         this.responseText = error;
       });
   }
-
-  public aboutDivRemove(): void {
-    const aboutDiv = document.getElementById('aboutDiv');
-    if (aboutDiv) {
-      aboutDiv.remove();
-    }
-  }
 }
