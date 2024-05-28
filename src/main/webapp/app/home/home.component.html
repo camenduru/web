@@ -121,7 +121,7 @@
           <br />
           <sf-form [schema]="activeSchema" [model]="activeModel" [actions]="activeActions"></sf-form>
           <form name="editForm" role="form" novalidate [formGroup]="editForm">
-            <button class="llm btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
+            <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
               <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
             </button>
           </form>

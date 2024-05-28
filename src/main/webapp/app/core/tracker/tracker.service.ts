@@ -117,6 +117,14 @@ export class TrackerService {
     });
   }
 
+  sendNotify(): void {
+    const DESTINATION_NOTIFY = '/notify/' + this.account.login;
+    this.stomp.publish({
+      destination: DESTINATION_NOTIFY,
+      body: 'DONE',
+    });
+  }
+
   private connect(): void {
     this.updateCredentials();
     return this.stomp.activate();

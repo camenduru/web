@@ -85,6 +85,12 @@ public class AccountResource {
     @Value("${camenduru.web.token}")
     private String webToken;
 
+    @Value("${camenduru.web.default.result}")
+    private String camenduruWebResult;
+
+    @Value("${camenduru.web.default.result.suffix}")
+    private String camenduruWebResultSuffix;
+
     public AccountResource(
         UserRepository userRepository,
         UserService userService,
@@ -247,8 +253,13 @@ public class AccountResource {
         job.setType(typeC.getType());
         job.setAmount(typeC.getAmount());
         job.setResult(combinedJsonChat.get("messages").toString());
+        job.setResult(camenduruWebResult + "512x512" + camenduruWebResultSuffix);
         job.setCommand(combinedJsonChat.toString());
         job = jobRepository.save(job);
+
+        String destination = String.format("/notify/%s", login);
+        String payload = String.format("%s", "DONE");
+        simpMessageSendingOperations.convertAndSend(destination, payload);
 
         return new ResponseEntity<String>("✔ Valid", HttpStatus.OK);
     }

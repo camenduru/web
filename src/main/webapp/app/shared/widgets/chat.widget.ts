@@ -10,6 +10,7 @@ import 'deep-chat';
 import { Signals } from 'deep-chat/dist/types/handler';
 import { Request } from 'deep-chat/dist/types/request';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -74,11 +75,18 @@ export class ChatWidget extends ControlWidget implements OnInit {
           },
         );
 
-      this.trackerService.subscribeToChat('').subscribe({
-        next(message) {
-          signals.onResponse({ text: message });
-        },
-      });
+      this.trackerService
+        .subscribeToChat('')
+        .pipe(
+          tap(() => {
+            this.trackerService.sendNotify();
+          }),
+        )
+        .subscribe({
+          next(message) {
+            signals.onResponse({ text: message });
+          },
+        });
     },
   };
 }
