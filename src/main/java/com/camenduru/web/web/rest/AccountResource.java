@@ -29,6 +29,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import jakarta.validation.Valid;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Instant;
 import java.util.*;
 import org.apache.commons.lang3.StringUtils;
@@ -175,7 +180,22 @@ public class AccountResource {
                 detailRepository.save(detail);
                 if (job.getType().startsWith("chat")) {
                     String destination = String.format("/chat/%s", login);
-                    String payload = String.format("%s", result);
+                    StringBuilder content = new StringBuilder();
+                    try {
+                        URL url = new URL(result);
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                        connection.setRequestMethod("GET");
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            content.append(line);
+                            content.append(System.lineSeparator());
+                        }
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    String payload = String.format("%s", content.toString());
                     simpMessageSendingOperations.convertAndSend(destination, payload);
                 } else {
                     String destination = String.format("/notify/%s", login);

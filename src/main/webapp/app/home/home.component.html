@@ -66,6 +66,15 @@
                       width="445"
                     />
                   </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.txt')">
+                    <img
+                      class="item rounded"
+                      src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[TXT]#.png"
+                      (click)="download(job.result)"
+                      style="cursor: pointer"
+                      width="445"
+                    />
+                  </ng-container>
                 </ng-template>
               </ng-container>
             </div>
@@ -213,6 +222,15 @@
                     <img
                       class="item rounded"
                       src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[GLB]#.png"
+                      (click)="download(job.result)"
+                      style="cursor: pointer"
+                      width="445"
+                    />
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.txt')">
+                    <img
+                      class="item rounded"
+                      src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[TXT]#.png"
                       (click)="download(job.result)"
                       style="cursor: pointer"
                       width="445"
