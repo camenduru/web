@@ -19,12 +19,16 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -110,8 +114,24 @@ public class JobResource {
                 JsonElement jsonElement = JsonParser.parseString(jsonString);
                 if (jsonElement.isJsonObject()) {
                     JsonObject jsonObject = jsonElement.getAsJsonObject();
-                    width = jsonObject.get("width").getAsInt();
-                    height = jsonObject.get("height").getAsInt();
+                    if (jsonObject.has("width") && jsonObject.has("height")) {
+                        width = jsonObject.get("width").getAsInt();
+                        height = jsonObject.get("height").getAsInt();
+                    } else {
+                        if (jsonObject.has("input_image_check")) {
+                            String input_image = jsonObject.get("input_image_check").getAsString();
+                            URL image_url;
+                            BufferedImage image;
+                            try {
+                                image_url = new URL(input_image);
+                                image = ImageIO.read(image_url);
+                                width = image.getWidth();
+                                height = image.getHeight();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
                 }
             } catch (JsonSyntaxException e) {
                 System.err.println("Invalid JSON syntax: " + e.getMessage());
