@@ -16,13 +16,14 @@ describe('Type e2e test', () => {
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const typeSample = {
-    type: 'truthfully because',
-    amount: 'successfully hm which',
-    schema: 'meaningfully',
-    model: 'but yuck',
-    title: 'whoa armament',
+    type: 'eke moose',
+    amount: 'simplify absent afore',
+    schema: 'ouch',
+    model: 'out',
+    title: 'plus except',
     isDefault: false,
-    isActive: false,
+    isActive: true,
+    isFree: true,
   };
 
   let type;
@@ -99,9 +100,6 @@ describe('Type e2e test', () => {
             },
             {
               statusCode: 200,
-              headers: {
-                link: '<http://localhost/api/types?page=0&size=20>; rel="last",<http://localhost/api/types?page=0&size=20>; rel="first"',
-              },
               body: [type],
             },
           ).as('entitiesRequestInternal');
@@ -168,20 +166,20 @@ describe('Type e2e test', () => {
     });
 
     it('should create an instance of Type', () => {
-      cy.get(`[data-cy="type"]`).type('but beside');
-      cy.get(`[data-cy="type"]`).should('have.value', 'but beside');
+      cy.get(`[data-cy="type"]`).type('dig warlike');
+      cy.get(`[data-cy="type"]`).should('have.value', 'dig warlike');
 
-      cy.get(`[data-cy="amount"]`).type('adhere');
-      cy.get(`[data-cy="amount"]`).should('have.value', 'adhere');
+      cy.get(`[data-cy="amount"]`).type('woefully');
+      cy.get(`[data-cy="amount"]`).should('have.value', 'woefully');
 
-      cy.get(`[data-cy="schema"]`).type('passionate where');
-      cy.get(`[data-cy="schema"]`).should('have.value', 'passionate where');
+      cy.get(`[data-cy="schema"]`).type('hurtful woot fortune');
+      cy.get(`[data-cy="schema"]`).should('have.value', 'hurtful woot fortune');
 
-      cy.get(`[data-cy="model"]`).type('gadzooks mmm maximize');
-      cy.get(`[data-cy="model"]`).should('have.value', 'gadzooks mmm maximize');
+      cy.get(`[data-cy="model"]`).type('the mmm');
+      cy.get(`[data-cy="model"]`).should('have.value', 'the mmm');
 
-      cy.get(`[data-cy="title"]`).type('drake gosh');
-      cy.get(`[data-cy="title"]`).should('have.value', 'drake gosh');
+      cy.get(`[data-cy="title"]`).type('whose');
+      cy.get(`[data-cy="title"]`).should('have.value', 'whose');
 
       cy.get(`[data-cy="isDefault"]`).should('not.be.checked');
       cy.get(`[data-cy="isDefault"]`).click();
@@ -190,6 +188,10 @@ describe('Type e2e test', () => {
       cy.get(`[data-cy="isActive"]`).should('not.be.checked');
       cy.get(`[data-cy="isActive"]`).click();
       cy.get(`[data-cy="isActive"]`).should('be.checked');
+
+      cy.get(`[data-cy="isFree"]`).should('not.be.checked');
+      cy.get(`[data-cy="isFree"]`).click();
+      cy.get(`[data-cy="isFree"]`).should('be.checked');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

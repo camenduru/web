@@ -38,6 +38,11 @@
       "fieldName": "isActive",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "isFree",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
     }
   ],
   "name": "Type",

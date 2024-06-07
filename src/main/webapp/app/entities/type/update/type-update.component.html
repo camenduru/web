@@ -98,6 +98,18 @@
             </div>
           }
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isFree" jhiTranslate="webApp.type.isFree">Is Free</label>
+          <input type="checkbox" class="form-check" name="isFree" id="field_isFree" data-cy="isFree" formControlName="isFree" />
+          @if (editForm.get('isFree')!.invalid && (editForm.get('isFree')!.dirty || editForm.get('isFree')!.touched)) {
+            <div>
+              @if (editForm.get('isFree')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
       </div>
 
       <div>

@@ -43,6 +43,10 @@
           <dd>
             <span>{{ type()!.isActive }}</span>
           </dd>
+          <dt><span jhiTranslate="webApp.type.isFree">Is Free</span></dt>
+          <dd>
+            <span>{{ type()!.isFree }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

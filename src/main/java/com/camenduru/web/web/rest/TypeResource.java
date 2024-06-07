@@ -147,6 +147,9 @@ public class TypeResource {
                 if (type.getIsActive() != null) {
                     existingType.setIsActive(type.getIsActive());
                 }
+                if (type.getIsFree() != null) {
+                    existingType.setIsFree(type.getIsFree());
+                }
 
                 return existingType;
             })

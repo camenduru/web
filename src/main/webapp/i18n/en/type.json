@@ -24,7 +24,8 @@
       "model": "Model",
       "title": "Title",
       "isDefault": "Is Default",
-      "isActive": "Is Active"
+      "isActive": "Is Active",
+      "isFree": "Is Free"
     }
   }
 }

@@ -49,6 +49,9 @@ class TypeResourceIT {
     private static final Boolean DEFAULT_IS_ACTIVE = false;
     private static final Boolean UPDATED_IS_ACTIVE = true;
 
+    private static final Boolean DEFAULT_IS_FREE = false;
+    private static final Boolean UPDATED_IS_FREE = true;
+
     private static final String ENTITY_API_URL = "/api/types";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -77,7 +80,8 @@ class TypeResourceIT {
             .model(DEFAULT_MODEL)
             .title(DEFAULT_TITLE)
             .isDefault(DEFAULT_IS_DEFAULT)
-            .isActive(DEFAULT_IS_ACTIVE);
+            .isActive(DEFAULT_IS_ACTIVE)
+            .isFree(DEFAULT_IS_FREE);
         return type;
     }
 
@@ -95,7 +99,8 @@ class TypeResourceIT {
             .model(UPDATED_MODEL)
             .title(UPDATED_TITLE)
             .isDefault(UPDATED_IS_DEFAULT)
-            .isActive(UPDATED_IS_ACTIVE);
+            .isActive(UPDATED_IS_ACTIVE)
+            .isFree(UPDATED_IS_FREE);
         return type;
     }
 
@@ -246,6 +251,21 @@ class TypeResourceIT {
     }
 
     @Test
+    void checkIsFreeIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setIsFree(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllTypes() throws Exception {
         // Initialize the database
         typeRepository.save(type);
@@ -262,7 +282,8 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.[*].model").value(hasItem(DEFAULT_MODEL)))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].isDefault").value(hasItem(DEFAULT_IS_DEFAULT.booleanValue())))
-            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
+            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())))
+            .andExpect(jsonPath("$.[*].isFree").value(hasItem(DEFAULT_IS_FREE.booleanValue())));
     }
 
     @Test
@@ -282,7 +303,8 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.model").value(DEFAULT_MODEL))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.isDefault").value(DEFAULT_IS_DEFAULT.booleanValue()))
-            .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()));
+            .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()))
+            .andExpect(jsonPath("$.isFree").value(DEFAULT_IS_FREE.booleanValue()));
     }
 
     @Test
@@ -307,7 +329,8 @@ class TypeResourceIT {
             .model(UPDATED_MODEL)
             .title(UPDATED_TITLE)
             .isDefault(UPDATED_IS_DEFAULT)
-            .isActive(UPDATED_IS_ACTIVE);
+            .isActive(UPDATED_IS_ACTIVE)
+            .isFree(UPDATED_IS_FREE);
 
         restTypeMockMvc
             .perform(
@@ -379,7 +402,7 @@ class TypeResourceIT {
         Type partialUpdatedType = new Type();
         partialUpdatedType.setId(type.getId());
 
-        partialUpdatedType.amount(UPDATED_AMOUNT).title(UPDATED_TITLE).isActive(UPDATED_IS_ACTIVE);
+        partialUpdatedType.amount(UPDATED_AMOUNT).title(UPDATED_TITLE).isActive(UPDATED_IS_ACTIVE).isFree(UPDATED_IS_FREE);
 
         restTypeMockMvc
             .perform(
@@ -413,7 +436,8 @@ class TypeResourceIT {
             .model(UPDATED_MODEL)
             .title(UPDATED_TITLE)
             .isDefault(UPDATED_IS_DEFAULT)
-            .isActive(UPDATED_IS_ACTIVE);
+            .isActive(UPDATED_IS_ACTIVE)
+            .isFree(UPDATED_IS_FREE);
 
         restTypeMockMvc
             .perform(

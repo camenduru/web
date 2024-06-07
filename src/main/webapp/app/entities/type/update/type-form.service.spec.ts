@@ -27,6 +27,7 @@ describe('Type Form Service', () => {
             title: expect.any(Object),
             isDefault: expect.any(Object),
             isActive: expect.any(Object),
+            isFree: expect.any(Object),
           }),
         );
       });
@@ -44,6 +45,7 @@ describe('Type Form Service', () => {
             title: expect.any(Object),
             isDefault: expect.any(Object),
             isActive: expect.any(Object),
+            isFree: expect.any(Object),
           }),
         );
       });

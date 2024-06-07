@@ -1,46 +1,50 @@
 import { IType, NewType } from './type.model';
 
 export const sampleWithRequiredData: IType = {
-  id: '0c256efe-5944-49d7-a926-6a7023c71721',
-  type: 'nor',
-  amount: 'incidentally why',
-  schema: 'unimportant picture library',
-  model: 'gah against after',
-  title: 'whether',
+  id: 'c256efe5-9449-4d79-9266-a7023c717218',
+  type: 'nervously incidentally why',
+  amount: 'unimportant picture library',
+  schema: 'gah against after',
+  model: 'whether',
+  title: 'concentrate phooey',
   isDefault: false,
   isActive: true,
+  isFree: false,
 };
 
 export const sampleWithPartialData: IType = {
-  id: 'a8fa13a5-82dc-40f4-9e68-33c93b465b38',
-  type: 'apprehensive',
-  amount: 'why',
-  schema: 'for alongside vaguely',
-  model: 'although ack warmly',
-  title: 'herald although',
+  id: '6833c93b-465b-4386-b539-5dd9020a312f',
+  type: 'for alongside vaguely',
+  amount: 'although ack warmly',
+  schema: 'herald although',
+  model: 'banker detain',
+  title: 'excepting forenenst',
   isDefault: true,
-  isActive: true,
+  isActive: false,
+  isFree: true,
 };
 
 export const sampleWithFullData: IType = {
-  id: '5422111c-5a88-439a-9a62-7b605d19270f',
-  type: 'calmly ew',
-  amount: 'herring',
-  schema: 'since',
-  model: 'now shore tugboat',
-  title: 'yowza faraway',
-  isDefault: true,
-  isActive: true,
+  id: 'ae528051-b56b-4a04-b04f-771b6492f823',
+  type: 'now shore tugboat',
+  amount: 'yowza faraway',
+  schema: 'opposite near',
+  model: 'medal gadzooks',
+  title: 'tiny',
+  isDefault: false,
+  isActive: false,
+  isFree: false,
 };
 
 export const sampleWithNewData: NewType = {
-  type: 'barring porcelain',
-  amount: 'why rudely',
-  schema: 'strict',
-  model: 'woot yum break',
-  title: 'aggressive ack',
-  isDefault: true,
-  isActive: true,
+  type: 'what gosh moralize',
+  amount: 'defiantly fortress gauge',
+  schema: 'yahoo',
+  model: 'although',
+  title: 'voluminous',
+  isDefault: false,
+  isActive: false,
+  isFree: false,
   id: null,
 };
 

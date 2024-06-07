@@ -41,6 +41,7 @@ entity Type {
     title String required
     isDefault Boolean required
     isActive Boolean required
+    isFree Boolean required
 }
 
 entity Job {

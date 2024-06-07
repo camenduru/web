@@ -7,6 +7,7 @@ export interface IType {
   title?: string | null;
   isDefault?: boolean | null;
   isActive?: boolean | null;
+  isFree?: boolean | null;
 }
 
 export type NewType = Omit<IType, 'id'> & { id: null };
