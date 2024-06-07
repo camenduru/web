@@ -83,6 +83,23 @@
         </div>
 
         <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="mb-3">
+          <label class="form-label" for="field_membership" jhiTranslate="webApp.detail.membership">Membership</label>
+          <select class="form-control" name="membership" formControlName="membership" id="field_membership" data-cy="membership">
+            <option [ngValue]="null">{{ 'webApp.Membership.null' | translate }}</option>
+            @for (membership of membershipValues; track $index) {
+              <option [value]="membership">{{ 'webApp.Membership.' + membership | translate }}</option>
+            }
+          </select>
+          @if (editForm.get('membership')!.invalid && (editForm.get('membership')!.dirty || editForm.get('membership')!.touched)) {
+            <div>
+              @if (editForm.get('membership')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="mb-3">
           <label class="form-label" for="field_user" jhiTranslate="webApp.detail.user">User</label>
           <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user" [compareWith]="compareUser">
             <option [ngValue]="null"></option>

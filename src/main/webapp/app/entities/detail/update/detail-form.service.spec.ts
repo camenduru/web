@@ -25,6 +25,7 @@ describe('Detail Form Service', () => {
             sourceChannel: expect.any(Object),
             total: expect.any(Object),
             login: expect.any(Object),
+            membership: expect.any(Object),
             user: expect.any(Object),
           }),
         );
@@ -41,6 +42,7 @@ describe('Detail Form Service', () => {
             sourceChannel: expect.any(Object),
             total: expect.any(Object),
             login: expect.any(Object),
+            membership: expect.any(Object),
             user: expect.any(Object),
           }),
         );

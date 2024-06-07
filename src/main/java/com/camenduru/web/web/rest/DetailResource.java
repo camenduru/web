@@ -173,6 +173,9 @@ public class DetailResource {
                     if (detail.getLogin() != null) {
                         existingDetail.setLogin(detail.getLogin());
                     }
+                    if (detail.getMembership() != null) {
+                        existingDetail.setMembership(detail.getMembership());
+                    }
 
                     return existingDetail;
                 })
@@ -201,6 +204,7 @@ public class DetailResource {
             detail.user(currentDetail.getUser());
             detail.login(currentDetail.getLogin());
             detail.total(currentDetail.getTotal());
+            detail.membership(currentDetail.getMembership());
             Optional<Detail> result = detailRepository
                 .findById(detail.getId())
                 .map(existingDetail -> {

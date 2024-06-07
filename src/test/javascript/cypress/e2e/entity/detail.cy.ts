@@ -16,11 +16,12 @@ describe('Detail e2e test', () => {
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const detailSample = {
-    discord: 'commonly',
-    sourceId: 'strictly',
-    sourceChannel: 'maracas cloudy',
-    total: 'likewise',
-    login: 'cower sinuosity',
+    discord: 'oh sans',
+    sourceId: 'commonly',
+    sourceChannel: 'strictly',
+    total: 'maracas cloudy',
+    login: 'likewise',
+    membership: 'FREE',
   };
 
   let detail;
@@ -166,20 +167,22 @@ describe('Detail e2e test', () => {
     });
 
     it('should create an instance of Detail', () => {
-      cy.get(`[data-cy="discord"]`).type('toilet');
-      cy.get(`[data-cy="discord"]`).should('have.value', 'toilet');
+      cy.get(`[data-cy="discord"]`).type('anti harmless');
+      cy.get(`[data-cy="discord"]`).should('have.value', 'anti harmless');
 
-      cy.get(`[data-cy="sourceId"]`).type('till');
-      cy.get(`[data-cy="sourceId"]`).should('have.value', 'till');
+      cy.get(`[data-cy="sourceId"]`).type('yum caramelise');
+      cy.get(`[data-cy="sourceId"]`).should('have.value', 'yum caramelise');
 
-      cy.get(`[data-cy="sourceChannel"]`).type('endow casserole');
-      cy.get(`[data-cy="sourceChannel"]`).should('have.value', 'endow casserole');
+      cy.get(`[data-cy="sourceChannel"]`).type('fast tragic intelligent');
+      cy.get(`[data-cy="sourceChannel"]`).should('have.value', 'fast tragic intelligent');
 
-      cy.get(`[data-cy="total"]`).type('horrible surpass readies');
-      cy.get(`[data-cy="total"]`).should('have.value', 'horrible surpass readies');
+      cy.get(`[data-cy="total"]`).type('hate');
+      cy.get(`[data-cy="total"]`).should('have.value', 'hate');
 
-      cy.get(`[data-cy="login"]`).type('oh sans');
-      cy.get(`[data-cy="login"]`).should('have.value', 'oh sans');
+      cy.get(`[data-cy="login"]`).type('versus silently');
+      cy.get(`[data-cy="login"]`).should('have.value', 'versus silently');
+
+      cy.get(`[data-cy="membership"]`).select('PAID');
 
       cy.get(entityCreateSaveButtonSelector).click();
 

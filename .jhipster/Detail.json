@@ -28,6 +28,12 @@
       "fieldName": "login",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "membership",
+      "fieldType": "Membership",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "FREE,PAID"
     }
   ],
   "name": "Detail",

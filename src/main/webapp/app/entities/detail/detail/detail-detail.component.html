@@ -35,6 +35,12 @@
           <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{ detail()!.login }}</span>
           </dd>
+          <dt><span jhiTranslate="webApp.detail.membership">Membership</span></dt>
+          <dd>
+            <span [jhiTranslate]="'webApp.Membership.' + (detail()!.membership ?? 'null')">{{
+              { null: '', FREE: 'FREE', PAID: 'PAID' }[detail()!.membership ?? 'null']
+            }}</span>
+          </dd>
           <dt *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="webApp.detail.user">User</span></dt>
           <dd *jhiHasAnyAuthority="'ROLE_ADMIN'">
             <span>{{ detail()!.user?.login }}</span>

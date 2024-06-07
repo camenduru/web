@@ -1,38 +1,42 @@
 import { IDetail, NewDetail } from './detail.model';
 
 export const sampleWithRequiredData: IDetail = {
-  id: 'c9833f39-c546-4f02-ad04-964268df260a',
-  discord: 'resect',
-  sourceId: 'whereas cane',
-  sourceChannel: 'pay plunder yum',
-  total: 'boo',
-  login: 'alongside nearly',
+  id: '9833f39c-546f-402d-8049-64268df260a8',
+  discord: 'political',
+  sourceId: 'fictionalize taint',
+  sourceChannel: 'autumn',
+  total: 'pish walk impersonate',
+  login: 'oof',
+  membership: 'PAID',
 };
 
 export const sampleWithPartialData: IDetail = {
-  id: '2d5cc990-b169-4f25-823b-d1f1491429b8',
-  discord: 'phew sponsor engulf',
-  sourceId: 'even everlasting failing',
-  sourceChannel: 'aw grit ratio',
-  total: 'along atop despite',
-  login: 'sketch lazily meanwhile',
+  id: '10a782d5-cc99-40b1-969f-2523bd1f1491',
+  discord: 'hinge',
+  sourceId: 'helpfully',
+  sourceChannel: 'anti zowie',
+  total: 'laze whereas sweltering',
+  login: 'barring',
+  membership: 'FREE',
 };
 
 export const sampleWithFullData: IDetail = {
-  id: 'c074f71d-962b-427c-b828-d44362ada763',
-  discord: 'when',
-  sourceId: 'solidly what',
-  sourceChannel: 'thunderstorm pro recant',
-  total: 'pish',
-  login: 'boo poorly',
+  id: 'd614b635-bd75-48fc-961e-3ae3244b1e6a',
+  discord: 'sketch lazily meanwhile',
+  sourceId: 'till sometimes fervently',
+  sourceChannel: 'apud always',
+  total: 'stormy joyously before',
+  login: 'traveler than',
+  membership: 'PAID',
 };
 
 export const sampleWithNewData: NewDetail = {
-  discord: 'of fussy lest',
-  sourceId: 'lazily brr',
-  sourceChannel: 'robotics frankly',
-  total: 'consult notwithstanding anti',
-  login: 'bah yum',
+  discord: 'yowza selfishly versus',
+  sourceId: 'privilege once',
+  sourceChannel: 'upon easy psst',
+  total: 'oof gaseous',
+  login: 'aperitif whose',
+  membership: 'PAID',
   id: null,
 };
 

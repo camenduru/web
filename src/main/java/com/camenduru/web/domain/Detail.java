@@ -1,5 +1,6 @@
 package com.camenduru.web.domain;
 
+import com.camenduru.web.domain.enumeration.Membership;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import org.springframework.data.annotation.Id;
@@ -38,6 +39,10 @@ public class Detail implements Serializable {
     @NotNull
     @Field("login")
     private String login;
+
+    @NotNull
+    @Field("membership")
+    private Membership membership;
 
     @DBRef
     @Field("user")
@@ -123,6 +128,19 @@ public class Detail implements Serializable {
         this.login = login;
     }
 
+    public Membership getMembership() {
+        return this.membership;
+    }
+
+    public Detail membership(Membership membership) {
+        this.setMembership(membership);
+        return this;
+    }
+
+    public void setMembership(Membership membership) {
+        this.membership = membership;
+    }
+
     public User getUser() {
         return this.user;
     }
@@ -165,6 +183,7 @@ public class Detail implements Serializable {
             ", sourceChannel='" + getSourceChannel() + "'" +
             ", total='" + getTotal() + "'" +
             ", login='" + getLogin() + "'" +
+            ", membership='" + getMembership() + "'" +
             "}";
     }
 }

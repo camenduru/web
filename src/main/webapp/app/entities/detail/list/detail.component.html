@@ -71,6 +71,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="membership">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.detail.membership">Membership</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="user.login">
               <div class="d-flex">
                 <span jhiTranslate="webApp.detail.user">User</span>
@@ -88,6 +95,9 @@
               <td>{{ detail.sourceChannel }}</td>
               <td>{{ detail.total }}</td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ detail.login }}</td>
+              <td [jhiTranslate]="'webApp.Membership.' + (detail.membership ?? 'null')">
+                {{ { null: '', FREE: 'FREE', PAID: 'PAID' }[detail.membership ?? 'null'] }}
+              </td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
                 {{ detail.user?.login }}
               </td>

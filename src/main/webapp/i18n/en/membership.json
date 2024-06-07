@@ -1,0 +1,9 @@
+{
+  "webApp": {
+    "Membership": {
+      "null": "",
+      "FREE": "FREE",
+      "PAID": "PAID"
+    }
+  }
+}

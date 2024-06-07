@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.camenduru.web.IntegrationTest;
 import com.camenduru.web.domain.Detail;
+import com.camenduru.web.domain.enumeration.Membership;
 import com.camenduru.web.repository.DetailRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
@@ -51,6 +52,9 @@ class DetailResourceIT {
     private static final String DEFAULT_LOGIN = "AAAAAAAAAA";
     private static final String UPDATED_LOGIN = "BBBBBBBBBB";
 
+    private static final Membership DEFAULT_MEMBERSHIP = Membership.FREE;
+    private static final Membership UPDATED_MEMBERSHIP = Membership.PAID;
+
     private static final String ENTITY_API_URL = "/api/details";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -80,7 +84,8 @@ class DetailResourceIT {
             .sourceId(DEFAULT_SOURCE_ID)
             .sourceChannel(DEFAULT_SOURCE_CHANNEL)
             .total(DEFAULT_TOTAL)
-            .login(DEFAULT_LOGIN);
+            .login(DEFAULT_LOGIN)
+            .membership(DEFAULT_MEMBERSHIP);
         return detail;
     }
 
@@ -96,7 +101,8 @@ class DetailResourceIT {
             .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .total(UPDATED_TOTAL)
-            .login(UPDATED_LOGIN);
+            .login(UPDATED_LOGIN)
+            .membership(UPDATED_MEMBERSHIP);
         return detail;
     }
 
@@ -217,6 +223,21 @@ class DetailResourceIT {
     }
 
     @Test
+    void checkMembershipIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        detail.setMembership(null);
+
+        // Create the Detail, which fails.
+
+        restDetailMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(detail)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllDetails() throws Exception {
         // Initialize the database
         detailRepository.save(detail);
@@ -231,7 +252,8 @@ class DetailResourceIT {
             .andExpect(jsonPath("$.[*].sourceId").value(hasItem(DEFAULT_SOURCE_ID)))
             .andExpect(jsonPath("$.[*].sourceChannel").value(hasItem(DEFAULT_SOURCE_CHANNEL)))
             .andExpect(jsonPath("$.[*].total").value(hasItem(DEFAULT_TOTAL)))
-            .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)));
+            .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)))
+            .andExpect(jsonPath("$.[*].membership").value(hasItem(DEFAULT_MEMBERSHIP.toString())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -266,7 +288,8 @@ class DetailResourceIT {
             .andExpect(jsonPath("$.sourceId").value(DEFAULT_SOURCE_ID))
             .andExpect(jsonPath("$.sourceChannel").value(DEFAULT_SOURCE_CHANNEL))
             .andExpect(jsonPath("$.total").value(DEFAULT_TOTAL))
-            .andExpect(jsonPath("$.login").value(DEFAULT_LOGIN));
+            .andExpect(jsonPath("$.login").value(DEFAULT_LOGIN))
+            .andExpect(jsonPath("$.membership").value(DEFAULT_MEMBERSHIP.toString()));
     }
 
     @Test
@@ -289,7 +312,8 @@ class DetailResourceIT {
             .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .total(UPDATED_TOTAL)
-            .login(UPDATED_LOGIN);
+            .login(UPDATED_LOGIN)
+            .membership(UPDATED_MEMBERSHIP);
 
         restDetailMockMvc
             .perform(
@@ -361,7 +385,7 @@ class DetailResourceIT {
         Detail partialUpdatedDetail = new Detail();
         partialUpdatedDetail.setId(detail.getId());
 
-        partialUpdatedDetail.sourceId(UPDATED_SOURCE_ID).login(UPDATED_LOGIN);
+        partialUpdatedDetail.sourceId(UPDATED_SOURCE_ID).login(UPDATED_LOGIN).membership(UPDATED_MEMBERSHIP);
 
         restDetailMockMvc
             .perform(
@@ -393,7 +417,8 @@ class DetailResourceIT {
             .sourceId(UPDATED_SOURCE_ID)
             .sourceChannel(UPDATED_SOURCE_CHANNEL)
             .total(UPDATED_TOTAL)
-            .login(UPDATED_LOGIN);
+            .login(UPDATED_LOGIN)
+            .membership(UPDATED_MEMBERSHIP);
 
         restDetailMockMvc
             .perform(

@@ -23,6 +23,7 @@ type DetailFormGroupContent = {
   sourceChannel: FormControl<IDetail['sourceChannel']>;
   total: FormControl<IDetail['total']>;
   login: FormControl<IDetail['login']>;
+  membership: FormControl<IDetail['membership']>;
   user: FormControl<IDetail['user']>;
 };
 
@@ -56,6 +57,9 @@ export class DetailFormService {
         validators: [Validators.required],
       }),
       login: new FormControl(detailRawValue.login, {
+        validators: [Validators.required],
+      }),
+      membership: new FormControl(detailRawValue.membership, {
         validators: [Validators.required],
       }),
       user: new FormControl(detailRawValue.user),

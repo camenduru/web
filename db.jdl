@@ -19,12 +19,18 @@ enum JobSource {
     OTHER
 }
 
+enum Membership {
+    FREE,
+    PAID
+}
+
 entity Detail {
     discord String required
     sourceId String required
     sourceChannel String required
     total String required
     login String required
+    membership Membership required
 }
 
 entity Type {

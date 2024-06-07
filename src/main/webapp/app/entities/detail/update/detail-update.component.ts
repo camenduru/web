@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountService } from 'app/core/auth/account.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/service/user.service';
+import { Membership } from 'app/entities/enumerations/membership.model';
 import { IDetail } from '../detail.model';
 import { DetailService } from '../service/detail.service';
 import { DetailFormService, DetailFormGroup } from './detail-form.service';
@@ -24,6 +25,7 @@ import { DetailFormService, DetailFormGroup } from './detail-form.service';
 export class DetailUpdateComponent implements OnInit {
   isSaving = false;
   detail: IDetail | null = null;
+  membershipValues = Object.keys(Membership);
 
   usersSharedCollection: IUser[] = [];
 

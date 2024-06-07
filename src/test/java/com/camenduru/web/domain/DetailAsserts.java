@@ -51,7 +51,8 @@ public class DetailAsserts {
             .satisfies(e -> assertThat(e.getSourceId()).as("check sourceId").isEqualTo(actual.getSourceId()))
             .satisfies(e -> assertThat(e.getSourceChannel()).as("check sourceChannel").isEqualTo(actual.getSourceChannel()))
             .satisfies(e -> assertThat(e.getTotal()).as("check total").isEqualTo(actual.getTotal()))
-            .satisfies(e -> assertThat(e.getLogin()).as("check login").isEqualTo(actual.getLogin()));
+            .satisfies(e -> assertThat(e.getLogin()).as("check login").isEqualTo(actual.getLogin()))
+            .satisfies(e -> assertThat(e.getMembership()).as("check membership").isEqualTo(actual.getMembership()));
     }
 
     /**

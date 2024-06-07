@@ -7,6 +7,7 @@ import com.camenduru.web.domain.Type;
 import com.camenduru.web.domain.User;
 import com.camenduru.web.domain.enumeration.JobSource;
 import com.camenduru.web.domain.enumeration.JobStatus;
+import com.camenduru.web.domain.enumeration.Membership;
 import com.camenduru.web.domain.enumeration.RedeemStatus;
 import com.camenduru.web.repository.DetailRepository;
 import com.camenduru.web.repository.JobRepository;
@@ -127,12 +128,13 @@ public class AccountResource {
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
         Detail detail = new Detail();
-        detail.discord(defaultDiscord);
-        detail.sourceId(defaultSourceId);
-        detail.sourceChannel(defaultSourceChannel);
-        detail.user(user);
-        detail.login(user.getLogin());
-        detail.total(defaultSourceTotal);
+        detail.setDiscord(defaultDiscord);
+        detail.setSourceId(defaultSourceId);
+        detail.setSourceChannel(defaultSourceChannel);
+        detail.setUser(user);
+        detail.setLogin(user.getLogin());
+        detail.setTotal(defaultSourceTotal);
+        detail.setMembership(Membership.FREE);
         if (detail.getId() == null) {
             detailRepository.save(detail);
         }
