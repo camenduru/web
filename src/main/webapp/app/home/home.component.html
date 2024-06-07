@@ -59,6 +59,11 @@
                       <source class="item rounded" [src]="job.result" type="video/mp4" />
                     </video>
                   </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.wav')">
+                    <audio width="445" height="445" controls>
+                      <source class="item rounded" [src]="job.result" type="audio/wav" />
+                    </audio>
+                  </ng-container>
                   <ng-container *ngIf="job.result && job.result.includes('.glb')">
                     <img
                       class="item rounded"
@@ -221,6 +226,11 @@
                     <video width="445" height="445" controls>
                       <source class="item rounded" [src]="job.result" type="video/mp4" />
                     </video>
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.wav')">
+                    <audio width="445" height="445" controls>
+                      <source class="item rounded" [src]="job.result" type="audio/wav" />
+                    </audio>
                   </ng-container>
                   <ng-container *ngIf="job.result && job.result.includes('.glb')">
                     <img
