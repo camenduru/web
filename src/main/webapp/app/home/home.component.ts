@@ -298,7 +298,11 @@ export default class HomeComponent implements OnInit, OnDestroy {
     this.fillComponentAttributesFromTypeResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromTypeResponseBody(response.body);
 
-    this.types = dataFromBody.filter(item => item.isActive === true).reverse();
+    if (this.accountService.hasAnyAuthority('ROLE_PAID')) {
+      this.types = dataFromBody.filter(item => item.isActive === true).reverse();
+    } else {
+      this.types = dataFromBody.filter(item => item.isActive === true && item.isFree === true).reverse();
+    }
     const type = this.types.find(item => item.isDefault === true);
     const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
     this.activeSchema = jsonSchema as unknown as ISchema;
