@@ -151,16 +151,18 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
-        Detail newDetail = new Detail();
-        newDetail.setDiscord(defaultDiscord);
-        newDetail.setSourceId(defaultSourceId);
-        newDetail.setSourceChannel(defaultSourceChannel);
-        newDetail.setUser(newUser);
-        newDetail.setLogin(newUser.getLogin());
-        newDetail.setTotal(defaultFreeTotal);
-        newDetail.setMembership(Membership.FREE);
-        detailRepository.save(newDetail);
-        log.debug("Created Information for Detail: {}", newDetail);
+        if (newUser != null && newUser.getLogin() != null && !newUser.getLogin().isEmpty()) {
+            Detail newDetail = new Detail();
+            newDetail.setDiscord(defaultDiscord);
+            newDetail.setSourceId(defaultSourceId);
+            newDetail.setSourceChannel(defaultSourceChannel);
+            newDetail.setUser(newUser);
+            newDetail.setLogin(newUser.getLogin());
+            newDetail.setTotal(defaultFreeTotal);
+            newDetail.setMembership(Membership.FREE);
+            detailRepository.save(newDetail);
+            log.debug("Created Information for Detail: {}", newDetail);
+        }
         return newUser;
     }
 
@@ -205,16 +207,18 @@ public class UserService {
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
-        Detail detail = new Detail();
-        detail.setDiscord(defaultDiscord);
-        detail.setSourceId(defaultSourceId);
-        detail.setSourceChannel(defaultSourceChannel);
-        detail.setUser(user);
-        detail.setLogin(user.getLogin());
-        detail.setTotal(defaultFreeTotal);
-        detail.setMembership(Membership.FREE);
-        detailRepository.save(detail);
-        log.debug("Created Information for Detail: {}", detail);
+        if (user != null && user.getLogin() != null && !user.getLogin().isEmpty()) {
+            Detail detail = new Detail();
+            detail.setDiscord(defaultDiscord);
+            detail.setSourceId(defaultSourceId);
+            detail.setSourceChannel(defaultSourceChannel);
+            detail.setUser(user);
+            detail.setLogin(user.getLogin());
+            detail.setTotal(defaultFreeTotal);
+            detail.setMembership(Membership.FREE);
+            detailRepository.save(detail);
+            log.debug("Created Information for Detail: {}", detail);
+        }
         return user;
     }
 
