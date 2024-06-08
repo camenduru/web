@@ -1,5 +1,6 @@
 package com.camenduru.web.web.rest;
 
+import com.camenduru.web.domain.Authority;
 import com.camenduru.web.domain.Detail;
 import com.camenduru.web.domain.Job;
 import com.camenduru.web.domain.Type;
@@ -107,51 +108,58 @@ public class JobResource {
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
             Detail detail = detailRepository.findAllByUserIsCurrentUser(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
             Type typeC = typeRepository.findByType(job.getType()).orElseThrow();
-            int width = 512;
-            int height = 512;
-            String jsonString = job.getCommand();
-            try {
-                JsonElement jsonElement = JsonParser.parseString(jsonString);
-                if (jsonElement.isJsonObject()) {
-                    JsonObject jsonObject = jsonElement.getAsJsonObject();
-                    if (jsonObject.has("width") && jsonObject.has("height")) {
-                        width = jsonObject.get("width").getAsInt();
-                        height = jsonObject.get("height").getAsInt();
-                    } else {
-                        if (jsonObject.has("input_image_check")) {
-                            String input_image = jsonObject.get("input_image_check").getAsString();
-                            URL image_url;
-                            BufferedImage image;
-                            try {
-                                image_url = new URL(input_image);
-                                image = ImageIO.read(image_url);
-                                width = image.getWidth();
-                                height = image.getHeight();
-                            } catch (IOException e) {
-                                e.printStackTrace();
+            if (
+                (!user.getAuthorities().contains(new Authority().name("ROLE_PAID")) && typeC.getIsFree()) ||
+                user.getAuthorities().contains(new Authority().name("ROLE_PAID"))
+            ) {
+                int width = 512;
+                int height = 512;
+                String jsonString = job.getCommand();
+                try {
+                    JsonElement jsonElement = JsonParser.parseString(jsonString);
+                    if (jsonElement.isJsonObject()) {
+                        JsonObject jsonObject = jsonElement.getAsJsonObject();
+                        if (jsonObject.has("width") && jsonObject.has("height")) {
+                            width = jsonObject.get("width").getAsInt();
+                            height = jsonObject.get("height").getAsInt();
+                        } else {
+                            if (jsonObject.has("input_image_check")) {
+                                String input_image = jsonObject.get("input_image_check").getAsString();
+                                URL image_url;
+                                BufferedImage image;
+                                try {
+                                    image_url = new URL(input_image);
+                                    image = ImageIO.read(image_url);
+                                    width = image.getWidth();
+                                    height = image.getHeight();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
+                } catch (JsonSyntaxException e) {
+                    System.err.println("Invalid JSON syntax: " + e.getMessage());
                 }
-            } catch (JsonSyntaxException e) {
-                System.err.println("Invalid JSON syntax: " + e.getMessage());
+                job.setResult(camenduruWebResult + width + "x" + height + camenduruWebResultSuffix);
+                job.setType(typeC.getType());
+                job.setAmount(typeC.getAmount());
+                job.setSourceChannel(detail.getSourceChannel());
+                job.setSourceId(detail.getSourceId());
+                job.setDate(Instant.now());
+                job.setStatus(JobStatus.WAITING);
+                job.setLogin(SecurityUtils.getCurrentUserLogin().orElseThrow());
+                job.setSource(JobSource.WEB);
+                job.setDiscord(detail);
+                job.setTotal(detail);
+                job.setUser(user);
+                job = jobRepository.save(job);
+                return ResponseEntity.created(new URI("/api/jobs/" + job.getId()))
+                    .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, job.getId()))
+                    .body(job);
+            } else {
+                throw new BadRequestAlertException("User authority and job authority mismatch.", ENTITY_NAME, "Invalid Authority");
             }
-            job.setResult(camenduruWebResult + width + "x" + height + camenduruWebResultSuffix);
-            job.setType(typeC.getType());
-            job.setAmount(typeC.getAmount());
-            job.setSourceChannel(detail.getSourceChannel());
-            job.setSourceId(detail.getSourceId());
-            job.setDate(Instant.now());
-            job.setStatus(JobStatus.WAITING);
-            job.setLogin(SecurityUtils.getCurrentUserLogin().orElseThrow());
-            job.setSource(JobSource.WEB);
-            job.setDiscord(detail);
-            job.setTotal(detail);
-            job.setUser(user);
-            job = jobRepository.save(job);
-            return ResponseEntity.created(new URI("/api/jobs/" + job.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, job.getId()))
-                .body(job);
         }
     }
 
