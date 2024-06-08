@@ -99,7 +99,7 @@ export class DetailUpdateComponent implements OnInit {
   protected loadRelationshipsOptions(): void {
     this.userService
       .query({
-        size: 200,
+        size: 10000,
       })
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing<IUser>(users, this.detail?.user)))
