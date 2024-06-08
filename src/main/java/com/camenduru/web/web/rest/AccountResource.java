@@ -127,15 +127,16 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        Detail detail = new Detail();
-        detail.setDiscord(defaultDiscord);
-        detail.setSourceId(defaultSourceId);
-        detail.setSourceChannel(defaultSourceChannel);
-        detail.setUser(user);
-        detail.setLogin(user.getLogin());
-        detail.setTotal(defaultSourceTotal);
-        detail.setMembership(Membership.FREE);
-        if (detail.getId() == null) {
+        Optional<Detail> existingDetail = detailRepository.findOneWithByLogin(user.getLogin());
+        if (existingDetail.isEmpty()) {
+            Detail detail = new Detail();
+            detail.setDiscord(defaultDiscord);
+            detail.setSourceId(defaultSourceId);
+            detail.setSourceChannel(defaultSourceChannel);
+            detail.setUser(user);
+            detail.setLogin(user.getLogin());
+            detail.setTotal(defaultSourceTotal);
+            detail.setMembership(Membership.FREE);
             detailRepository.save(detail);
         }
         mailService.sendActivationEmail(user);
