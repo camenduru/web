@@ -2,8 +2,11 @@ package com.camenduru.web.service;
 
 import com.camenduru.web.config.Constants;
 import com.camenduru.web.domain.Authority;
+import com.camenduru.web.domain.Detail;
 import com.camenduru.web.domain.User;
+import com.camenduru.web.domain.enumeration.Membership;
 import com.camenduru.web.repository.AuthorityRepository;
+import com.camenduru.web.repository.DetailRepository;
 import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.AuthoritiesConstants;
 import com.camenduru.web.security.SecurityUtils;
@@ -15,6 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,25 +34,36 @@ import tech.jhipster.security.RandomUtil;
 public class UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
-
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthorityRepository authorityRepository;
-
     private final CacheManager cacheManager;
+    private final DetailRepository detailRepository;
+
+    @Value("${camenduru.web.default.discord}")
+    private String defaultDiscord;
+
+    @Value("${camenduru.web.default.source.id}")
+    private String defaultSourceId;
+
+    @Value("${camenduru.web.default.source.channel}")
+    private String defaultSourceChannel;
+
+    @Value("${camenduru.web.default.free.total}")
+    private String defaultFreeTotal;
 
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        CacheManager cacheManager,
+        DetailRepository detailRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.detailRepository = detailRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -130,7 +145,16 @@ public class UserService {
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
+        Detail newDetail = new Detail();
+        newDetail.setDiscord(defaultDiscord);
+        newDetail.setSourceId(defaultSourceId);
+        newDetail.setSourceChannel(defaultSourceChannel);
+        newDetail.setUser(newUser);
+        newDetail.setLogin(newUser.getLogin());
+        newDetail.setTotal(defaultFreeTotal);
+        newDetail.setMembership(Membership.FREE);
         userRepository.save(newUser);
+        detailRepository.save(newDetail);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;

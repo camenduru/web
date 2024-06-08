@@ -7,7 +7,6 @@ import com.camenduru.web.domain.Type;
 import com.camenduru.web.domain.User;
 import com.camenduru.web.domain.enumeration.JobSource;
 import com.camenduru.web.domain.enumeration.JobStatus;
-import com.camenduru.web.domain.enumeration.Membership;
 import com.camenduru.web.domain.enumeration.RedeemStatus;
 import com.camenduru.web.repository.DetailRepository;
 import com.camenduru.web.repository.JobRepository;
@@ -71,18 +70,6 @@ public class AccountResource {
     private final TypeRepository typeRepository;
     private final SimpMessageSendingOperations simpMessageSendingOperations;
 
-    @Value("${camenduru.web.default.discord}")
-    private String defaultDiscord;
-
-    @Value("${camenduru.web.default.source.id}")
-    private String defaultSourceId;
-
-    @Value("${camenduru.web.default.source.channel}")
-    private String defaultSourceChannel;
-
-    @Value("${camenduru.web.default.free.total}")
-    private String defaultFreeTotal;
-
     @Value("${camenduru.web.token}")
     private String webToken;
 
@@ -127,18 +114,6 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
-        Optional<Detail> existingDetail = detailRepository.findOneWithByLogin(user.getLogin());
-        if (existingDetail.isEmpty()) {
-            Detail detail = new Detail();
-            detail.setDiscord(defaultDiscord);
-            detail.setSourceId(defaultSourceId);
-            detail.setSourceChannel(defaultSourceChannel);
-            detail.setUser(user);
-            detail.setLogin(user.getLogin());
-            detail.setTotal(defaultFreeTotal);
-            detail.setMembership(Membership.FREE);
-            detailRepository.save(detail);
-        }
         mailService.sendActivationEmail(user);
     }
 
