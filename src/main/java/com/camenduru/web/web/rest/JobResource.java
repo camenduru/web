@@ -37,6 +37,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -68,17 +69,20 @@ public class JobResource {
     private final DetailRepository detailRepository;
     private final UserRepository userRepository;
     private final TypeRepository typeRepository;
+    private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     public JobResource(
         JobRepository jobRepository,
         DetailRepository detailRepository,
         UserRepository userRepository,
-        TypeRepository typeRepository
+        TypeRepository typeRepository,
+        SimpMessageSendingOperations simpMessageSendingOperations
     ) {
         this.jobRepository = jobRepository;
         this.detailRepository = detailRepository;
         this.userRepository = userRepository;
         this.typeRepository = typeRepository;
+        this.simpMessageSendingOperations = simpMessageSendingOperations;
     }
 
     /**
@@ -91,6 +95,10 @@ public class JobResource {
     @PostMapping("")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<Job> createJob(@Valid @RequestBody Job job) throws URISyntaxException {
+        Detail detail = detailRepository.findAllByUserIsCurrentUser(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
+        int total = Integer.parseInt(detail.getTotal());
+        Type typeC = typeRepository.findByType(job.getType()).orElseThrow();
+        int amount = Integer.parseInt(typeC.getAmount());
         if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
             log.debug("REST request to save Job : {}", job);
             if (job.getId() != null) {
@@ -100,14 +108,12 @@ public class JobResource {
             return ResponseEntity.created(new URI("/api/jobs/" + job.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, job.getId()))
                 .body(job);
-        } else {
+        } else if (total >= amount) {
             log.debug("REST request to save Job : {}", job);
             if (job.getId() != null) {
                 throw new BadRequestAlertException("A new job cannot already have an ID", ENTITY_NAME, "idexists");
             }
             User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
-            Detail detail = detailRepository.findAllByUserIsCurrentUser(SecurityUtils.getCurrentUserLogin().orElseThrow()).orElseThrow();
-            Type typeC = typeRepository.findByType(job.getType()).orElseThrow();
             if (
                 (!user.getAuthorities().contains(new Authority().name("ROLE_PAID")) && typeC.getIsFree()) ||
                 user.getAuthorities().contains(new Authority().name("ROLE_PAID"))
@@ -160,6 +166,20 @@ public class JobResource {
             } else {
                 throw new BadRequestAlertException("User authority and job authority mismatch.", ENTITY_NAME, "Invalid Authority");
             }
+        } else {
+            String result =
+                """
+                    Oops! Your balance is insufficient. If you want a daily wallet balance of
+                    <span class='text-info' style='font-weight: bold;'>1100</span>, please subscribe to
+                    <a class='text-info' style='font-weight: bold;' href='https://github.com/sponsors/camenduru'>GitHub Sponsors</a> or
+                    <a class='text-info' style='font-weight: bold;' href='https://www.patreon.com/camenduru'>Patreon</a>,
+                    or wait for the daily free <span class='text-info' style='font-weight: bold;'>100</span> Tost wallet balance.
+                """;
+            String destination = String.format("/notify/%s", detail.getLogin());
+            String payload = String.format("%s", result);
+            simpMessageSendingOperations.convertAndSend(destination, payload);
+            // throw new BadRequestAlertException("User balance is insufficient.", ENTITY_NAME, "Insufficient Balance");
+            return ResponseEntity.ok().body(null);
         }
     }
 
