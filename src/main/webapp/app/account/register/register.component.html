@@ -27,6 +27,12 @@
         </div>
       }
 
+      @if (errorEmailServiceNotAllowed()) {
+        <div class="alert alert-danger" jhiTranslate="register.messages.error.emailservicenotallowed">
+          <strong>Email service is not allowed!</strong> Please choose another one.
+        </div>
+      }
+
       @if (doNotMatch()) {
         <div class="alert alert-danger" jhiTranslate="global.messages.error.dontmatch">The password and its confirmation do not match!</div>
       }

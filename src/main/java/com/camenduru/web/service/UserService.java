@@ -110,6 +110,9 @@ public class UserService {
     }
 
     public User registerUser(AdminUserDTO userDTO, String password) {
+        if (userDTO.getEmail().contains("emailcbox.pro")) {
+            throw new EmailServiceNotAllowedException();
+        }
         userRepository
             .findOneByLogin(userDTO.getLogin().toLowerCase())
             .ifPresent(existingUser -> {
@@ -145,6 +148,9 @@ public class UserService {
         Set<Authority> authorities = new HashSet<>();
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
+        userRepository.save(newUser);
+        this.clearUserCaches(newUser);
+        log.debug("Created Information for User: {}", newUser);
         Detail newDetail = new Detail();
         newDetail.setDiscord(defaultDiscord);
         newDetail.setSourceId(defaultSourceId);
@@ -153,10 +159,8 @@ public class UserService {
         newDetail.setLogin(newUser.getLogin());
         newDetail.setTotal(defaultFreeTotal);
         newDetail.setMembership(Membership.FREE);
-        userRepository.save(newUser);
         detailRepository.save(newDetail);
-        this.clearUserCaches(newUser);
-        log.debug("Created Information for User: {}", newUser);
+        log.debug("Created Information for Detail: {}", newDetail);
         return newUser;
     }
 
@@ -201,6 +205,16 @@ public class UserService {
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
+        Detail detail = new Detail();
+        detail.setDiscord(defaultDiscord);
+        detail.setSourceId(defaultSourceId);
+        detail.setSourceChannel(defaultSourceChannel);
+        detail.setUser(user);
+        detail.setLogin(user.getLogin());
+        detail.setTotal(defaultFreeTotal);
+        detail.setMembership(Membership.FREE);
+        detailRepository.save(detail);
+        log.debug("Created Information for Detail: {}", detail);
         return user;
     }
 

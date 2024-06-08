@@ -14,6 +14,7 @@ import com.camenduru.web.repository.RedeemRepository;
 import com.camenduru.web.repository.TypeRepository;
 import com.camenduru.web.repository.UserRepository;
 import com.camenduru.web.security.SecurityUtils;
+import com.camenduru.web.service.EmailServiceNotAllowedException;
 import com.camenduru.web.service.MailService;
 import com.camenduru.web.service.UserService;
 import com.camenduru.web.service.chat.ChatRequestBody;
@@ -106,6 +107,7 @@ public class AccountResource {
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
      * @throws EmailAlreadyUsedException {@code 400 (Bad Request)} if the email is already used.
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already used.
+     * @throws EmailServiceNotAllowedException {@code 400 (Bad Request)} if the email service is not allowed.
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)

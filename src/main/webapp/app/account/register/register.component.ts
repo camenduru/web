@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 
-import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
+import { EMAIL_ALREADY_USED_TYPE, EMAIL_SERVICE_NOT_ALLOWED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import SharedModule from 'app/shared/shared.module';
 import PasswordStrengthBarComponent from '../password/password-strength-bar/password-strength-bar.component';
 import { RegisterService } from './register.service';
@@ -22,6 +22,7 @@ export default class RegisterComponent implements AfterViewInit {
   doNotMatch = signal(false);
   error = signal(false);
   errorEmailExists = signal(false);
+  errorEmailServiceNotAllowed = signal(false);
   errorUserExists = signal(false);
   success = signal(false);
 
@@ -62,6 +63,7 @@ export default class RegisterComponent implements AfterViewInit {
     this.doNotMatch.set(false);
     this.error.set(false);
     this.errorEmailExists.set(false);
+    this.errorEmailServiceNotAllowed.set(false);
     this.errorUserExists.set(false);
 
     const { password, confirmPassword } = this.registerForm.getRawValue();
@@ -80,6 +82,8 @@ export default class RegisterComponent implements AfterViewInit {
       this.errorUserExists.set(true);
     } else if (response.status === 400 && response.error.type === EMAIL_ALREADY_USED_TYPE) {
       this.errorEmailExists.set(true);
+    } else if (response.status === 400 && response.error.type === EMAIL_SERVICE_NOT_ALLOWED_TYPE) {
+      this.errorEmailServiceNotAllowed.set(true);
     } else {
       this.error.set(true);
     }

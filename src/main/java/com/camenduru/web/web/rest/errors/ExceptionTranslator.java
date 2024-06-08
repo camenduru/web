@@ -87,6 +87,9 @@ public class ExceptionTranslator extends ResponseEntityExceptionHandler {
         if (
             ex instanceof com.camenduru.web.service.EmailAlreadyUsedException
         ) return (ProblemDetailWithCause) new EmailAlreadyUsedException().getBody();
+        if (
+            ex instanceof com.camenduru.web.service.EmailServiceNotAllowedException
+        ) return (ProblemDetailWithCause) new EmailServiceNotAllowedException().getBody();
         if (ex instanceof com.camenduru.web.service.InvalidPasswordException) return (ProblemDetailWithCause) new InvalidPasswordException()
             .getBody();
 
