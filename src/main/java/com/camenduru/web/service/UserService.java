@@ -250,8 +250,18 @@ public class UserService {
             detail.setLogin(user.getLogin());
             detail.setTotal(defaultFreeTotal);
             detail.setMembership(Membership.FREE);
-            detailRepository.save(detail);
-            log.debug("Created Information for Detail: {}", detail);
+            if (detailRepository.findOneWithByLogin(user.getLogin()).isEmpty()) {
+                try {
+                    detailRepository.save(detail);
+                    log.debug("Created Information for Detail: {}", detail);
+                } catch (Exception e) {
+                    log.debug("Error creating Detail");
+                }
+            } else {
+                log.debug("Detail already exists");
+            }
+        } else {
+            log.debug("Invalid newUser or login is empty");
         }
         return user;
     }
