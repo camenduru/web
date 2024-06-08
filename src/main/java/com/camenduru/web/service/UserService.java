@@ -109,8 +109,32 @@ public class UserService {
             });
     }
 
+    String[] allowedDomains = {
+        "@camenduru.",
+        "@tost.",
+        "@gmail.",
+        "@hotmail.",
+        "@live.",
+        "@outlook.",
+        "@msn.",
+        "@ymail.",
+        "@yahoo.",
+        "@icloud.",
+        "@me.",
+        "@qq.",
+        "@yandex.",
+        "@mail.",
+    };
+
     public User registerUser(AdminUserDTO userDTO, String password) {
-        if (userDTO.getEmail().contains("emailcbox.pro")) {
+        boolean isAllowed = false;
+        for (String allowedDomain : allowedDomains) {
+            if (userDTO.getEmail().contains(allowedDomain)) {
+                isAllowed = true;
+                break;
+            }
+        }
+        if (!isAllowed) {
             throw new EmailServiceNotAllowedException();
         }
         userRepository
@@ -160,8 +184,18 @@ public class UserService {
             newDetail.setLogin(newUser.getLogin());
             newDetail.setTotal(defaultFreeTotal);
             newDetail.setMembership(Membership.FREE);
-            detailRepository.save(newDetail);
-            log.debug("Created Information for Detail: {}", newDetail);
+            if (detailRepository.findOneWithByLogin(newUser.getLogin()).isEmpty()) {
+                try {
+                    detailRepository.save(newDetail);
+                    log.debug("Created Information for Detail: {}", newDetail);
+                } catch (Exception e) {
+                    log.debug("Error creating Detail");
+                }
+            } else {
+                log.debug("Detail already exists");
+            }
+        } else {
+            log.debug("Invalid newUser or login is empty");
         }
         return newUser;
     }
