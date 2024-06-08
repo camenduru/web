@@ -80,8 +80,8 @@ public class AccountResource {
     @Value("${camenduru.web.default.source.channel}")
     private String defaultSourceChannel;
 
-    @Value("${camenduru.web.default.source.total}")
-    private String defaultSourceTotal;
+    @Value("${camenduru.web.default.free.total}")
+    private String defaultFreeTotal;
 
     @Value("${camenduru.web.token}")
     private String webToken;
@@ -135,7 +135,7 @@ public class AccountResource {
             detail.setSourceChannel(defaultSourceChannel);
             detail.setUser(user);
             detail.setLogin(user.getLogin());
-            detail.setTotal(defaultSourceTotal);
+            detail.setTotal(defaultFreeTotal);
             detail.setMembership(Membership.FREE);
             detailRepository.save(detail);
         }

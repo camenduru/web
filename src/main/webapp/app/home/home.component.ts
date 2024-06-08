@@ -176,7 +176,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next(message) {
-          if (message.includes('insufficient')) {
+          if (message.includes('Oops!')) {
             const notify = document.getElementById('notify');
             const notifyDivHTML = `
                 <div id="notifyDiv" class="alert alert-dismissible alert-warning">

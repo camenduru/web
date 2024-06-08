@@ -193,5 +193,7 @@ camenduru:
   web.default.discord: ${com_camenduru_web_default_discord}
   web.default.source.id: ${com_camenduru_web_default_source_id}
   web.default.source.channel: ${com_camenduru_web_default_source_channel}
-  web.default.source.total: ${com_camenduru_web_default_source_total}
+  web.default.free.total: ${com_camenduru_web_default_free_total}
+  web.default.paid.total: ${com_camenduru_web_default_paid_total}
   web.token: ${com_camenduru_web_token}
+  web.cooldown: ${com_camenduru_web_cooldown}

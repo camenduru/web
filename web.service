@@ -10,7 +10,8 @@ Environment="com_camenduru_web_default_result_suffix=result_suffix"
 Environment="com_camenduru_web_default_discord=discord"
 Environment="com_camenduru_web_default_source_id=source_id"
 Environment="com_camenduru_web_default_source_channel=source_channel"
-Environment="com_camenduru_web_default_source_total=0"
+Environment="com_camenduru_web_default_free_total=0"
+Environment="com_camenduru_web_default_paid_total=0"
 Environment="com_camenduru_web_mail_host=smtp.gmail.com"
 Environment="com_camenduru_web_mail_password=password"
 Environment="com_camenduru_web_mail_port=587"
@@ -19,6 +20,7 @@ Environment="com_camenduru_web_mail_username=mail@gmail.com"
 Environment="com_camenduru_web_base_url=base_url"
 Environment="com_camenduru_web_base64_secret=base64_secret"
 Environment="com_camenduru_web_token=web_token"
+Environment="com_camenduru_web_cooldown=5"
 WorkingDirectory=/content/com.camenduru/web
 ExecStart=/bin/bash -c 'java -Dserver.port=3000 -jar target/web-0.0.1.jar --spring.profiles.active=prod'
 Restart=always

@@ -1,6 +1,7 @@
 package com.camenduru.web.repository;
 
 import com.camenduru.web.domain.Job;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,7 @@ public interface JobRepository extends MongoRepository<Job, String> {
 
     @Query("{'id': ?0}")
     Optional<Job> findOneWithEagerRelationships(String id);
+
+    @Query(value = "{'login': ?0, 'status': {$ne: 'EXPIRED'}, date: {$gt: ?1}}", sort = "{date: -1}")
+    List<Job> findAllByUserNonExpiredJobsNewerThanTheDate(String login, Date date);
 }
