@@ -317,50 +317,17 @@
             [isCroppedSize]="isCroppedSize"
           >
             <ng-container *ngFor="let job of jobs; trackBy: trackId">
-              <ng-container *ngIf="job.result && job.result.includes(','); else resultNotArray">
-                <ng-container *ngFor="let link of job.result.slice(1, -1).trim().split(',')">
-                  <ng-container *ngIf="link.includes('.mp4')">
-                    <video width="445" height="445" controls>
-                      <source class="item rounded" src="{{ link.slice(1, -1) }}" type="video/mp4" />
-                    </video>
-                  </ng-container>
-                </ng-container>
+              <ng-container
+                *ngIf="
+                  job.result &&
+                  (job.result.includes('.png') ||
+                    job.result.includes('.jpg') ||
+                    job.result.includes('.webp') ||
+                    job.result.includes('.gif'))
+                "
+              >
+                <img class="item rounded" [src]="job.result" (click)="download(job.result)" style="cursor: pointer" width="445" />
               </ng-container>
-              <ng-template #resultNotArray>
-                <ng-container
-                  *ngIf="job.result && (job.result.includes('.png') || job.result.includes('.jpg') || job.result.includes('.webp'))"
-                >
-                  <img class="item rounded" [src]="job.result" (click)="download(job.result)" style="cursor: pointer" width="445" />
-                </ng-container>
-                <ng-container *ngIf="job.result && job.result.includes('.mp4')">
-                  <video width="445" height="445" controls>
-                    <source class="item rounded" [src]="job.result" type="video/mp4" />
-                  </video>
-                </ng-container>
-                <ng-container *ngIf="job.result && job.result.includes('.wav')">
-                  <audio width="445" height="445" controls>
-                    <source class="item rounded" [src]="job.result" type="audio/wav" />
-                  </audio>
-                </ng-container>
-                <ng-container *ngIf="job.result && job.result.includes('.glb')">
-                  <img
-                    class="item rounded"
-                    src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[GLB]#.png"
-                    (click)="download(job.result)"
-                    style="cursor: pointer"
-                    width="445"
-                  />
-                </ng-container>
-                <ng-container *ngIf="job.result && job.result.includes('.txt')">
-                  <img
-                    class="item rounded"
-                    src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[TXT]#.png"
-                    (click)="download(job.result)"
-                    style="cursor: pointer"
-                    width="445"
-                  />
-                </ng-container>
-              </ng-template>
             </ng-container>
           </div>
         }
