@@ -177,6 +177,12 @@ export default class HomeComponent implements OnInit, OnDestroy {
   trackId = (_index: number, item: IJob): string => this.jobService.getJobIdentifier(item);
 
   ngOnInit(): void {
+    this.queryHomeBackend().subscribe({
+      next: (res: JobEntityArrayResponseType) => {
+        this.onJobResponseSuccess(res);
+      },
+    });
+
     this.accountService.identity().subscribe(() => {
       if (this.accountService.isAuthenticated()) {
         this.queryTypeBackend().subscribe({
@@ -295,6 +301,20 @@ export default class HomeComponent implements OnInit, OnDestroy {
       sort: this.sortService.buildSortParam(this.sortState()),
     };
     return this.jobService.query(queryObject).pipe(tap(() => (this.isLoading = false)));
+  }
+
+  protected queryHomeBackend(): Observable<JobEntityArrayResponseType> {
+    const { page } = this;
+
+    this.isLoading = true;
+    const pageToLoad: number = page;
+    const queryObject: any = {
+      page: pageToLoad - 1,
+      size: this.itemsPerPage,
+      eagerload: true,
+      sort: this.sortService.buildSortParam(this.sortState()),
+    };
+    return this.jobService.home(queryObject).pipe(tap(() => (this.isLoading = false)));
   }
 
   protected onTypeResponseSuccess(response: TypeEntityArrayResponseType): void {

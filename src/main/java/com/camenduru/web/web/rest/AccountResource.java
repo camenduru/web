@@ -41,10 +41,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.web.util.PaginationUtil;
 
 /**
  * REST controller for managing the current user's account.
@@ -184,6 +189,25 @@ public class AccountResource {
         } else {
             return new ResponseEntity<String>("❌ Invalid", HttpStatus.OK);
         }
+    }
+
+    /**
+     * {@code GET  /home} : get all the home user's jobs.
+     *
+     * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of jobs in body.
+     */
+    @GetMapping("/home")
+    public ResponseEntity<List<Job>> geHomeJobs(
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Jobs");
+        Page<Job> page;
+        page = jobRepository.findAllByUserIsCurrentUser(pageable, "home");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**

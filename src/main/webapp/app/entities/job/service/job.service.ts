@@ -30,6 +30,7 @@ export class JobService {
   protected applicationConfigService = inject(ApplicationConfigService);
 
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/jobs');
+  protected homeUrl = this.applicationConfigService.getEndpointFor('api/home');
 
   create(job: NewJob): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(job);
@@ -60,6 +61,13 @@ export class JobService {
     const options = createRequestOption(req);
     return this.http
       .get<RestJob[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
+  home(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<RestJob[]>(this.homeUrl, { params: options, observe: 'response' })
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
