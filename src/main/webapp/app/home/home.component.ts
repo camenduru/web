@@ -160,7 +160,23 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
 
-  public constructor(private http: HttpClient) {
+  changeSchema(event: Event): void {
+    const selectedValue = (event.target as HTMLInputElement).value;
+    if (this.types && this.types.length > 0) {
+      const type = this.types.find(item => item.type === selectedValue);
+      const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
+      this.activeSchema = jsonSchema as unknown as ISchema;
+      const jsonModel = type?.model ? JSON.parse(type.model) : null;
+      this.activeModel = jsonModel;
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
+
+  trackId = (_index: number, item: IJob): string => this.jobService.getJobIdentifier(item);
+
+  ngOnInit(): void {
     this.accountService.identity().subscribe(() => {
       if (this.accountService.isAuthenticated()) {
         this.queryTypeBackend().subscribe({
@@ -196,29 +212,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
               }
             },
           });
-      }
-    });
-  }
 
-  changeSchema(event: Event): void {
-    const selectedValue = (event.target as HTMLInputElement).value;
-    if (this.types && this.types.length > 0) {
-      const type = this.types.find(item => item.type === selectedValue);
-      const jsonSchema = type?.schema ? JSON.parse(type.schema) : null;
-      this.activeSchema = jsonSchema as unknown as ISchema;
-      const jsonModel = type?.model ? JSON.parse(type.model) : null;
-      this.activeModel = jsonModel;
-    }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/member-ordering
-  editForm: JobFormGroup = this.jobFormService.createJobFormGroup();
-
-  trackId = (_index: number, item: IJob): string => this.jobService.getJobIdentifier(item);
-
-  ngOnInit(): void {
-    this.accountService.identity().subscribe(() => {
-      if (this.accountService.isAuthenticated()) {
         this.accountService.getAuthenticationState().subscribe({
           next: (user: Account | null) => {
             if (user) {
