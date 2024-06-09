@@ -77,6 +77,28 @@ public class UserService {
                 userRepository.save(user);
                 this.clearUserCaches(user);
                 log.debug("Activated user: {}", user);
+                if (user != null && user.getLogin() != null && !user.getLogin().isEmpty()) {
+                    Detail detail = new Detail();
+                    detail.setDiscord(defaultDiscord);
+                    detail.setSourceId(defaultSourceId);
+                    detail.setSourceChannel(defaultSourceChannel);
+                    detail.setUser(user);
+                    detail.setLogin(user.getLogin());
+                    detail.setTotal(defaultFreeTotal);
+                    detail.setMembership(Membership.FREE);
+                    if (detailRepository.findOneWithByLogin(user.getLogin()).isEmpty()) {
+                        try {
+                            detailRepository.save(detail);
+                            log.debug("Created Information for Detail: {}", detail);
+                        } catch (Exception e) {
+                            log.debug("Error creating Detail");
+                        }
+                    } else {
+                        log.debug("Detail already exists");
+                    }
+                } else {
+                    log.debug("Invalid newUser or login is empty");
+                }
                 return user;
             });
     }
@@ -175,28 +197,6 @@ public class UserService {
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
-        if (newUser != null && newUser.getLogin() != null && !newUser.getLogin().isEmpty()) {
-            Detail newDetail = new Detail();
-            newDetail.setDiscord(defaultDiscord);
-            newDetail.setSourceId(defaultSourceId);
-            newDetail.setSourceChannel(defaultSourceChannel);
-            newDetail.setUser(newUser);
-            newDetail.setLogin(newUser.getLogin());
-            newDetail.setTotal(defaultFreeTotal);
-            newDetail.setMembership(Membership.FREE);
-            if (detailRepository.findOneWithByLogin(newUser.getLogin()).isEmpty()) {
-                try {
-                    detailRepository.save(newDetail);
-                    log.debug("Created Information for Detail: {}", newDetail);
-                } catch (Exception e) {
-                    log.debug("Error creating Detail");
-                }
-            } else {
-                log.debug("Detail already exists");
-            }
-        } else {
-            log.debug("Invalid newUser or login is empty");
-        }
         return newUser;
     }
 
@@ -241,28 +241,6 @@ public class UserService {
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
-        if (user != null && user.getLogin() != null && !user.getLogin().isEmpty()) {
-            Detail detail = new Detail();
-            detail.setDiscord(defaultDiscord);
-            detail.setSourceId(defaultSourceId);
-            detail.setSourceChannel(defaultSourceChannel);
-            detail.setUser(user);
-            detail.setLogin(user.getLogin());
-            detail.setTotal(defaultFreeTotal);
-            detail.setMembership(Membership.FREE);
-            if (detailRepository.findOneWithByLogin(user.getLogin()).isEmpty()) {
-                try {
-                    detailRepository.save(detail);
-                    log.debug("Created Information for Detail: {}", detail);
-                } catch (Exception e) {
-                    log.debug("Error creating Detail");
-                }
-            } else {
-                log.debug("Detail already exists");
-            }
-        } else {
-            log.debug("Invalid newUser or login is empty");
-        }
         return user;
     }
 
