@@ -161,39 +161,43 @@ export default class HomeComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   public constructor(private http: HttpClient) {
-    this.queryTypeBackend().subscribe({
-      next: (res: TypeEntityArrayResponseType) => {
-        this.onTypeResponseSuccess(res);
-      },
-    });
+    this.accountService.identity().subscribe(() => {
+      if (this.accountService.isAuthenticated()) {
+        this.queryTypeBackend().subscribe({
+          next: (res: TypeEntityArrayResponseType) => {
+            this.onTypeResponseSuccess(res);
+          },
+        });
 
-    this.trackerService
-      .subscribeToNotify('')
-      .pipe(
-        tap(() => {
-          this.load();
-        }),
-      )
-      .subscribe({
-        next(message) {
-          if (message.includes('Oops!')) {
-            const notify = document.getElementById('notify');
-            const notifyDivHTML = `
-                <div id="notifyDiv" class="alert alert-dismissible alert-warning">
-                    <button id="notifyButton" type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    ${message}
-                </div>
-            `;
-            if (notify) {
-              notify.innerHTML = notifyDivHTML;
-              const notifyButton = document.getElementById('notifyButton');
-              if (notifyButton) {
-                notifyButton.addEventListener('click', notifyDivRemove);
+        this.trackerService
+          .subscribeToNotify('')
+          .pipe(
+            tap(() => {
+              this.load();
+            }),
+          )
+          .subscribe({
+            next(message) {
+              if (message.includes('Oops!')) {
+                const notify = document.getElementById('notify');
+                const notifyDivHTML = `
+                    <div id="notifyDiv" class="alert alert-dismissible alert-warning">
+                        <button id="notifyButton" type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        ${message}
+                    </div>
+                `;
+                if (notify) {
+                  notify.innerHTML = notifyDivHTML;
+                  const notifyButton = document.getElementById('notifyButton');
+                  if (notifyButton) {
+                    notifyButton.addEventListener('click', notifyDivRemove);
+                  }
+                }
               }
-            }
-          }
-        },
-      });
+            },
+          });
+      }
+    });
   }
 
   changeSchema(event: Event): void {
@@ -213,23 +217,28 @@ export default class HomeComponent implements OnInit, OnDestroy {
   trackId = (_index: number, item: IJob): string => this.jobService.getJobIdentifier(item);
 
   ngOnInit(): void {
-    this.accountService.getAuthenticationState().subscribe({
-      next: (user: Account | null) => {
-        if (user) {
-          this.user = user;
-        }
-      },
+    this.accountService.identity().subscribe(() => {
+      if (this.accountService.isAuthenticated()) {
+        this.accountService.getAuthenticationState().subscribe({
+          next: (user: Account | null) => {
+            if (user) {
+              this.user = user;
+            }
+          },
+        });
+
+        this.accountService
+          .getAuthenticationState()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(account => this.account.set(account));
+        this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
+          .pipe(
+            tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
+            tap(() => this.load()),
+          )
+          .subscribe();
+      }
     });
-    this.accountService
-      .getAuthenticationState()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(account => this.account.set(account));
-    this.subscription = combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data])
-      .pipe(
-        tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),
-        tap(() => this.load()),
-      )
-      .subscribe();
   }
 
   login(): void {
