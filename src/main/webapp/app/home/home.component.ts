@@ -177,12 +177,6 @@ export default class HomeComponent implements OnInit, OnDestroy {
   trackId = (_index: number, item: IJob): string => this.jobService.getJobIdentifier(item);
 
   ngOnInit(): void {
-    this.queryHomeBackend().subscribe({
-      next: (res: JobEntityArrayResponseType) => {
-        this.onJobResponseSuccess(res);
-      },
-    });
-
     this.accountService.identity().subscribe(() => {
       if (this.accountService.isAuthenticated()) {
         this.queryTypeBackend().subscribe({
@@ -237,6 +231,12 @@ export default class HomeComponent implements OnInit, OnDestroy {
             tap(() => this.load()),
           )
           .subscribe();
+      } else {
+        this.queryHomeBackend().subscribe({
+          next: (res: JobEntityArrayResponseType) => {
+            this.onJobResponseSuccess(res);
+          },
+        });
       }
     });
   }
