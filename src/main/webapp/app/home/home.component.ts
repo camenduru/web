@@ -362,7 +362,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
     const pageToLoad: number = page;
     const queryObject: any = {
       page: pageToLoad - 1,
-      size: this.itemsPerPage,
+      size: 40,
       eagerload: true,
       sort: this.sortService.buildSortParam(this.sortState()),
     };
