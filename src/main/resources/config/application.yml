@@ -163,7 +163,7 @@ jhipster:
   #   allow-credentials: true
   #   max-age: 1800
   mail:
-    from: web@localhost
+    from: ${com_camenduru_web_mail_from}
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**
