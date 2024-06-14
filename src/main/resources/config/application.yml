@@ -167,8 +167,8 @@ jhipster:
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**
-    title: Web API
-    description: Web API documentation
+    title: Tost AI API
+    description: Tost AI API documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name:
