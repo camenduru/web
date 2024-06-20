@@ -149,21 +149,25 @@ public class JobResource {
                         JsonElement jsonElement = JsonParser.parseString(jsonString);
                         if (jsonElement.isJsonObject()) {
                             JsonObject jsonObject = jsonElement.getAsJsonObject();
-                            if (jsonObject.has("width") && jsonObject.has("height")) {
-                                width = jsonObject.get("width").getAsInt();
-                                height = jsonObject.get("height").getAsInt();
+                            if (jsonObject.has("input_image_check")) {
+                                String input_image = jsonObject.get("input_image_check").getAsString();
+                                URL image_url;
+                                BufferedImage image;
+                                try {
+                                    image_url = new URL(input_image);
+                                    image = ImageIO.read(image_url);
+                                    width = image.getWidth();
+                                    height = image.getHeight();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
                             } else {
-                                if (jsonObject.has("input_image_check")) {
-                                    String input_image = jsonObject.get("input_image_check").getAsString();
-                                    URL image_url;
-                                    BufferedImage image;
-                                    try {
-                                        image_url = new URL(input_image);
-                                        image = ImageIO.read(image_url);
-                                        width = image.getWidth();
-                                        height = image.getHeight();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                for (String key : jsonObject.keySet()) {
+                                    if (key.startsWith("width")) {
+                                        width = jsonObject.get(key).getAsInt();
+                                    }
+                                    if (key.startsWith("height")) {
+                                        height = jsonObject.get(key).getAsInt();
                                     }
                                 }
                             }
