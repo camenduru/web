@@ -57,7 +57,7 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="isActive">
+            <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="isActive">
               <div class="d-flex">
                 <span jhiTranslate="webApp.type.isActive">Is Active</span>
 
@@ -80,7 +80,7 @@
               <td>{{ type.title }}</td>
               <td>{{ type.amount }}</td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isDefault }}</td>
-              <td>{{ type.isActive }}</td>
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isActive }}</td>
               <td>{{ type.isFree }}</td>
               <td class="text-end">
                 <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">
