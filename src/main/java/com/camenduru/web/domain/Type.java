@@ -50,6 +50,10 @@ public class Type implements Serializable {
     @Field("is_free")
     private Boolean isFree;
 
+    @NotNull
+    @Field("cooldown")
+    private String cooldown;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getId() {
@@ -169,6 +173,19 @@ public class Type implements Serializable {
         this.isFree = isFree;
     }
 
+    public String getCooldown() {
+        return this.cooldown;
+    }
+
+    public Type cooldown(String cooldown) {
+        this.setCooldown(cooldown);
+        return this;
+    }
+
+    public void setCooldown(String cooldown) {
+        this.cooldown = cooldown;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -201,6 +218,7 @@ public class Type implements Serializable {
             ", isDefault='" + getIsDefault() + "'" +
             ", isActive='" + getIsActive() + "'" +
             ", isFree='" + getIsFree() + "'" +
+            ", cooldown='" + getCooldown() + "'" +
             "}";
     }
 }

@@ -25,7 +25,8 @@
       "title": "Title",
       "isDefault": "Is Default",
       "isActive": "Is Active",
-      "isFree": "Is Free"
+      "isFree": "Is Free",
+      "cooldown": "Cooldown"
     }
   }
 }

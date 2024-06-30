@@ -54,7 +54,8 @@ public class TypeAsserts {
             .satisfies(e -> assertThat(e.getTitle()).as("check title").isEqualTo(actual.getTitle()))
             .satisfies(e -> assertThat(e.getIsDefault()).as("check isDefault").isEqualTo(actual.getIsDefault()))
             .satisfies(e -> assertThat(e.getIsActive()).as("check isActive").isEqualTo(actual.getIsActive()))
-            .satisfies(e -> assertThat(e.getIsFree()).as("check isFree").isEqualTo(actual.getIsFree()));
+            .satisfies(e -> assertThat(e.getIsFree()).as("check isFree").isEqualTo(actual.getIsFree()))
+            .satisfies(e -> assertThat(e.getCooldown()).as("check cooldown").isEqualTo(actual.getCooldown()));
     }
 
     /**

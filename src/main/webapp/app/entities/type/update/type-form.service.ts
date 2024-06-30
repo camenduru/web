@@ -26,6 +26,7 @@ type TypeFormGroupContent = {
   isDefault: FormControl<IType['isDefault']>;
   isActive: FormControl<IType['isActive']>;
   isFree: FormControl<IType['isFree']>;
+  cooldown: FormControl<IType['cooldown']>;
 };
 
 export type TypeFormGroup = FormGroup<TypeFormGroupContent>;
@@ -67,6 +68,9 @@ export class TypeFormService {
         validators: [Validators.required],
       }),
       isFree: new FormControl(typeRawValue.isFree, {
+        validators: [Validators.required],
+      }),
+      cooldown: new FormControl(typeRawValue.cooldown, {
         validators: [Validators.required],
       }),
     });

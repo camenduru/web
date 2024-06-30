@@ -16,14 +16,15 @@ describe('Type e2e test', () => {
   const username = Cypress.env('E2E_USERNAME') ?? 'user';
   const password = Cypress.env('E2E_PASSWORD') ?? 'user';
   const typeSample = {
-    type: 'eke moose',
-    amount: 'simplify absent afore',
-    schema: 'ouch',
-    model: 'out',
-    title: 'plus except',
+    type: 'likewise',
+    amount: 'huzzah',
+    schema: 'dual queasily',
+    model: 'soundproof that above',
+    title: 'yesterday aggravating',
     isDefault: false,
     isActive: true,
     isFree: true,
+    cooldown: 'aw',
   };
 
   let type;
@@ -53,7 +54,7 @@ describe('Type e2e test', () => {
     cy.visit('/');
     cy.clickOnEntityMenuItem('type');
     cy.wait('@entitiesRequest').then(({ response }) => {
-      if (response.body.length === 0) {
+      if (response?.body.length === 0) {
         cy.get(entityTableSelector).should('not.exist');
       } else {
         cy.get(entityTableSelector).should('exist');
@@ -77,7 +78,7 @@ describe('Type e2e test', () => {
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
+          expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', typePageUrlPattern);
       });
@@ -115,7 +116,7 @@ describe('Type e2e test', () => {
         cy.getEntityDetailsHeading('type');
         cy.get(entityDetailsBackButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
+          expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', typePageUrlPattern);
       });
@@ -126,7 +127,7 @@ describe('Type e2e test', () => {
         cy.get(entityCreateSaveButtonSelector).should('exist');
         cy.get(entityCreateCancelButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
+          expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', typePageUrlPattern);
       });
@@ -136,7 +137,7 @@ describe('Type e2e test', () => {
         cy.getEntityCreateUpdateHeading('Type');
         cy.get(entityCreateSaveButtonSelector).click();
         cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
+          expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', typePageUrlPattern);
       });
@@ -146,10 +147,10 @@ describe('Type e2e test', () => {
         cy.getEntityDeleteDialogHeading('type').should('exist');
         cy.get(entityConfirmDeleteButtonSelector).click();
         cy.wait('@deleteEntityRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(204);
+          expect(response?.statusCode).to.equal(204);
         });
         cy.wait('@entitiesRequest').then(({ response }) => {
-          expect(response.statusCode).to.equal(200);
+          expect(response?.statusCode).to.equal(200);
         });
         cy.url().should('match', typePageUrlPattern);
 
@@ -166,20 +167,20 @@ describe('Type e2e test', () => {
     });
 
     it('should create an instance of Type', () => {
-      cy.get(`[data-cy="type"]`).type('dig warlike');
-      cy.get(`[data-cy="type"]`).should('have.value', 'dig warlike');
+      cy.get(`[data-cy="type"]`).type('typhoon mockingly but');
+      cy.get(`[data-cy="type"]`).should('have.value', 'typhoon mockingly but');
 
-      cy.get(`[data-cy="amount"]`).type('woefully');
-      cy.get(`[data-cy="amount"]`).should('have.value', 'woefully');
+      cy.get(`[data-cy="amount"]`).type('fragment whoa');
+      cy.get(`[data-cy="amount"]`).should('have.value', 'fragment whoa');
 
-      cy.get(`[data-cy="schema"]`).type('hurtful woot fortune');
-      cy.get(`[data-cy="schema"]`).should('have.value', 'hurtful woot fortune');
+      cy.get(`[data-cy="schema"]`).type('up');
+      cy.get(`[data-cy="schema"]`).should('have.value', 'up');
 
-      cy.get(`[data-cy="model"]`).type('the mmm');
-      cy.get(`[data-cy="model"]`).should('have.value', 'the mmm');
+      cy.get(`[data-cy="model"]`).type('outlook well-off');
+      cy.get(`[data-cy="model"]`).should('have.value', 'outlook well-off');
 
-      cy.get(`[data-cy="title"]`).type('whose');
-      cy.get(`[data-cy="title"]`).should('have.value', 'whose');
+      cy.get(`[data-cy="title"]`).type('crossly');
+      cy.get(`[data-cy="title"]`).should('have.value', 'crossly');
 
       cy.get(`[data-cy="isDefault"]`).should('not.be.checked');
       cy.get(`[data-cy="isDefault"]`).click();
@@ -193,14 +194,17 @@ describe('Type e2e test', () => {
       cy.get(`[data-cy="isFree"]`).click();
       cy.get(`[data-cy="isFree"]`).should('be.checked');
 
+      cy.get(`[data-cy="cooldown"]`).type('mercerize surprisingly motherly');
+      cy.get(`[data-cy="cooldown"]`).should('have.value', 'mercerize surprisingly motherly');
+
       cy.get(entityCreateSaveButtonSelector).click();
 
       cy.wait('@postEntityRequest').then(({ response }) => {
-        expect(response.statusCode).to.equal(201);
+        expect(response?.statusCode).to.equal(201);
         type = response.body;
       });
       cy.wait('@entitiesRequest').then(({ response }) => {
-        expect(response.statusCode).to.equal(200);
+        expect(response?.statusCode).to.equal(200);
       });
       cy.url().should('match', typePageUrlPattern);
     });

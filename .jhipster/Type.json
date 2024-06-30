@@ -43,6 +43,11 @@
       "fieldName": "isFree",
       "fieldType": "Boolean",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "cooldown",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
     }
   ],
   "name": "Type",

@@ -47,6 +47,10 @@
           <dd>
             <span>{{ type()!.isFree }}</span>
           </dd>
+          <dt><span jhiTranslate="webApp.type.cooldown">Cooldown</span></dt>
+          <dd>
+            <span>{{ type()!.cooldown }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

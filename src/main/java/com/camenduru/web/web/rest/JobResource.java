@@ -66,9 +66,6 @@ public class JobResource {
     @Value("${camenduru.web.default.result.suffix}")
     private String camenduruWebResultSuffix;
 
-    @Value("${camenduru.web.cooldown}")
-    private String camenduruWebCooldown;
-
     @Value("${camenduru.web.default.free.total}")
     private String camenduruWebFreeTotal;
 
@@ -110,7 +107,7 @@ public class JobResource {
         Type typeC = typeRepository.findByType(job.getType()).orElseThrow();
         int amount = Integer.parseInt(typeC.getAmount());
         String destination = String.format("/notify/%s", detail.getLogin());
-        int cooldown = Integer.parseInt(camenduruWebCooldown);
+        int cooldown = Integer.parseInt(typeC.getCooldown());
         Date date = new Date(System.currentTimeMillis() - (cooldown * 1000));
 
         if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {

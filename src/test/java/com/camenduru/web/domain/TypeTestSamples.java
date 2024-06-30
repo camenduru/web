@@ -5,11 +5,11 @@ import java.util.UUID;
 public class TypeTestSamples {
 
     public static Type getTypeSample1() {
-        return new Type().id("id1").type("type1").amount("amount1").schema("schema1").model("model1").title("title1");
+        return new Type().id("id1").type("type1").amount("amount1").schema("schema1").model("model1").title("title1").cooldown("cooldown1");
     }
 
     public static Type getTypeSample2() {
-        return new Type().id("id2").type("type2").amount("amount2").schema("schema2").model("model2").title("title2");
+        return new Type().id("id2").type("type2").amount("amount2").schema("schema2").model("model2").title("title2").cooldown("cooldown2");
     }
 
     public static Type getTypeRandomSampleGenerator() {
@@ -19,6 +19,7 @@ public class TypeTestSamples {
             .amount(UUID.randomUUID().toString())
             .schema(UUID.randomUUID().toString())
             .model(UUID.randomUUID().toString())
-            .title(UUID.randomUUID().toString());
+            .title(UUID.randomUUID().toString())
+            .cooldown(UUID.randomUUID().toString());
     }
 }

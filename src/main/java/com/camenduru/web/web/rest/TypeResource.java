@@ -150,6 +150,9 @@ public class TypeResource {
                 if (type.getIsFree() != null) {
                     existingType.setIsFree(type.getIsFree());
                 }
+                if (type.getCooldown() != null) {
+                    existingType.setCooldown(type.getCooldown());
+                }
 
                 return existingType;
             })

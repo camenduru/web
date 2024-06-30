@@ -8,6 +8,7 @@ export interface IType {
   isDefault?: boolean | null;
   isActive?: boolean | null;
   isFree?: boolean | null;
+  cooldown?: string | null;
 }
 
 export type NewType = Omit<IType, 'id'> & { id: null };

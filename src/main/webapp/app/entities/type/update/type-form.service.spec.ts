@@ -28,6 +28,7 @@ describe('Type Form Service', () => {
             isDefault: expect.any(Object),
             isActive: expect.any(Object),
             isFree: expect.any(Object),
+            cooldown: expect.any(Object),
           }),
         );
       });
@@ -46,6 +47,7 @@ describe('Type Form Service', () => {
             isDefault: expect.any(Object),
             isActive: expect.any(Object),
             isFree: expect.any(Object),
+            cooldown: expect.any(Object),
           }),
         );
       });

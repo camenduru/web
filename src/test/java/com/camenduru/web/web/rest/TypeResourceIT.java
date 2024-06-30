@@ -12,6 +12,7 @@ import com.camenduru.web.domain.Type;
 import com.camenduru.web.repository.TypeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,9 @@ class TypeResourceIT {
     private static final Boolean DEFAULT_IS_FREE = false;
     private static final Boolean UPDATED_IS_FREE = true;
 
+    private static final String DEFAULT_COOLDOWN = "AAAAAAAAAA";
+    private static final String UPDATED_COOLDOWN = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/types";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -65,6 +69,8 @@ class TypeResourceIT {
     private MockMvc restTypeMockMvc;
 
     private Type type;
+
+    private Type insertedType;
 
     /**
      * Create an entity for this test.
@@ -81,7 +87,8 @@ class TypeResourceIT {
             .title(DEFAULT_TITLE)
             .isDefault(DEFAULT_IS_DEFAULT)
             .isActive(DEFAULT_IS_ACTIVE)
-            .isFree(DEFAULT_IS_FREE);
+            .isFree(DEFAULT_IS_FREE)
+            .cooldown(DEFAULT_COOLDOWN);
         return type;
     }
 
@@ -100,14 +107,22 @@ class TypeResourceIT {
             .title(UPDATED_TITLE)
             .isDefault(UPDATED_IS_DEFAULT)
             .isActive(UPDATED_IS_ACTIVE)
-            .isFree(UPDATED_IS_FREE);
+            .isFree(UPDATED_IS_FREE)
+            .cooldown(UPDATED_COOLDOWN);
         return type;
     }
 
     @BeforeEach
     public void initTest() {
-        typeRepository.deleteAll();
         type = createEntity();
+    }
+
+    @AfterEach
+    public void cleanup() {
+        if (insertedType != null) {
+            typeRepository.delete(insertedType);
+            insertedType = null;
+        }
     }
 
     @Test
@@ -127,6 +142,8 @@ class TypeResourceIT {
         // Validate the Type in the database
         assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
         assertTypeUpdatableFieldsEquals(returnedType, getPersistedType(returnedType));
+
+        insertedType = returnedType;
     }
 
     @Test
@@ -266,9 +283,24 @@ class TypeResourceIT {
     }
 
     @Test
+    void checkCooldownIsRequired() throws Exception {
+        long databaseSizeBeforeTest = getRepositoryCount();
+        // set the field null
+        type.setCooldown(null);
+
+        // Create the Type, which fails.
+
+        restTypeMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(type)))
+            .andExpect(status().isBadRequest());
+
+        assertSameRepositoryCount(databaseSizeBeforeTest);
+    }
+
+    @Test
     void getAllTypes() throws Exception {
         // Initialize the database
-        typeRepository.save(type);
+        insertedType = typeRepository.save(type);
 
         // Get all the typeList
         restTypeMockMvc
@@ -283,13 +315,14 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].isDefault").value(hasItem(DEFAULT_IS_DEFAULT.booleanValue())))
             .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())))
-            .andExpect(jsonPath("$.[*].isFree").value(hasItem(DEFAULT_IS_FREE.booleanValue())));
+            .andExpect(jsonPath("$.[*].isFree").value(hasItem(DEFAULT_IS_FREE.booleanValue())))
+            .andExpect(jsonPath("$.[*].cooldown").value(hasItem(DEFAULT_COOLDOWN)));
     }
 
     @Test
     void getType() throws Exception {
         // Initialize the database
-        typeRepository.save(type);
+        insertedType = typeRepository.save(type);
 
         // Get the type
         restTypeMockMvc
@@ -304,7 +337,8 @@ class TypeResourceIT {
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.isDefault").value(DEFAULT_IS_DEFAULT.booleanValue()))
             .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()))
-            .andExpect(jsonPath("$.isFree").value(DEFAULT_IS_FREE.booleanValue()));
+            .andExpect(jsonPath("$.isFree").value(DEFAULT_IS_FREE.booleanValue()))
+            .andExpect(jsonPath("$.cooldown").value(DEFAULT_COOLDOWN));
     }
 
     @Test
@@ -316,7 +350,7 @@ class TypeResourceIT {
     @Test
     void putExistingType() throws Exception {
         // Initialize the database
-        typeRepository.save(type);
+        insertedType = typeRepository.save(type);
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
@@ -330,7 +364,8 @@ class TypeResourceIT {
             .title(UPDATED_TITLE)
             .isDefault(UPDATED_IS_DEFAULT)
             .isActive(UPDATED_IS_ACTIVE)
-            .isFree(UPDATED_IS_FREE);
+            .isFree(UPDATED_IS_FREE)
+            .cooldown(UPDATED_COOLDOWN);
 
         restTypeMockMvc
             .perform(
@@ -394,7 +429,7 @@ class TypeResourceIT {
     @Test
     void partialUpdateTypeWithPatch() throws Exception {
         // Initialize the database
-        typeRepository.save(type);
+        insertedType = typeRepository.save(type);
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
@@ -421,7 +456,7 @@ class TypeResourceIT {
     @Test
     void fullUpdateTypeWithPatch() throws Exception {
         // Initialize the database
-        typeRepository.save(type);
+        insertedType = typeRepository.save(type);
 
         long databaseSizeBeforeUpdate = getRepositoryCount();
 
@@ -437,7 +472,8 @@ class TypeResourceIT {
             .title(UPDATED_TITLE)
             .isDefault(UPDATED_IS_DEFAULT)
             .isActive(UPDATED_IS_ACTIVE)
-            .isFree(UPDATED_IS_FREE);
+            .isFree(UPDATED_IS_FREE)
+            .cooldown(UPDATED_COOLDOWN);
 
         restTypeMockMvc
             .perform(
@@ -502,7 +538,7 @@ class TypeResourceIT {
     @Test
     void deleteType() throws Exception {
         // Initialize the database
-        typeRepository.save(type);
+        insertedType = typeRepository.save(type);
 
         long databaseSizeBeforeDelete = getRepositoryCount();
 

@@ -71,6 +71,13 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="cooldown">
+              <div class="d-flex">
+                <span jhiTranslate="webApp.type.cooldown">Cooldown</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -82,6 +89,7 @@
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isDefault }}</td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isActive }}</td>
               <td>{{ type.isFree }}</td>
+              <td>{{ type.cooldown }}</td>
               <td class="text-end">
                 <div *jhiHasAnyAuthority="'ROLE_ADMIN'" class="btn-group">
                   <a [routerLink]="['/type', type.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

@@ -110,6 +110,18 @@
             </div>
           }
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cooldown" jhiTranslate="webApp.type.cooldown">Cooldown</label>
+          <input type="text" class="form-control" name="cooldown" id="field_cooldown" data-cy="cooldown" formControlName="cooldown" />
+          @if (editForm.get('cooldown')!.invalid && (editForm.get('cooldown')!.dirty || editForm.get('cooldown')!.touched)) {
+            <div>
+              @if (editForm.get('cooldown')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
       </div>
 
       <div>
