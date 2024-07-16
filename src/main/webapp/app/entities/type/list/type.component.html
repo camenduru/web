@@ -85,7 +85,16 @@
           @for (type of types; track trackId) {
             <tr data-cy="entityTable">
               <td>
-                <a [routerLink]="['/type', type.id, 'view']">{{ type.title }}</a>
+                @if (account()?.authorities?.includes('ROLE_ADMIN') || account()?.authorities?.includes('ROLE_PAID')) {
+                  <a [routerLink]="['/type', type.id, 'view']">{{ type.title }}</a>
+                } @else {
+                  <ng-container *ngIf="type.isFree; else noLink">
+                    <a [routerLink]="['/type', type.id, 'view']">{{ type.title }}</a>
+                  </ng-container>
+                  <ng-template #noLink>
+                    {{ type.title }}
+                  </ng-template>
+                }
               </td>
               <td>{{ type.amount }}</td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isDefault }}</td>

@@ -1,4 +1,4 @@
-import { Component, NgZone, inject, OnInit } from '@angular/core';
+import { Component, NgZone, inject, signal, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
 import { combineLatest, filter, Observable, Subscription, tap } from 'rxjs';
@@ -10,6 +10,8 @@ import { sortStateSignal, SortDirective, SortByDirective, type SortState, SortSe
 import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
 import { ItemCountComponent } from 'app/shared/pagination';
 import { FormsModule } from '@angular/forms';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/auth/account.model';
 
 import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
 import { SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
@@ -35,6 +37,7 @@ import { TypeDeleteDialogComponent } from '../delete/type-delete-dialog.componen
   ],
 })
 export class TypeComponent implements OnInit {
+  account = signal<Account | null>(null);
   subscription: Subscription | null = null;
   types?: IType[];
   isLoading = false;
@@ -51,6 +54,7 @@ export class TypeComponent implements OnInit {
   protected sortService = inject(SortService);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
+  protected accountService = inject(AccountService);
 
   trackId = (_index: number, item: IType): string => this.typeService.getTypeIdentifier(item);
 
@@ -61,6 +65,8 @@ export class TypeComponent implements OnInit {
         tap(() => this.load()),
       )
       .subscribe();
+
+    this.accountService.getAuthenticationState().subscribe(account => this.account.set(account));
   }
 
   delete(type: IType): void {

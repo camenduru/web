@@ -4,6 +4,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subject } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule, TranslateService, MissingTranslationHandler } from '@ngx-translate/core';
+import { missingTranslationHandler } from 'app/config/translation.config';
 
 import { sampleWithRequiredData } from '../type.test-samples';
 import { TypeService } from '../service/type.service';
@@ -19,7 +21,16 @@ describe('Type Management Component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TypeComponent],
+      imports: [
+        HttpClientTestingModule,
+        TypeComponent,
+        TranslateModule.forRoot({
+          missingTranslationHandler: {
+            provide: MissingTranslationHandler,
+            useFactory: missingTranslationHandler,
+          },
+        }),
+      ],
       providers: [
         {
           provide: ActivatedRoute,
@@ -48,7 +59,8 @@ describe('Type Management Component', () => {
     })
       .overrideTemplate(TypeComponent, '')
       .compileComponents();
-
+    const translateService = TestBed.inject(TranslateService);
+    translateService.setDefaultLang('en');
     fixture = TestBed.createComponent(TypeComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(TypeService);
