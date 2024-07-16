@@ -1,66 +1,269 @@
-<div class="d-flex justify-content-center">
-  <div class="col-8">
-    @if (type()) {
-      <div>
-        <h2 data-cy="typeDetailsHeading"><span jhiTranslate="webApp.type.detail.title">Type</span></h2>
-
-        <hr />
-
-        <jhi-alert-error></jhi-alert-error>
-
-        <jhi-alert></jhi-alert>
-
-        <dl class="row-md jh-entity-details">
-          <dt><span jhiTranslate="global.field.id">ID</span></dt>
-          <dd>
-            <span>{{ type()!.id }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.type">Type</span></dt>
-          <dd>
-            <span>{{ type()!.type }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.amount">Amount</span></dt>
-          <dd>
-            <span>{{ type()!.amount }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.schema">Schema</span></dt>
-          <dd>
-            <span>{{ type()!.schema }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.model">Model</span></dt>
-          <dd>
-            <span>{{ type()!.model }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.title">Title</span></dt>
-          <dd>
-            <span>{{ type()!.title }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.isDefault">Is Default</span></dt>
-          <dd>
-            <span>{{ type()!.isDefault }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.isActive">Is Active</span></dt>
-          <dd>
-            <span>{{ type()!.isActive }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.isFree">Is Free</span></dt>
-          <dd>
-            <span>{{ type()!.isFree }}</span>
-          </dd>
-          <dt><span jhiTranslate="webApp.type.cooldown">Cooldown</span></dt>
-          <dd>
-            <span>{{ type()!.cooldown }}</span>
-          </dd>
-        </dl>
-
-        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-        </button>
-
-        <button type="button" [routerLink]="['/type', type()!.id, 'edit']" class="btn btn-primary">
-          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-        </button>
-      </div>
+@if (!account()?.authorities?.includes('ROLE_ADMIN')) {
+  <div style="padding-left: 1.5%">
+    🥪 TOST is under heavy development, so things might break at any time. 😋 <br />
+    📂 Because of our limited budget, we don't have a file upload service. 😐 Please use alternatives like
+    <a href="https://litterbox.catbox.moe" target="_blank">litterbox.catbox.moe</a> |
+    <a href="https://www.youtube.com/watch?v=FDPIjW7vWpI" target="_blank">tutorial</a> <br />
+    🐣 Please follow me for new updates. <a href="https://x.com/camenduru">x.com/camenduru</a> <br />
+    🥳 Please consider donation to help us maintain this project. <a href="https://github.com/sponsors/camenduru">GitHub Sponsors</a> |
+    <a href="https://www.patreon.com/camenduru">Patreon </a>
+  </div>
+}
+<div class="card jh-card">
+  <div class="row">
+    @if (account() !== null) {
+      @if (account()?.authorities?.includes('ROLE_ADMIN')) {
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div id="notify"></div>
+          <jhi-alert-error></jhi-alert-error>
+          @if (jobs?.length === 0) {
+            <div class="alert alert-warning" id="no-result">
+              <span jhiTranslate="webApp.job.home.notFound">No Jobs found</span>
+            </div>
+          }
+          @if (jobs && jobs.length > 0) {
+            <div
+              NgxJustifiedGrid
+              [horizontal]="horizontal"
+              [percentage]="percentage"
+              [isEqualSize]="isEqualSize"
+              [isConstantSize]="isConstantSize"
+              [gap]="gap"
+              [resizeDebounce]="resizeDebounce"
+              [maxResizeDebounce]="maxResizeDebounce"
+              [autoResize]="autoResize"
+              [useFit]="useFit"
+              [useTransform]="useTransform"
+              [renderOnPropertyChange]="renderOnPropertyChange"
+              [preserveUIOnDestroy]="preserveUIOnDestroy"
+              [defaultDirection]="defaultDirection"
+              [outlineLength]="outlineLength"
+              [outlineSize]="outlineSize"
+              [useRoundedSize]="useRoundedSize"
+              [useResizeObserver]="useResizeObserver"
+              [observeChildren]="observeChildren"
+              [align]="align"
+              [columnRange]="[5, 5]"
+              [rowRange]="rowRange"
+              [sizeRange]="sizeRange"
+              [displayedRow]="displayedRow"
+              [isCroppedSize]="isCroppedSize"
+            >
+              <ng-container *ngFor="let job of jobs; trackBy: trackId">
+                <ng-container *ngIf="job.result && job.result.includes(','); else resultNotArray">
+                  <ng-container *ngFor="let link of job.result.slice(1, -1).trim().split(',')">
+                    <ng-container *ngIf="link.includes('.mp4')">
+                      <video width="445" height="445" controls>
+                        <source class="item rounded" src="{{ link.slice(1, -1) }}" type="video/mp4" />
+                      </video>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <ng-template #resultNotArray>
+                  <ng-container
+                    *ngIf="job.result && (job.result.includes('.png') || job.result.includes('.jpg') || job.result.includes('.webp'))"
+                  >
+                    <img class="item rounded" [src]="job.result" (click)="download(job.result)" style="cursor: pointer" width="445" />
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.mp4')">
+                    <video width="445" height="445" controls>
+                      <source class="item rounded" [src]="job.result" type="video/mp4" />
+                    </video>
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.wav')">
+                    <audio width="445" height="445" controls>
+                      <source class="item rounded" [src]="job.result" type="audio/wav" />
+                    </audio>
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.glb')">
+                    <img
+                      class="item rounded"
+                      src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[GLB]#.png"
+                      (click)="download(job.result)"
+                      style="cursor: pointer"
+                      width="445"
+                    />
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.txt')">
+                    <img
+                      class="item rounded"
+                      src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[TXT]#.png"
+                      (click)="download(job.result)"
+                      style="cursor: pointer"
+                      width="445"
+                    />
+                  </ng-container>
+                </ng-template>
+              </ng-container>
+            </div>
+            <br />
+            <div>
+              <div class="d-flex justify-content-center">
+                <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+              </div>
+              <div class="d-flex justify-content-center">
+                <ngb-pagination
+                  [collectionSize]="totalItems"
+                  [page]="page"
+                  [pageSize]="itemsPerPage"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                  (pageChange)="navigateToPage($event)"
+                ></ngb-pagination>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5">
+          <sf-form [schema]="activeSchema" [model]="activeModel" [actions]="activeActions"></sf-form>
+          <form name="editForm" role="form" novalidate [formGroup]="editForm">
+            <button class="btn btn-secondary me-2 float-end" (click)="load()" [disabled]="isLoading">
+              <fa-icon icon="sync" [spin]="isLoading"></fa-icon> Refresh
+            </button>
+          </form>
+          <br /><br /><br />
+        </div>
+        <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7">
+          <div id="notify"></div>
+          <jhi-alert-error></jhi-alert-error>
+          @if (jobs?.length === 0) {
+            <div class="alert alert-warning" id="no-result">
+              <span jhiTranslate="webApp.job.home.notFound">No Jobs found</span>
+            </div>
+          }
+          @if (jobs && jobs.length > 0) {
+            <div
+              NgxJustifiedGrid
+              [horizontal]="horizontal"
+              [percentage]="percentage"
+              [isEqualSize]="isEqualSize"
+              [isConstantSize]="isConstantSize"
+              [gap]="gap"
+              [resizeDebounce]="resizeDebounce"
+              [maxResizeDebounce]="maxResizeDebounce"
+              [autoResize]="autoResize"
+              [useFit]="useFit"
+              [useTransform]="useTransform"
+              [renderOnPropertyChange]="renderOnPropertyChange"
+              [preserveUIOnDestroy]="preserveUIOnDestroy"
+              [defaultDirection]="defaultDirection"
+              [outlineLength]="outlineLength"
+              [outlineSize]="outlineSize"
+              [useRoundedSize]="useRoundedSize"
+              [useResizeObserver]="useResizeObserver"
+              [observeChildren]="observeChildren"
+              [align]="align"
+              [columnRange]="columnRange"
+              [rowRange]="rowRange"
+              [sizeRange]="sizeRange"
+              [displayedRow]="displayedRow"
+              [isCroppedSize]="isCroppedSize"
+            >
+              <ng-container *ngFor="let job of jobs; trackBy: trackId">
+                <ng-container *ngIf="job.result && job.result.includes(','); else resultNotArray">
+                  <ng-container *ngFor="let link of job.result.slice(1, -1).trim().split(',')">
+                    <ng-container *ngIf="link.includes('.mp4')">
+                      <video width="445" height="445" controls>
+                        <source class="item rounded" src="{{ link.slice(1, -1) }}" type="video/mp4" />
+                      </video>
+                    </ng-container>
+                    <ng-container *ngIf="link.includes('.png')">
+                      <img
+                        class="item rounded"
+                        src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[PNG]#.png"
+                        (click)="download(link.slice(2, -1))"
+                        style="cursor: pointer"
+                        width="445"
+                      />
+                    </ng-container>
+                    <ng-container *ngIf="link.includes('.obj')">
+                      <img
+                        class="item rounded"
+                        src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[OBJ]#.png"
+                        (click)="download(link.slice(2, -1))"
+                        style="cursor: pointer"
+                        width="445"
+                      />
+                    </ng-container>
+                    <ng-container *ngIf="link.includes('.mtl')">
+                      <img
+                        class="item rounded"
+                        src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[MTL]#.png"
+                        (click)="download(link.slice(2, -1))"
+                        style="cursor: pointer"
+                        width="445"
+                      />
+                    </ng-container>
+                    <ng-container *ngIf="link.includes('.glb')">
+                      <img
+                        class="item rounded"
+                        src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[GLB]#.png"
+                        (click)="download(link.slice(2, -1))"
+                        style="cursor: pointer"
+                        width="445"
+                      />
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+                <ng-template #resultNotArray>
+                  <ng-container
+                    *ngIf="job.result && (job.result.includes('.png') || job.result.includes('.jpg') || job.result.includes('.webp'))"
+                  >
+                    <img class="item rounded" [src]="job.result" (click)="download(job.result)" style="cursor: pointer" width="445" />
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.mp4')">
+                    <video width="445" height="445" controls>
+                      <source class="item rounded" [src]="job.result" type="video/mp4" />
+                    </video>
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.wav')">
+                    <audio width="445" height="445" controls>
+                      <source class="item rounded" [src]="job.result" type="audio/wav" />
+                    </audio>
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.glb')">
+                    <img
+                      class="item rounded"
+                      src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[GLB]#.png"
+                      (click)="download(job.result)"
+                      style="cursor: pointer"
+                      width="445"
+                    />
+                  </ng-container>
+                  <ng-container *ngIf="job.result && job.result.includes('.txt')">
+                    <img
+                      class="item rounded"
+                      src="https://fakeimg.pl/512x512/282828/eae0d0/?text=[TXT]#.png"
+                      (click)="download(job.result)"
+                      style="cursor: pointer"
+                      width="445"
+                    />
+                  </ng-container>
+                </ng-template>
+              </ng-container>
+            </div>
+            <br />
+            <div>
+              <div class="d-flex justify-content-center">
+                <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+              </div>
+              <div class="d-flex justify-content-center">
+                <ngb-pagination
+                  [collectionSize]="totalItems"
+                  [page]="page"
+                  [pageSize]="itemsPerPage"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                  (pageChange)="navigateToPage($event)"
+                ></ngb-pagination>
+              </div>
+            </div>
+          }
+        </div>
+      }
     }
   </div>
 </div>

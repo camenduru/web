@@ -183,7 +183,7 @@ public class TypeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the type, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     public ResponseEntity<Type> getType(@PathVariable("id") String id) {
         log.debug("REST request to get Type : {}", id);
         Optional<Type> type = typeRepository.findById(id);

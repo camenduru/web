@@ -340,6 +340,35 @@ public class JobResource {
     }
 
     /**
+     * {@code GET  /jobs/type} : get all the jobs by type.
+     *
+     * @param pageable the pagination information.
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of jobs in body.
+     */
+    @GetMapping("/type/{type}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    public ResponseEntity<List<Job>> getAllJobsByType(
+        @PathVariable("type") String type,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable,
+        @RequestParam(name = "eagerload", required = false, defaultValue = "true") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Jobs");
+        Page<Job> page;
+        if (SecurityUtils.hasCurrentUserThisAuthority(AuthoritiesConstants.ADMIN)) {
+            if (eagerload) {
+                page = jobRepository.findAllByTypeWithEagerRelationships(pageable, type);
+            } else {
+                page = jobRepository.findAllByType(pageable, type);
+            }
+        } else {
+            page = jobRepository.findAllByTypeByUserIsCurrentUser(pageable, SecurityUtils.getCurrentUserLogin().orElseThrow(), type);
+        }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
      * {@code GET  /jobs/:id} : get the "id" job.
      *
      * @param id the id of the job to retrieve.

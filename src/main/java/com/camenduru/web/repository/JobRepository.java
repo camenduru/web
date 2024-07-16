@@ -18,11 +18,23 @@ public interface JobRepository extends MongoRepository<Job, String> {
     @Query(value = "{'login': ?0, 'status': {$nin: ['EXPIRED', 'FAILED']}}", sort = "{date: -1}")
     Page<Job> findAllByUserIsCurrentUser(Pageable pageable, String login);
 
+    @Query(value = "{'login': ?0, 'type': ?1, 'status': {$nin: ['EXPIRED', 'FAILED']}}", sort = "{date: -1}")
+    Page<Job> findAllByTypeByUserIsCurrentUser(Pageable pageable, String login, String type);
+
     @Query(value = "{status: {$nin: ['EXPIRED', 'FAILED']}}", sort = "{date: -1}")
     Page<Job> findAllWithEagerRelationships(Pageable pageable);
 
     @Query(value = "{}", sort = "{date: -1}")
     List<Job> findAllWithEagerRelationships();
+
+    @Query(value = "{'type': ?0, status: {$nin: ['EXPIRED', 'FAILED']}}", sort = "{date: -1}")
+    Page<Job> findAllByTypeWithEagerRelationships(Pageable pageable, String type);
+
+    @Query(value = "{'type': ?0}", sort = "{date: -1}")
+    List<Job> findAllByTypeWithEagerRelationships(String type);
+
+    @Query(value = "{'type': ?0, status: {$nin: ['EXPIRED', 'FAILED']}}", sort = "{date: -1}")
+    Page<Job> findAllByType(Pageable pageable, String type);
 
     @Query("{'id': ?0}")
     Optional<Job> findOneWithEagerRelationships(String id);

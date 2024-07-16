@@ -84,7 +84,9 @@
         <tbody>
           @for (type of types; track trackId) {
             <tr data-cy="entityTable">
-              <td>{{ type.title }}</td>
+              <td>
+                <a [routerLink]="['/type', type.id, 'view']">{{ type.title }}</a>
+              </td>
               <td>{{ type.amount }}</td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isDefault }}</td>
               <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ type.isActive }}</td>
