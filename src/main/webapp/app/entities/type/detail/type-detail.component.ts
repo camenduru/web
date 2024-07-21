@@ -130,6 +130,8 @@ export class TypeDetailComponent implements OnInit, OnDestroy {
 
   activeActions = {
     enter: (property: any) => {
+      const enterButton = document.querySelector('.llm.btn') as HTMLButtonElement;
+      enterButton.disabled = true;
       this.isSaving = true;
       const job = this.jobFormService.getJob(this.editForm);
       job.type = this.type()?.type;
@@ -238,6 +240,8 @@ export class TypeDetailComponent implements OnInit, OnDestroy {
   }
 
   load(): void {
+    const enterButton = document.querySelector('.llm.btn') as HTMLButtonElement;
+    enterButton.disabled = false;
     this.queryJobBackend().subscribe({
       next: (res: JobEntityArrayResponseType) => {
         this.onJobResponseSuccess(res);
