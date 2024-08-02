@@ -106,7 +106,7 @@ export class TypeComponent implements OnInit {
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.types = dataFromBody;
+    this.types = dataFromBody.filter(item => item.isActive === true);
   }
 
   protected fillComponentAttributesFromResponseBody(data: IType[] | null): IType[] {
