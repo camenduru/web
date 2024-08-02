@@ -106,7 +106,11 @@ export class TypeComponent implements OnInit {
   protected onResponseSuccess(response: EntityArrayResponseType): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
-    this.types = dataFromBody.filter(item => item.isActive === true);
+    if (this.accountService.hasAnyAuthority('ROLE_ADMIN')) {
+      this.types = dataFromBody;
+    } else {
+      this.types = dataFromBody.filter(item => item.isActive === true);
+    }
   }
 
   protected fillComponentAttributesFromResponseBody(data: IType[] | null): IType[] {
