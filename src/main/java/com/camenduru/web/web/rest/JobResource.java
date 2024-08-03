@@ -72,6 +72,9 @@ public class JobResource {
     @Value("${camenduru.web.default.paid.total}")
     private String camenduruWebPaidTotal;
 
+    @Value("${camenduru.web.default.min.total}")
+    private String camenduruWebMinTotal;
+
     private final JobRepository jobRepository;
     private final DetailRepository detailRepository;
     private final UserRepository userRepository;
@@ -196,12 +199,13 @@ public class JobResource {
             String result = String.format(
                 """
                     Oops! Your balance is insufficient. If you want a daily wallet balance of
-                    <span class='text-info' style='font-weight: bold;'>%s</span>, please subscribe to
+                    <span class='text-info' style='font-weight: bold;'>%s</span> ($%s/month), please subscribe to
                     <a class='text-info' style='font-weight: bold;' href='https://github.com/sponsors/camenduru'>GitHub Sponsors</a> or
                     <a class='text-info' style='font-weight: bold;' href='https://www.patreon.com/camenduru'>Patreon</a>,
                     or wait for the daily free <span class='text-info' style='font-weight: bold;'>%s</span> Tost wallet balance.
                 """,
                 camenduruWebPaidTotal,
+                camenduruWebMinTotal,
                 camenduruWebFreeTotal
             );
             String payload = String.format("%s", result);

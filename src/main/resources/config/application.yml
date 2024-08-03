@@ -195,4 +195,5 @@ camenduru:
   web.default.source.channel: ${com_camenduru_web_default_source_channel}
   web.default.free.total: ${com_camenduru_web_default_free_total}
   web.default.paid.total: ${com_camenduru_web_default_paid_total}
+  web.default.min.total: ${com_camenduru_web_default_min_total}
   web.token: ${com_camenduru_web_token}
