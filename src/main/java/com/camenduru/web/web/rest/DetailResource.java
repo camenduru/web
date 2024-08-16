@@ -118,6 +118,7 @@ public class DetailResource {
             detail.user(currentDetail.getUser());
             detail.login(currentDetail.getLogin());
             detail.total(currentDetail.getTotal());
+            detail.membership(currentDetail.getMembership());
             detail = detailRepository.save(detail);
             return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, detail.getId()))
